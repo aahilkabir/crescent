@@ -70,7 +70,7 @@ body{
 .cinematic-bg {
   position: absolute;
   right: 0; top: 0; bottom: 0;
-  width: 50%;
+  width: 55%;
   background-size: cover;
   background-position: center;
   mask-image: linear-gradient(to left, rgba(0,0,0,1) 50%, rgba(0,0,0,0) 100%);
@@ -509,21 +509,34 @@ S(`
 </div>
 `);
 
-/* ---------- 09 WHILE LOOP ANALOGY (CINEMATIC) ---------- */
+/* ---------- 09 WHILE LOOP HERO ---------- */
 S(`
 <div class="eyebrow">Part 02 · Loops &amp; Iteration</div>
-<div class="title">while loop: The Wet Grinder Analogy</div>
+<div class="title">The Wet Grinder Analogy</div>
 <div class="split" style="position:relative; min-height:60vh;">
   <div style="flex:1.2; z-index:2; position:relative;">
     <p class="lede">A <b>while loop</b> repeats actions while a condition remains True.</p>
-    <ul class="simple-list">
-      <li class="step"><b>Grinding Batter:</b> You dump rice inside the grinding machine. <b>Condition:</b> "Is the batter still coarse?"</li>
-      <li class="step"><b>Loop:</b> If yes, the stone keeps rotating (grinds batter).</li>
-      <li class="step"><b>Check again:</b> Every rotation, the stone grinds, then checks: "Is it smooth yet?"</li>
-      <li class="step"><b>Halt:</b> The loop terminates only when the batter is smooth (Condition becomes False).</li>
-    </ul>
+    <p class="lede" style="color:var(--accent); font-weight:400; margin-top:2rem;">Like grinding batter: You dump rice inside. As long as it is still coarse, the stone keeps rotating (repeats loop).</p>
   </div>
   <div class="cinematic-bg step" style="background-image: url('../../assets/wet_grinder.jpg');"></div>
+</div>
+`);
+
+/* ---------- 09B WHILE LOOP STUDY ---------- */
+S(`
+<div class="eyebrow">Part 02 · Loops &amp; Iteration</div>
+<div class="title">while Loops: Entry-Controlled</div>
+<div class="split">
+  <div style="flex:1.2;">
+    <ul class="simple-list">
+      <li class="step"><b>Condition Checked First:</b> Loop body executes only if the test matches.</li>
+      <li class="step">If the condition starts as False, the loop executes exactly <b>zero</b> times.</li>
+      <li class="step">Always ensure the variable updates inside the loop to avoid an <b>Infinite Loop</b>.</li>
+    </ul>
+  </div>
+  <div>
+    <div class="giant-stat step">while</div>
+  </div>
 </div>
 `);
 
@@ -553,7 +566,7 @@ S(`
 </div>
 `);
 
-/* ---------- INTERACTIVE LOOP TRACE SLIDE (NEW) ---------- */
+/* ---------- INTERACTIVE LOOP TRACE SLIDE ---------- */
 S(`
 <div class="eyebrow">Part 02 · Interactive Trace</div>
 <div class="title">for Loop Variable Tracking</div>
@@ -662,7 +675,7 @@ Address:  1000  1004  1008  1012  1016
 </div>
 `);
 
-/* ---------- INTERACTIVE ARRAY ADDRESS SLIDE (NEW) ---------- */
+/* ---------- INTERACTIVE ARRAY ADDRESS SLIDE ---------- */
 S(`
 <div class="eyebrow">Part 03 · Interactive Address Math</div>
 <div class="title">Calculating Seat Addresses</div>
@@ -780,24 +793,38 @@ S(`
 </div>
 `, '{');
 
-/* ---------- 20 WHAT IS A STRING & ANALOGY (CINEMATIC) ---------- */
+/* ---------- 20 WHAT IS A STRING HERO ---------- */
 S(`
 <div class="eyebrow">Part 05 · Strings</div>
-<div class="title">The Flower Garland Analogy (Strings)</div>
+<div class="title">The Flower Garland Analogy</div>
 <div class="split" style="position:relative; min-height:60vh;">
   <div style="flex:1.2; z-index:2; position:relative;">
     <p class="lede">A <b>String</b> is a sequence of characters terminated by a null character <span class="mono">\0</span>.</p>
-    <ul class="simple-list">
-      <li class="step"><b>The Garland:</b> String is like tying flowers together. Each flower represents a character ('C', 'o', 'd', 'e').</li>
-      <li class="step"><b>The Null Terminator:</b> How do you stop the flowers from falling off? You tie a <b>knot at the end</b>.</li>
-      <li class="step">In C, the knot is the **Null Character** <span class="mono" style="color:var(--accent);">\0</span> (ASCII value 0) marking the string's end.</li>
-    </ul>
+    <p class="lede" style="color:var(--accent); font-weight:400; margin-top:2rem;">Like tying a flower garland: Each flower represents a character ('C','o','d','e'). The final knot at the end represents the Null Terminator <span class="mono">\0</span>, which prevents the flowers from falling off.</p>
   </div>
   <div class="cinematic-bg step" style="background-image: url('../../assets/flower_garland.jpg');"></div>
 </div>
 `);
 
-/* ---------- INTERACTIVE NULL TERMINATOR SLIDE (NEW) ---------- */
+/* ---------- 20B STRINGS STUDY ---------- */
+S(`
+<div class="eyebrow">Part 05 · Strings</div>
+<div class="title">Strings in C Code</div>
+<div class="split">
+  <div style="flex:1.2;">
+    <ul class="simple-list">
+      <li class="step">Declared as character arrays: <span class="mono" style="color:var(--accent);">char name[10];</span>.</li>
+      <li class="step">Always allocate <b>one extra slot</b> for the null character <span class="mono" style="color:var(--accent);">\0</span>.</li>
+      <li class="step">"CSE" takes 4 bytes in memory: 'C', 'S', 'E', '\0'.</li>
+    </ul>
+  </div>
+  <div>
+    <div class="giant-stat step">\0</div>
+  </div>
+</div>
+`);
+
+/* ---------- INTERACTIVE NULL TERMINATOR SLIDE ---------- */
 S(`
 <div class="eyebrow">Part 05 · Interactive String Visualizer</div>
 <div class="title">Null Terminator (\0) String End Check</div>

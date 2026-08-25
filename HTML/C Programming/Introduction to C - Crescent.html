@@ -70,7 +70,7 @@ body{
 .cinematic-bg {
   position: absolute;
   right: 0; top: 0; bottom: 0;
-  width: 50%;
+  width: 55%;
   background-size: cover;
   background-position: center;
   mask-image: linear-gradient(to left, rgba(0,0,0,1) 50%, rgba(0,0,0,0) 100%);
@@ -395,6 +395,84 @@ body{
   color: var(--hi);
 }
 
+/* Code completion blank field styling */
+.blank-fill {
+  background: var(--surface2);
+  border-bottom: 2px dashed var(--accent);
+  padding: 0.1rem 1rem;
+  color: transparent;
+  cursor: pointer;
+  border-radius: 4px 4px 0 0;
+  transition: all 0.3s;
+  user-select: none;
+}
+.blank-fill:hover {
+  background: var(--surface3);
+}
+.blank-fill.solved {
+  border-bottom: none;
+  color: var(--green);
+  font-weight: 700;
+  background: transparent;
+}
+
+/* Interactive Quiz Card layout */
+.card-quiz {
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 2.2rem;
+  width: clamp(320px, 45vw, 600px);
+  margin: 0 auto;
+  text-align: center;
+  box-shadow: 0 25px 60px rgba(0,0,0,0.8);
+}
+.card-question {
+  font-family: var(--serif);
+  font-size: clamp(1.4rem, 2.3vw, 2.0rem);
+  color: var(--hi);
+  line-height: 1.5;
+  margin-bottom: 1.8rem;
+}
+.card-buttons {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+}
+.quiz-btn {
+  background: var(--surface3);
+  border: 1px solid var(--border-hi);
+  color: var(--mid);
+  padding: 0.8rem 2.2rem;
+  border-radius: 6px;
+  font-family: var(--mono);
+  font-size: 1.15rem;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+.quiz-btn:hover {
+  border-color: var(--hi);
+  color: var(--hi);
+}
+.quiz-btn.correct {
+  background: var(--green-soft);
+  border-color: var(--green);
+  color: var(--hi);
+}
+.quiz-btn.incorrect {
+  background: rgba(244,63,94,0.15);
+  border-color: var(--rose);
+  color: var(--hi);
+}
+.card-feedback {
+  margin-top: 1.5rem;
+  font-family: var(--mono);
+  font-size: 1.1rem;
+  color: var(--green);
+  transition: opacity 0.4s;
+  min-height: 1.5rem;
+}
+
 /* nav ui */
 #progress{position:fixed;top:0;left:0;height:3px;background:var(--accent);z-index:50;transition:width .4s ease;box-shadow:0 0 10px var(--accent);}
 #hud{
@@ -414,7 +492,7 @@ body{
   .two-col,.split,.flowchart{grid-template-columns:1fr;display:flex;flex-direction:column;}
   .slide{padding:4vh 5vw;}
   .fact-grid.cols-3{grid-template-columns:1fr;}
-  .anatomy-stack,.terminal-sim,.quiz-options{width:100%; margin-top:2rem;}
+  .anatomy-stack,.terminal-sim,.quiz-options,.card-quiz{width:100%; margin-top:2rem;}
 }
 </style>
 </head>
@@ -569,37 +647,67 @@ S(`
 </div>
 `);
 
-/* ---------- 09 COMPILER ANALOGY (CINEMATIC) ---------- */
+/* ---------- 09 COMPILER HERO ---------- */
 S(`
 <div class="eyebrow">Part 02 · Source → Machine</div>
-<div class="title">The Catering Analogy (Compilers)</div>
+<div class="title">The Catering Analogy</div>
 <div class="split" style="position:relative; min-height:60vh;">
   <div style="flex:1.2; z-index:2; position:relative;">
     <p class="lede">A <b>Compiler</b> translates the entire code at once before running it.</p>
-    <ul class="simple-list">
-      <li class="step"><b>Catering Service:</b> You give the full menu beforehand. They cook the entire meal in giant vessels, and deliver it. You eat immediately.</li>
-      <li class="step"><b>Fast Execution:</b> Since it is pre-cooked, eating (running the app) is super fast.</li>
-      <li class="step"><b>Compilation:</b> The compiler reads the entire <b>.c</b> file and builds a standalone <b>.exe</b> file.</li>
-    </ul>
+    <p class="lede" style="color:var(--accent); font-weight:400; margin-top:2rem;">Like hiring a Catering Service: You order the full menu beforehand. They cook the entire feast and deliver it all at once.</p>
   </div>
   <div class="cinematic-bg step" style="background-image: url('../../assets/samayal_chef.jpg');"></div>
 </div>
 `);
 
-/* ---------- 10 INTERPRETER ANALOGY (CINEMATIC) ---------- */
+/* ---------- 09B COMPILER STUDY ---------- */
 S(`
 <div class="eyebrow">Part 02 · Source → Machine</div>
-<div class="title">The Dosa Master Analogy (Interpreters)</div>
+<div class="title">How Compilers Work</div>
+<div class="split">
+  <div style="flex:1.2;">
+    <ul class="simple-list">
+      <li class="step">Reads the entire C source code (<b>.c</b>) in one pass.</li>
+      <li class="step">Generates an independent machine binary executable (<b>.exe</b> / <b>.out</b>).</li>
+      <li class="step"><b>Execution Speed:</b> Pre-compiled code runs blazing fast on the CPU.</li>
+      <li class="step"><b>Error handling:</b> Reports all compilation errors at once at the very end.</li>
+    </ul>
+  </div>
+  <div>
+    <div class="giant-stat step">.exe</div>
+  </div>
+</div>
+`);
+
+/* ---------- 10 INTERPRETER HERO ---------- */
+S(`
+<div class="eyebrow">Part 02 · Source → Machine</div>
+<div class="title">The Dosa Master Analogy</div>
 <div class="split" style="position:relative; min-height:60vh;">
   <div style="flex:1.2; z-index:2; position:relative;">
     <p class="lede">An <b>Interpreter</b> reads and executes code line-by-line on the fly.</p>
-    <ul class="simple-list">
-      <li class="step"><b>Live Dosa Master:</b> He pours batter on the tawa, makes one dosa, serves it, then moves to the next.</li>
-      <li class="step"><b>Instant Error Halt:</b> If the gas cylinder runs out (error at line 5), he stops immediately. No more dosas can be served.</li>
-      <li class="step">Languages like Python and JavaScript use interpreters. C uses a compiler!</li>
-    </ul>
+    <p class="lede" style="color:var(--accent); font-weight:400; margin-top:2rem;">Like a Live Dosa Master: He pours batter, cooks one dosa, serves it, then immediately starts the next one.</p>
   </div>
   <div class="cinematic-bg step" style="background-image: url('../../assets/dosa_master.jpg');"></div>
+</div>
+`);
+
+/* ---------- 10B INTERPRETER STUDY ---------- */
+S(`
+<div class="eyebrow">Part 02 · Source → Machine</div>
+<div class="title">How Interpreters Work</div>
+<div class="split">
+  <div style="flex:1.2;">
+    <ul class="simple-list">
+      <li class="step">Reads and runs C / scripting code one line at a time.</li>
+      <li class="step">Does NOT output an executable binary file.</li>
+      <li class="step"><b>Execution Speed:</b> Slower because conversion happens on-demand during runtime.</li>
+      <li class="step"><b>Error handling:</b> Stops executing instantly the moment it hits any line with a bug.</li>
+    </ul>
+  </div>
+  <div>
+    <div class="giant-stat step">Line 1</div>
+  </div>
 </div>
 `);
 
@@ -805,7 +913,6 @@ S(`
 S(`
 <div class="eyebrow">Part 04 · Vocabulary</div>
 <div class="title">Breaking Down a Line</div>
-<div class="code" style="font-size:1.5rem; text-align:center;">if ( salary &gt;= 50000 )</div>
 <div class="fact-grid cols-3" style="margin-top:2rem;">
   <div class="fact step"><div class="num">if</div><div class="txt">Keyword</div></div>
   <div class="fact step"><div class="num">( )</div><div class="txt">Special symbols</div></div>
@@ -829,24 +936,39 @@ S(`
 </div>
 `);
 
-/* ---------- 24 VARIABLES & ANALOGY (CINEMATIC) ---------- */
+/* ---------- 24 VARIABLES HERO ---------- */
 S(`
 <div class="eyebrow">Part 04 · Vocabulary</div>
-<div class="title">The Spice Box Analogy (Variables)</div>
+<div class="title">The Spice Box Analogy</div>
 <div class="split" style="position:relative; min-height:60vh;">
   <div style="flex:1.2; z-index:2; position:relative;">
     <p class="lede">A <b>Variable</b> is a named storage container in memory.</p>
-    <ul class="simple-list">
-      <li class="step"><b>The Spice Box:</b> Traditional box with distinct cups. One cup for mustard, one for cumin, one for fenugreek.</li>
-      <li class="step"><b>Strict Data Types:</b> You don't dump mustard in the cumin cup. In C, you don't store characters in integer containers.</li>
-      <li class="step"><b>C Containers:</b> <span class="mono" style="color:var(--accent)">int</span> for whole numbers, <span class="mono" style="color:var(--accent)">float</span> for decimals, <span class="mono" style="color:var(--accent)">char</span> for single letters.</li>
-    </ul>
+    <p class="lede" style="color:var(--accent); font-weight:400; margin-top:2rem;">Like an Anjarai Petti (South Indian spice box): Dedicated cups for mustard, cumin, and cardamom. You store specific things in specific cups.</p>
   </div>
   <div class="cinematic-bg step" style="background-image: url('../../assets/anjarai_petti.jpg');"></div>
 </div>
 `);
 
-/* ---------- INTERACTIVE QUIZ SLIDE (NEW) ---------- */
+/* ---------- 24B VARIABLES STUDY ---------- */
+S(`
+<div class="eyebrow">Part 04 · Vocabulary</div>
+<div class="title">C Variables &amp; Types</div>
+<div class="split">
+  <div style="flex:1.2;">
+    <ul class="simple-list">
+      <li class="step">You must declare a variable's **data type** before storing data.</li>
+      <li class="step"><span class="mono" style="color:var(--accent);">int</span> - whole numbers (e.g. 15, -200).</li>
+      <li class="step"><span class="mono" style="color:var(--accent);">float</span> - decimal numbers (e.g. 3.14, 9.8).</li>
+      <li class="step"><span class="mono" style="color:var(--accent);">char</span> - single characters (e.g. 'A', '9').</li>
+    </ul>
+  </div>
+  <div>
+    <div class="giant-stat step">RAM</div>
+  </div>
+</div>
+`);
+
+/* ---------- INTERACTIVE QUIZ SLIDE ---------- */
 S(`
 <div class="eyebrow">Part 04 · Interactive Quiz</div>
 <div class="title">Spot the Semicolon Bug</div>
@@ -862,7 +984,7 @@ int main()
   </div>
   <div class="quiz-options">
     <div class="quiz-opt step" onclick="checkQuiz(this, false)">A) Missing header (#include)</div>
-    <div class="quiz-opt step" onclick="checkQuiz(this, true)">B) Missing semicolon on line 4</div>
+    <div class="quiz-opt step" onclick="checkQuiz(this, true)">B) Missing Semicolon on line 4</div>
     <div class="quiz-opt step" onclick="checkQuiz(this, false)">C) Salary cannot be initialized</div>
     <div class="quiz-opt step" onclick="checkQuiz(this, false)">D) Incorrect format specifier (%d)</div>
   </div>
@@ -964,21 +1086,35 @@ S(`
 </table>
 `);
 
-/* ---------- 30 MODULO ANALOGY (CINEMATIC) ---------- */
+/* ---------- 30 MODULO HERO ---------- */
 S(`
 <div class="eyebrow">Part 05 · Operators</div>
-<div class="title">The Change Analogy (Modulo)</div>
+<div class="title">The Change Analogy</div>
 <div class="split" style="position:relative; min-height:60vh;">
   <div style="flex:1.2; z-index:2; position:relative;">
     <p class="lede">The <b>Modulo operator (%)</b> returns the remainder of division.</p>
-    <ul class="simple-list">
-      <li class="step"><b>Buying Tea:</b> You buy tea for Rs. 15. You hand over a Rs. 50 note.</li>
-      <li class="step"><b>Division:</b> How many teas can you buy? 50 / 15 = 3 teas.</li>
-      <li class="step"><b>Modulo:</b> How much change do you get back? 50 % 15 = <b>Rs. 5</b>.</li>
-      <li class="step"><b>C Code:</b> <span class="mono" style="color:var(--accent);">int change = 50 % 15;</span> (change stores 5).</li>
-    </ul>
+    <p class="lede" style="color:var(--accent); font-weight:400; margin-top:2rem;">Like buying Tea: You buy tea for Rs. 15. You give a Rs. 50 note. Modulo calculates the leftover change (Rs. 5) you get back.</p>
   </div>
   <div class="cinematic-bg step" style="background-image: url('../../assets/tea_shop_change.jpg');"></div>
+</div>
+`);
+
+/* ---------- 30B MODULO STUDY ---------- */
+S(`
+<div class="eyebrow">Part 05 · Operators</div>
+<div class="title">Modulo in C Code</div>
+<div class="split">
+  <div style="flex:1.2;">
+    <ul class="simple-list">
+      <li class="step">Returns the absolute integer remainder of a division.</li>
+      <li class="step">Must only be used with integers (floats are invalid).</li>
+      <li class="step"><span class="mono" style="color:var(--accent);">50 % 15 = 5</span> (since 15 * 3 = 45, remainder is 5).</li>
+      <li class="step"><span class="mono" style="color:var(--accent);">10 % 3 = 1</span> (since 3 * 3 = 9, remainder is 1).</li>
+    </ul>
+  </div>
+  <div>
+    <div class="giant-stat step">%</div>
+  </div>
 </div>
 `);
 
@@ -1169,7 +1305,7 @@ scanf("Control String", &amp;var1, &amp;var2...);
 </div>
 `);
 
-/* ---------- INTERACTIVE TERMINAL SIMULATION SLIDE (NEW) ---------- */
+/* ---------- INTERACTIVE TERMINAL SIMULATION SLIDE ---------- */
 S(`
 <div class="eyebrow">Part 06 · Terminal Simulator</div>
 <div class="title">scanf() Execution Tracing</div>
@@ -1196,8 +1332,9 @@ int main() {
     </div>
   </div>
 </div>
-<div class="step"></div> <!-- step placeholder to trigger term line 2 -->
-<div class="step"></div> <!-- step placeholder to trigger term line 3 -->
+<div class="step"></div> <!-- step placeholder 1 -->
+<div class="step"></div> <!-- step placeholder 2 -->
+<div class="step"></div> <!-- step placeholder 3 -->
 `);
 
 /* ---------- 41 SCANF EXAMPLE ---------- */
