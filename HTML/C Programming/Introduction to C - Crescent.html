@@ -576,6 +576,113 @@ S(`
 </div>
 `);
 
+
+/* ---------- 02C STEVE JOBS VS DENNIS RITCHIE ---------- */
+S(`
+<div class="eyebrow">Part 01 · Historical Context</div>
+<div class="title">Jobs vs Ritchie: October 2011 🕊️</div>
+<div class="lede">A tale of two icons that defined modern computing — one in the spotlight, one behind the curtain.</div>
+
+<div class="two-col" style="margin-top:1.8rem;">
+  <div class="card-block step" style="border-color:rgba(56,189,248,0.3);">
+    <div style="font-size:2rem; margin-bottom:0.6rem;">📱</div>
+    <h4 style="color:var(--blue);">Steve Jobs (Oct 5, 2011)</h4>
+    <ul>
+      <li>Global front-page headlines and international mourning.</li>
+      <li>Celebrated as the ultimate visionary consumer icon.</li>
+      <li>Created the Macintosh, iPhone, iPad, and Pixar.</li>
+    </ul>
+  </div>
+
+  <div class="card-block step" style="border-color:rgba(245,158,11,0.3);">
+    <div style="font-size:2rem; margin-bottom:0.6rem;">⚡</div>
+    <h4 style="color:var(--accent);">Dennis Ritchie (Oct 12, 2011)</h4>
+    <ul>
+      <li>Passed away just <b>7 days later</b> with almost zero mainstream media coverage.</li>
+      <li>The quiet engineer who invented <b>C</b> and co-created <b>Unix</b>.</li>
+      <li><b>The Irony:</b> Every single iPhone, Mac, and iOS device built by Jobs ran on an operating system kernel and language directly built on Ritchie's work!</li>
+    </ul>
+  </div>
+</div>
+
+<div class="insight step blue" style="margin-top:1.8rem;">
+  💬 <em>"Ritchie's name was not a household word, but if you had a microscope and could look inside any computer, phone, or router on Earth — you would see his work everywhere."</em> — Paul Ceruzzi, Smithsonian Historian
+</div>
+`);
+
+/* ---------- 02D WHAT IS A KERNEL ---------- */
+S(`
+<div class="eyebrow">Part 01 · System Architecture</div>
+<div class="title">What is a Kernel? 👨‍🍳</div>
+<div class="lede">The invisible heart of your computer — explained with the 5-Star Kitchen analogy.</div>
+
+<div class="split" style="margin-top:1.8rem;">
+  <div>
+    <div class="story-card" style="margin-top:0;">
+      <div class="story-header">
+        <div class="story-icon">🍲</div>
+        <div>
+          <div class="story-title">The 5-Star Restaurant Analogy</div>
+          <div class="story-tamil">"ஹோட்டல் கிச்சனின் தலைமை செஃப் (Head Chef)"</div>
+        </div>
+      </div>
+      <div class="story-body">
+        <b>1. Guests (Apps):</b> Instagram, Chrome, Games sit at dining tables.<br>
+        <b>2. Waiters (System Calls):</b> Carry food orders from apps to the inner kitchen.<br>
+        <b>3. The Head Chef (THE KERNEL):</b> Sits in the center with absolute control over stoves (<span class="hl-violet">CPU</span>), cold storage (<span class="hl-blue">RAM</span>), and supply gates (<span class="hl-green">Hard Drive &amp; Hardware</span>).<br><br>
+        <b>The Core Rule:</b> Apps are NEVER allowed into the kitchen directly — one buggy app could burn down the whole restaurant! Everything must go through the <b>Kernel</b>.
+      </div>
+    </div>
+  </div>
+  <div>
+    <div class="card-block step">
+      <h4 style="color:var(--accent);">The Kernel's Core Responsibilities</h4>
+      <ul>
+        <li><span class="hl-violet">Memory Management:</span> Allocating RAM boxes to each running program without conflicts.</li>
+        <li><span class="hl-blue">Process Scheduling:</span> Giving CPU time slices to hundreds of apps simultaneously.</li>
+        <li><span class="hl-green">Device Drivers:</span> Talking directly to keyboards, displays, SSDs, and Wi-Fi chips.</li>
+        <li><span class="hl-gold">Why C?</span> The Linux, Windows, macOS, Android, and iOS kernels are all written in <b>C</b> because it provides raw speed and direct memory control.</li>
+      </ul>
+    </div>
+  </div>
+</div>
+`);
+
+/* ---------- 02E WHAT IS UNIX ---------- */
+S(`
+<div class="eyebrow">Part 01 · Operating Systems</div>
+<div class="title">What is Unix? 🏛️</div>
+<div class="lede">The 1969 breakthrough that created the foundation of every modern operating system on the planet.</div>
+
+<div class="two-col" style="margin-top:1.8rem;">
+  <div class="card-block step">
+    <h4 style="color:var(--rose);">Before Unix (The Chaos Era)</h4>
+    <p class="body-copy" style="font-size:1.05rem;">
+      In the 1960s, every single computer model had its own incompatible OS written in hardware-specific assembly language.<br><br>
+      When your company bought a new computer, you had to <b>throw away and rewrite all your software from scratch</b>!
+    </p>
+  </div>
+
+  <div class="card-block step">
+    <h4 style="color:var(--green);">The Unix + C Revolution</h4>
+    <p class="body-copy" style="font-size:1.05rem;">
+      In 1972, Dennis Ritchie rewrote Unix completely in <span class="hl-gold">C</span>.<br><br>
+      For the first time in human history, an operating system was <b>portable</b> — recompile the C code, and Unix would run on any computer manufacturer's hardware!
+    </p>
+  </div>
+</div>
+
+<div class="card-block step" style="margin-top:1.6rem; border-color:var(--accent);">
+  <h4 style="color:var(--accent);">The Unix Family Tree Today 🌳</h4>
+  <p class="body-copy" style="font-size:1.1rem;">
+    • <b>Apple macOS &amp; iOS:</b> Built directly on Darwin / BSD (direct Unix descendant).<br>
+    • <b>Linux &amp; Android:</b> Unix-like architecture running 100% of global top-500 supercomputers and AWS/Google cloud servers.<br>
+    • <b>Sony PlayStation:</b> Orbis OS running on FreeBSD (Unix core).
+  </p>
+</div>
+`);
+
+
 /* ---------- 03 WHAT IS C ---------- */
 S(`
 <div class="eyebrow">Part 01 · Origins &amp; Nature</div>
@@ -2448,9 +2555,6 @@ document.addEventListener('touchend', e=>{
 
 render();
 </script>
-
-
-
 
 <!-- DATABASE CHECKIN OVERLAY -->
 <div id="checkin-overlay" style="position:fixed;inset:0;background:rgba(0,0,0,0.92);backdrop-filter:blur(8px);display:flex;align-items:center;justify-content:center;z-index:9999;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;color:#fff;">
