@@ -740,35 +740,98 @@ S(`
   <div class="s-item">Operators</div>
   <div class="s-item">Terminal Input / Output</div>
 </div>
-`, '{');
+`);
 
 /* ---------- 13 STRUCTURE OVERVIEW ---------- */
 S(`
 <div class="eyebrow">Part 03 · Anatomy</div>
 <div class="title">The 6 Core Sections</div>
-<div class="split" style="align-items: center;">
-  <div class="code step" style="font-size:1.15rem; flex:1.2;">
-<span class="cm">/* 1. Documentation Section */</span>
-<span class="kw">#include</span> &lt;stdio.h&gt;    <span class="cm">/* 2. Link / Preprocessor */</span>
-<span class="kw">#define</span> TAX 5        <span class="cm">/* 3. Definition Section */</span>
-<span class="kw">int</span> globalScore;     <span class="cm">/* 4. Global Declaration */</span>
+<div class="split" style="align-items: center; gap: 3vw;">
+  <style>
+  .code-line {
+    padding: 0.15rem 0.5rem;
+    border-radius: 4px;
+    transition: all 0.3s ease;
+    border-left: 3px solid transparent;
+  }
+  .code-line.active {
+    background: rgba(251, 191, 36, 0.15) !important;
+    border-left-color: #fbbf24 !important;
+    box-shadow: 0 0 15px rgba(251, 191, 36, 0.08);
+  }
+  .stack-box {
+    cursor: pointer;
+    transition: all 0.3s ease !important;
+  }
+  .stack-box.active-stack {
+    border-color: #fbbf24 !important;
+    background: rgba(251, 191, 36, 0.15) !important;
+    box-shadow: 0 0 20px rgba(251, 191, 36, 0.25) !important;
+    color: #fbbf24 !important;
+  }
+  .code .num { color: #f43f5e; } /* pink for numbers */
+  .code .inc { color: #fb923c; } /* orange for headers */
+  .code .type { color: #60a5fa; font-weight: 700; } /* blue for types */
+  .code .op { color: #fcd34d; } /* gold for operators */
+  </style>
 
-<span class="kw">int</span> main()           <span class="cm">/* 5. Main Function Entry */</span>
+  <div class="code step" style="font-size:1.15rem; flex:1.2; line-height:1.6; white-space:pre-wrap;">
+<div class="code-line" id="code-doc"><span class="cm">/* 1. Documentation Section */</span></div><div class="code-line" id="code-link"><span class="kw">#include</span> <span class="inc">&lt;stdio.h&gt;</span>    <span class="cm">/* 2. Link / Preprocessor */</span></div><div class="code-line" id="code-def"><span class="kw">#define</span> TAX <span class="num">5</span>        <span class="cm">/* 3. Definition Section */</span></div><div class="code-line" id="code-glob"><span class="type">int</span> globalScore;     <span class="cm">/* 4. Global Declaration */</span></div>
+<div class="code-line" id="code-main"><span class="type">int</span> main()           <span class="cm">/* 5. Main Function Entry */</span>
 {
-    <span class="kw">int</span> localVal = 5;
+    <span class="type">int</span> localVal <span class="op">=</span> <span class="num">5</span>;
     <span class="fn">printf</span>(<span class="str">"Value: %d"</span>, localVal);
-    <span class="kw">return</span> 0;
-}
-<span class="kw">void</span> subProgram()    <span class="cm">/* 6. Subprogram Section */</span>
-{ }
+    <span class="kw">return</span> <span class="num">0</span>;
+}</div><div class="code-line" id="code-sub"><span class="type">void</span> subProgram()    <span class="cm">/* 6. Subprogram Section */</span>
+{ }</div>
   </div>
+  
   <div class="anatomy-stack">
-    <div class="stack-box step" id="st-doc">Documentation</div>
-    <div class="stack-box step" id="st-link">Preprocessor Link</div>
-    <div class="stack-box step" id="st-def">Definitions</div>
-    <div class="stack-box step" id="st-glob">Global Decl.</div>
-    <div class="stack-box step" id="st-main">main() Function</div>
-    <div class="stack-box step" id="st-sub">Subprograms</div>
+    <div class="stack-box step" data-target="code-doc" id="st-doc">Documentation</div>
+    <div class="stack-box step" data-target="code-link" id="st-link">Preprocessor Link</div>
+    <div class="stack-box step" data-target="code-def" id="st-def">Definitions</div>
+    <div class="stack-box step" data-target="code-glob" id="st-glob">Global Decl.</div>
+    <div class="stack-box step" data-target="code-main" id="st-main">main() Function</div>
+    <div class="stack-box step" data-target="code-sub" id="st-sub">Subprograms</div>
+  </div>
+</div>
+
+<script>
+(function() {
+  const initHighlight = () => {
+    const stackBoxes = document.querySelectorAll('.stack-box');
+    const codeLines = document.querySelectorAll('.code-line');
+    
+    if (stackBoxes.length === 0 || codeLines.length === 0) {
+      setTimeout(initHighlight, 100);
+      return;
+    }
+
+    stackBoxes.forEach(box => {
+      box.addEventListener('click', () => {
+        stackBoxes.forEach(b => b.classList.remove('active-stack'));
+        box.classList.add('active-stack');
+
+        const targetId = box.getAttribute('data-target');
+        codeLines.forEach(line => {
+          if (line.id === targetId) {
+            line.classList.add('active');
+          } else {
+            line.classList.remove('active');
+          }
+        });
+      });
+    });
+
+    // Select documentation by default
+    const docBox = document.getElementById('st-doc');
+    if (docBox) docBox.click();
+  };
+
+  setTimeout(initHighlight, 200);
+})();
+</script>
+`);tep" id="st-sub">Subprograms</div>
   </div>
 </div>
 `);
