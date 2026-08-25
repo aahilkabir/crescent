@@ -68,22 +68,22 @@ body{
 
 /* Cinematic Blended Image Layouts */
 .cinematic-bg {
-  position: absolute;
-  right: 0; top: 0; bottom: 0;
-  width: 55%;
+  position: relative;
+  flex: 0.95;
+  height: 380px;
   background-size: cover;
   background-position: center;
-  mask-image: linear-gradient(to left, rgba(0,0,0,1) 50%, rgba(0,0,0,0) 100%);
-  -webkit-mask-image: linear-gradient(to left, rgba(0,0,0,1) 50%, rgba(0,0,0,0) 100%);
-  z-index: 0;
+  border-radius: 12px;
+  border: 1px solid var(--border-hi);
+  box-shadow: 0 20px 45px rgba(0,0,0,0.55);
   pointer-events: none;
   opacity: 0;
-  transform: scale(1.06) translateX(12px);
-  transition: transform 1.6s cubic-bezier(0.16, 1, 0.3, 1), opacity 1.2s ease;
+  transform: scale(0.97) translateY(8px);
+  transition: transform 1s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.8s ease;
 }
 .cinematic-bg.revealed {
-  opacity: 0.75;
-  transform: scale(1.01) translateX(0);
+  opacity: 1;
+  transform: scale(1) translateY(0);
 }
 
 .eyebrow{
@@ -513,10 +513,12 @@ S(`
 S(`
 <div class="eyebrow">Part 02 · Loops &amp; Iteration</div>
 <div class="title">The Wet Grinder Analogy</div>
-<div class="split" style="position:relative; min-height:60vh;">
-  <div style="flex:1.2; z-index:2; position:relative;">
-    <p class="lede">A <b>while loop</b> repeats actions while a condition remains True.</p>
-    <p class="lede" style="color:var(--accent); font-weight:400; margin-top:2rem;">Like grinding batter: You dump rice inside. As long as it is still coarse, the stone keeps rotating (repeats loop).</p>
+<div class="split" style="align-items: center; gap: 4vw;">
+  <div style="flex: 1.1;">
+    <p class="lede" style="font-size: 1.45rem; line-height: 1.6; margin-bottom: 2rem;">A <b>while loop</b> repeats actions while a condition remains True.</p>
+    <div style="padding: 1.8rem; background: var(--accent-soft); border-left: 4px solid var(--accent); border-radius: 0 8px 8px 0; font-size: 1.25rem; color: var(--hi); line-height: 1.6; font-weight: 300;">
+      Like grinding batter: You dump rice inside. As long as it is still coarse, the stone keeps rotating (repeats loop).
+    </div>
   </div>
   <div class="cinematic-bg step" style="background-image: url('../../assets/wet_grinder.jpg');"></div>
 </div>
@@ -797,10 +799,12 @@ S(`
 S(`
 <div class="eyebrow">Part 05 · Strings</div>
 <div class="title">The Flower Garland Analogy</div>
-<div class="split" style="position:relative; min-height:60vh;">
-  <div style="flex:1.2; z-index:2; position:relative;">
-    <p class="lede">A <b>String</b> is a sequence of characters terminated by a null character <span class="mono">\0</span>.</p>
-    <p class="lede" style="color:var(--accent); font-weight:400; margin-top:2rem;">Like tying a flower garland: Each flower represents a character ('C','o','d','e'). The final knot at the end represents the Null Terminator <span class="mono">\0</span>, which prevents the flowers from falling off.</p>
+<div class="split" style="align-items: center; gap: 4vw;">
+  <div style="flex: 1.1;">
+    <p class="lede" style="font-size: 1.45rem; line-height: 1.6; margin-bottom: 2rem;">A <b>String</b> is a sequence of characters terminated by a null character <span class="mono">\0</span>.</p>
+    <div style="padding: 1.8rem; background: var(--accent-soft); border-left: 4px solid var(--accent); border-radius: 0 8px 8px 0; font-size: 1.25rem; color: var(--hi); line-height: 1.6; font-weight: 300;">
+      Like tying a flower garland: Each flower represents a character ('C','o','d','e'). The final knot at the end represents the Null Terminator <span class="mono">\0</span>, which prevents the flowers from falling off.
+    </div>
   </div>
   <div class="cinematic-bg step" style="background-image: url('../../assets/flower_garland.jpg');"></div>
 </div>
@@ -1022,7 +1026,6 @@ document.addEventListener('touchend', e=>{
 render();
 </script>
 
-
 <!-- DATABASE CHECKIN OVERLAY -->
 <div id="checkin-overlay" style="position:fixed;inset:0;background:rgba(0,0,0,0.92);backdrop-filter:blur(8px);display:flex;align-items:center;justify-content:center;z-index:9999;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;color:#fff;">
   <form id="checkin-form" style="background:#0e0f11;border:1px solid rgba(251,191,36,0.15);padding:3rem;border-radius:16px;max-width:420px;width:100%;text-align:center;box-shadow:0 25px 60px rgba(0,0,0,0.8);">
@@ -1133,6 +1136,5 @@ render();
 })();
 </script>
 </body>
-
 
 </html>
