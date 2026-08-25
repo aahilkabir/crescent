@@ -6,9 +6,9 @@ export const subjects = [
     desc: 'Master C programming logic, variables, loops, arrays, and standard lab manual exercises with visual tracers.',
     icon: 'code',
     modules: [
-      { id: 'intro', title: 'Module 1: C Fundamentals', desc: 'Origins, preprocessors, variables, operators, and preprocessor link sections.', isReact: true },
-      { id: 'control', title: 'Module 3: Control & Arrays', desc: 'if-else loops, arrays, and string garland NULL check.', isReact: true },
-      { id: 'lab', title: 'PPS Lab Manual Activities', desc: '20 practical challenges with live swapping, bank tracing, stack frames.', isReact: true }
+      { title: 'Module 1: C Fundamentals', path: '/HTML/C Programming/Introduction to C - Crescent.html', desc: 'Origins, preprocessors, variables, operators, and preprocessor link sections.' },
+      { title: 'Module 3: Control & Arrays', path: '/HTML/C Programming/Control Structures and Arrays - Crescent.html', desc: 'if-else loops, arrays, and string garland NULL check.' },
+      { title: 'PPS Lab Manual Activities', path: '/HTML/C Programming/C Programming Lab Activity Deck - Crescent.html', desc: '20 practical challenges with live swapping, bank tracing, stack frames.' }
     ]
   },
   {

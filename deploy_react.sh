@@ -15,4 +15,7 @@ cp crescent-app/dist/index.html ./index.html
 cp crescent-app/dist/assets/index-*.js ./assets/
 cp crescent-app/dist/assets/index-*.css ./assets/
 
+echo "=== Injecting database checkin overlay to static HTML slides ==="
+node scripts/inject_db_client.js
+
 echo "=== Deployment files prepared successfully! ==="

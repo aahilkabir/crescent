@@ -1432,5 +1432,118 @@ document.addEventListener('touchend', e=>{
 
 render();
 </script>
+
+
+<!-- DATABASE CHECKIN OVERLAY -->
+<div id="checkin-overlay" style="position:fixed;inset:0;background:rgba(0,0,0,0.92);backdrop-filter:blur(8px);display:flex;align-items:center;justify-content:center;z-index:9999;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;color:#fff;">
+  <form id="checkin-form" style="background:#0e0f11;border:1px solid rgba(251,191,36,0.15);padding:3rem;border-radius:16px;max-width:420px;width:100%;text-align:center;box-shadow:0 25px 60px rgba(0,0,0,0.8);">
+    <div style="font-size:3rem;margin-bottom:0.5rem;">🎓</div>
+    <h2 style="margin-bottom:0.5rem;font-size:1.8rem;font-weight:700;">Classroom Check-in</h2>
+    <p style="color:#64748b;font-size:0.95rem;margin-bottom:1.5rem;">Register your roll number and name to track slide activities.</p>
+    
+    <div style="text-align:left;margin-bottom:1rem;">
+      <label style="font-family:monospace;font-size:0.75rem;color:#64748b;text-transform:uppercase;letter-spacing:0.05em;display:block;margin-bottom:0.4rem;">Roll Number</label>
+      <input type="text" id="chk-roll" placeholder="e.g. 23CSE01" required style="width:100%;padding:0.75rem 1rem;background:#181a1f;border:1px solid rgba(255,255,255,0.08);color:#fff;border-radius:6px;outline:none;font-size:1rem;">
+    </div>
+    
+    <div style="text-align:left;margin-bottom:1.5rem;">
+      <label style="font-family:monospace;font-size:0.75rem;color:#64748b;text-transform:uppercase;letter-spacing:0.05em;display:block;margin-bottom:0.4rem;">Student Name</label>
+      <input type="text" id="chk-name" placeholder="e.g. Arun Kumar" required style="width:100%;padding:0.75rem 1rem;background:#181a1f;border:1px solid rgba(255,255,255,0.08);color:#fff;border-radius:6px;outline:none;font-size:1rem;">
+    </div>
+    
+    <button type="submit" style="width:100%;padding:0.8rem;background:#fbbf24;color:#000;border:none;border-radius:6px;font-weight:700;font-size:1rem;cursor:pointer;transition:background 0.2s;">Register & Enter</button>
+    <button type="button" id="chk-skip" style="width:100%;padding:0.8rem;background:transparent;color:#64748b;border:1px solid rgba(255,255,255,0.08);border-radius:6px;margin-top:0.8rem;cursor:pointer;font-size:0.95rem;">Presenter View</button>
+  </form>
+</div>
+
+<script>
+(function() {
+  const overlay = document.getElementById('checkin-overlay');
+  const form = document.getElementById('checkin-form');
+  const rollInput = document.getElementById('chk-roll');
+  const nameInput = document.getElementById('chk-name');
+  const skipBtn = document.getElementById('chk-skip');
+
+  const checkStatus = () => {
+    const roll = localStorage.getItem('crescent_roll_number');
+    const name = localStorage.getItem('crescent_name');
+    const skip = localStorage.getItem('crescent_presenter_view');
+    if ((roll && name) || skip === 'true') {
+      overlay.style.display = 'none';
+    }
+  };
+
+  checkStatus();
+
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const roll = rollInput.value.trim().toUpperCase();
+    const name = nameInput.value.trim();
+    
+    try {
+      const res = await fetch('/api/checkin', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ rollNumber: roll, name })
+      });
+      if (res.ok) {
+        localStorage.setItem('crescent_roll_number', roll);
+        localStorage.setItem('crescent_name', name);
+        localStorage.removeItem('crescent_presenter_view');
+        overlay.style.display = 'none';
+      } else {
+        alert('Check-in failed. Please try again.');
+      }
+    } catch (err) {
+      alert('Connection error. Please try again.');
+    }
+  });
+
+  skipBtn.addEventListener('click', () => {
+    localStorage.setItem('crescent_presenter_view', 'true');
+    localStorage.removeItem('crescent_roll_number');
+    localStorage.removeItem('crescent_name');
+    overlay.style.display = 'none';
+  });
+
+  // Inject quiz click tracking
+  window.recordResponse = async function(slideId, answer, isCorrect) {
+    const roll = localStorage.getItem('crescent_roll_number');
+    if (!roll) return;
+    try {
+      await fetch('/api/submit-quiz', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ rollNumber: roll, slideId, answer, isCorrect })
+      });
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  // Override verifyCard and solveBlank if they exist
+  setTimeout(() => {
+    const originalVerifyCard = window.verifyCard;
+    window.verifyCard = function(btn, isCorrect, feedbackText) {
+      if (originalVerifyCard) {
+        originalVerifyCard(btn, isCorrect, feedbackText);
+      }
+      const cardQuestion = btn.closest('.card-quiz')?.querySelector('.card-question')?.textContent || 'Quiz Card';
+      window.recordResponse(cardQuestion, btn.textContent, isCorrect);
+    };
+
+    const originalSolveBlank = window.solveBlank;
+    window.solveBlank = function(el, val) {
+      if (originalSolveBlank) {
+        originalSolveBlank(el, val);
+      }
+      const blankTitle = el.closest('.slide')?.querySelector('.title')?.textContent || 'Code Blank';
+      window.recordResponse(blankTitle, val, true);
+    };
+  }, 100);
+})();
+</script>
 </body>
+
+
 </html>
