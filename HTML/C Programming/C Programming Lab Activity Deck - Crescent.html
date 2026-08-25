@@ -1,4 +1,13 @@
-<!DOCTYPE html>
+import os
+
+WORKSPACE_DIR = "/Users/mohammedkabir/prez"
+TARGET_FILE = os.path.join(WORKSPACE_DIR, "HTML", "C Programming", "C Programming Lab Activity Deck - Crescent.html")
+
+# Ensure parent directory exists
+os.makedirs(os.path.dirname(TARGET_FILE), exist_ok=True)
+
+# Using raw string (r""") to preserve all double-backslashes (\\n, \\0) as-is in the output HTML file
+html_content = r"""<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -592,7 +601,7 @@ int main() {
     sum = a + b + c;
     avg = sum / 3.0; // float division
     
-    printf("Sum = %d\nAvg = %.2f\n", sum, avg);
+    printf("Sum = %d\\nAvg = %.2f\\n", sum, avg);
     return 0;
 }
   </div>
@@ -618,7 +627,7 @@ S(`
 <div class="code step" style="font-size:1.2rem; margin-top:1.5rem;">
 #include &lt;stdio.h&gt;
 #define PI 3.14159 // Unchangeable constant
-
+ 
 int main() {
     int radius;
     float area, circumference;
@@ -629,7 +638,7 @@ int main() {
     area = PI * radius * radius;
     circumference = 2 * PI * radius;
     
-    printf("Area = %.2f\nCircumference = %.2f\n", area, circumference);
+    printf("Area = %.2f\\nCircumference = %.2f\\n", area, circumference);
     return 0;
 }
 </div>
@@ -647,11 +656,11 @@ int main() {
     scanf("%d %d %d", &amp;num1, &amp;num2, &amp;num3);
     
     if (num1 &gt;= num2 &amp;&amp; num1 &gt;= num3) {
-        printf("%d is largest\n", num1);
+        printf("%d is largest\\n", num1);
     } else if (num2 &gt;= num1 &amp;&amp; num2 &gt;= num3) {
-        printf("%d is largest\n", num2);
+        printf("%d is largest\\n", num2);
     } else {
-        printf("%d is largest\n", num3);
+        printf("%d is largest\\n", num3);
     }
     return 0;
 }
@@ -700,13 +709,13 @@ S(`
 <div class="title">Size of Data Types (sizeof)</div>
 <div class="code step" style="font-size:1.15rem; margin-top:1.5rem;">
 #include &lt;stdio.h&gt;
-
+ 
 int main() {
-    printf("char   : %lu bytes\n", sizeof(char));
-    printf("int    : %lu bytes\n", sizeof(int));
-    printf("float  : %lu bytes\n", sizeof(float));
-    printf("double : %lu bytes\n", sizeof(double));
-    printf("pointer: %lu bytes\n", sizeof(void *));
+    printf("char   : %lu bytes\\n", sizeof(char));
+    printf("int    : %lu bytes\\n", sizeof(int));
+    printf("float  : %lu bytes\\n", sizeof(float));
+    printf("double : %lu bytes\\n", sizeof(double));
+    printf("pointer: %lu bytes\\n", sizeof(void *));
     return 0;
 }
 </div>
@@ -733,7 +742,7 @@ S(`
   <div style="flex:1.2;">
     <p class="lede">Using conditional operator to evaluate eligibility: <span class="mono">(age &gt;= 18) ? "Eligible" : "Not"</span>.</p>
     <ul class="simple-list" style="margin-top:1.4rem;">
-      <li class="step">Ternary is a compact shorthand for simple `if-else` return expressions.</li>
+      <li class="step">Ternary is a compact shorthand for simple \`if-else\` return expressions.</li>
     </ul>
   </div>
   <div class="gate-sim step">
@@ -779,7 +788,7 @@ int main() {
     c--; // postfix decrement
     --d; // prefix decrement
     
-    printf("a = %d, b = %d, c = %d, d = %d\n", a, b, c, d);
+    printf("a = %d, b = %d, c = %d, d = %d\\n", a, b, c, d);
     return 0;
 }
 </div>
@@ -815,8 +824,8 @@ int main() {
             break;
         }
     }
-    if (flag == 0) printf("%d is Prime\n", n);
-    else printf("%d is Not Prime\n", n);
+    if (flag == 0) printf("%d is Prime\\n", n);
+    else printf("%d is Not Prime\\n", n);
     return 0;
 }
 </div>
@@ -834,9 +843,9 @@ int main() {
     scanf("%d", &amp;yr);
     
     if ((yr % 400 == 0) || ((yr % 4 == 0) &amp;&amp; (yr % 100 != 0))) {
-        printf("%d is a Leap Year\n", yr);
+        printf("%d is a Leap Year\\n", yr);
     } else {
-        printf("%d is Not a Leap Year\n", yr);
+        printf("%d is Not a Leap Year\\n", yr);
     }
     return 0;
 }
@@ -865,12 +874,12 @@ int main() {
     printf("Enter integer: ");
     scanf("%d", &amp;n);
     
-    if (n &lt; 0) printf("Negative values invalid.\n");
+    if (n &lt; 0) printf("Negative values invalid.\\n");
     else {
         for (int i = 1; i &lt;= n; i++) {
             fact *= i; // multiply loop
         }
-        printf("Factorial of %d = %llu\n", n, fact);
+        printf("Factorial of %d = %llu\\n", n, fact);
     }
     return 0;
 }
@@ -894,8 +903,8 @@ int main() {
         result += remainder * remainder * remainder; // sum cube
         originalNum /= 10; // remove last digit
     }
-    if (result == num) printf("%d is Armstrong\n", num);
-    else printf("%d is Not Armstrong\n", num);
+    if (result == num) printf("%d is Armstrong\\n", num);
+    else printf("%d is Not Armstrong\\n", num);
     return 0;
 }
 </div>
@@ -913,11 +922,11 @@ int main() {
     scanf("%d", &amp;num);
     
     switch (num &gt; 0) {
-        case 1: printf("%d is Positive\n", num); break;
+        case 1: printf("%d is Positive\\n", num); break;
         case 0:
             switch (num &lt; 0) {
-                case 1: printf("%d is Negative\n", num); break;
-                case 0: printf("%d is Zero\n", num); break;
+                case 1: printf("%d is Negative\\n", num); break;
+                case 0: printf("%d is Zero\\n", num); break;
             }
             break;
     }
@@ -939,12 +948,12 @@ int main() {
         for (j = 0; j &lt; c; ++j) {
             sum[i][j] = a[i][j] + b[i][j]; // element sum
         }
-    printf("Sum matrix:\n");
+    printf("Sum matrix:\\n");
     for (i = 0; i &lt; r; ++i) {
         for (j = 0; j &lt; c; ++j) {
             printf("%d   ", sum[i][j]);
         }
-        printf("\n");
+        printf("\\n");
     }
     return 0;
 }
@@ -967,18 +976,18 @@ S(`
 <div class="title">Arithmetic Operations via Functions</div>
 <div class="code step" style="font-size:1.1rem; margin-top:1.5rem;">
 #include &lt;stdio.h&gt;
-
+ 
 int addition(int a, int b) { return a + b; }
 int subtract(int a, int b) { return a - b; }
 int multiply(int a, int b) { return a * b; }
 float division(float a, float b) { return a / b; }
-
+ 
 int main() {
     int x = 8, y = 3;
-    printf("Add: %d\n", addition(x, y));
-    printf("Sub: %d\n", subtract(x, y));
-    printf("Mul: %d\n", multiply(x, y));
-    printf("Div: %f\n", division(x, y));
+    printf("Add: %d\\n", addition(x, y));
+    printf("Sub: %d\\n", subtract(x, y));
+    printf("Mul: %d\\n", multiply(x, y));
+    printf("Div: %f\\n", division(x, y));
     return 0;
 }
 </div>
@@ -991,7 +1000,7 @@ S(`
 <div class="lede" style="margin-top:1.2rem;">Define a function that multiplies two integers and returns the integer result:</div>
 <div class="code step" style="font-size:1.35rem; margin-top:2rem;">
 #include &lt;stdio.h&gt;
-
+ 
 <span class="blank-fill step" onclick="solveBlank(this, 'int')">______</span> multiply(int a, int b) 
 {
     return a * b;
@@ -1013,7 +1022,7 @@ int sumOfDigits(int n) {
 }
 int main() {
     int num = 123;
-    printf("Sum = %d\n", sumOfDigits(num));
+    printf("Sum = %d\\n", sumOfDigits(num));
     return 0;
 }
   </div>
@@ -1043,7 +1052,7 @@ struct Student {
 };
 int main() {
     struct Student s = {"Arun", 450, 90.0};
-    printf("Name: %s\nScore: %d\nPct: %.2f%%\n", s.name, s.score, s.pct);
+    printf("Name: %s\\nScore: %d\\nPct: %.2f%%\\n", s.name, s.score, s.pct);
     return 0;
 }
 </div>
@@ -1063,7 +1072,7 @@ int main() {
     union Data d;
     d.i = 10;
     d.f = 220.5; // overwrites d.i shared memory!
-    printf("Shared space overwrite: d.i = %d, d.f = %f\n", d.i, d.f);
+    printf("Shared space overwrite: d.i = %d, d.f = %f\\n", d.i, d.f);
     return 0;
 }
 </div>
@@ -1094,7 +1103,7 @@ int main() {
     int *ptr = arr; // ptr points to arr[0]
     
     for (int i = 0; i &lt; 3; i++) {
-        printf("Addr: %p, Val: %d\n", (ptr+i), *(ptr+i));
+        printf("Addr: %p, Val: %d\\n", (ptr+i), *(ptr+i));
     }
     return 0;
 }
@@ -1120,7 +1129,7 @@ S(`
 int main() {
     int val = 99;
     int *ptr = &amp;val;
-    printf("Value is %d\n", <span class="blank-fill step" onclick="solveBlank(this, '*ptr')">______</span>);
+    printf("Value is %d\\n", <span class="blank-fill step" onclick="solveBlank(this, '*ptr')">______</span>);
     return 0;
 }
 </div>
@@ -1138,10 +1147,10 @@ int main() {
     if (fptr == NULL) return 1;
     
     char name[] = "Raj"; int age = 28; float sal = 75000;
-    fprintf(fptr, "Name: %s, Age: %d, Salary: %.2f\n", name, age, sal);
+    fprintf(fptr, "Name: %s, Age: %d, Salary: %.2f\\n", name, age, sal);
     
     fclose(fptr); // close file
-    printf("Employee records saved successfully in emp.rec.\n");
+    printf("Employee records saved successfully in emp.rec.\\n");
     return 0;
 }
 </div>
@@ -1434,3 +1443,9 @@ render();
 </script>
 </body>
 </html>
+"""
+
+with open(TARGET_FILE, "w", encoding="utf-8") as f:
+    f.write(html_content)
+
+print(f"Successfully generated lab activity slide deck at {TARGET_FILE}")
