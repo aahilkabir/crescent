@@ -14,7 +14,7 @@ import {
   TodoCard,
   StringGarland
 } from './components/InteractiveWidgets';
-import { Play, Home, ChevronRight, Menu, X, ArrowLeft, ArrowRight, Maximize2, Monitor, BookOpen, Terminal, CheckCircle2, Code, Lightbulb, Cpu, Briefcase, ExternalLink } from 'lucide-react';
+import { Play, Home, ChevronRight, Menu, X, ArrowLeft, ArrowRight, Maximize2, Monitor, BookOpen, Terminal, CheckCircle2, Code, Lightbulb, Cpu, Briefcase, ExternalLink, RefreshCw, Users, HelpCircle, GraduationCap, ChevronLeft } from 'lucide-react';
 
 function App() {
   const [currentSubjectId, setCurrentSubjectId] = useState(null);
@@ -23,14 +23,122 @@ function App() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [isFullscreen, setIsFullscreen] = useState(false);
 
+  // Attendance Check-in State
+  const [rollNumber, setRollNumber] = useState('');
+  const [studentName, setStudentName] = useState('');
+  const [isCheckedIn, setIsCheckedIn] = useState(false);
+  const [checkInError, setCheckInError] = useState('');
+  const [checkInLoading, setCheckInLoading] = useState(false);
+
+  // Admin Dashboard State
+  const [isAdminView, setIsAdminView] = useState(false);
+  const [adminData, setAdminData] = useState({ students: [], stats: [], rawResponses: [] });
+  const [adminLoading, setAdminLoading] = useState(false);
+  const [adminSearch, setAdminSearch] = useState('');
+
   const activeModule = modules.find(m => m.id === currentModuleId);
   const slides = activeModule?.slides || [];
   const currentSlide = slides[slideIdx];
 
   const activeSubject = subjects.find(s => s.id === currentSubjectId);
-
-  // Reference for touch gestures
   const touchStartX = useRef(null);
+
+  // Initialize and check local storage check-in credentials
+  useEffect(() => {
+    // Check if path or hash is admin
+    const checkRoute = () => {
+      const isHashAdmin = window.location.hash === '#admin';
+      const isPathAdmin = window.location.pathname === '/admin';
+      setIsAdminView(isHashAdmin || isPathAdmin);
+    };
+
+    checkRoute();
+    window.addEventListener('hashchange', checkRoute);
+    
+    const savedRoll = localStorage.getItem('crescent_roll_number');
+    const savedName = localStorage.getItem('crescent_name');
+    const presenterFlag = localStorage.getItem('crescent_presenter_view');
+    
+    if ((savedRoll && savedName) || presenterFlag === 'true') {
+      setIsCheckedIn(true);
+    }
+
+    return () => window.removeEventListener('hashchange', checkRoute);
+  }, []);
+
+  // Fetch admin stats when admin panel is visible
+  useEffect(() => {
+    if (isAdminView) {
+      fetchAdminData();
+    }
+  }, [isAdminView]);
+
+  const fetchAdminData = async () => {
+    setAdminLoading(true);
+    try {
+      const res = await fetch('/api/submissions');
+      if (res.ok) {
+        const data = await res.json();
+        setAdminData(data);
+      }
+    } catch (err) {
+      console.error("Failed to fetch admin stats:", err);
+    } finally {
+      setAdminLoading(false);
+    }
+  };
+
+  const handleCheckInSubmit = async (e) => {
+    e.preventDefault();
+    if (!rollNumber.trim() || !studentName.trim()) {
+      setCheckInError('Please enter both your Roll Number and Name.');
+      return;
+    }
+
+    setCheckInLoading(true);
+    setCheckInError('');
+
+    try {
+      const res = await fetch('/api/checkin', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          rollNumber: rollNumber.trim(),
+          name: studentName.trim()
+        })
+      });
+
+      if (res.ok) {
+        localStorage.setItem('crescent_roll_number', rollNumber.trim().toUpperCase());
+        localStorage.setItem('crescent_name', studentName.trim());
+        localStorage.removeItem('crescent_presenter_view');
+        setIsCheckedIn(true);
+      } else {
+        const errData = await res.json();
+        setCheckInError(errData.error || 'Check-in failed. Please try again.');
+      }
+    } catch (err) {
+      setCheckInError('Network error. Check your connection.');
+    } finally {
+      setCheckInLoading(false);
+    }
+  };
+
+  const skipCheckInAsPresenter = () => {
+    localStorage.setItem('crescent_presenter_view', 'true');
+    localStorage.removeItem('crescent_roll_number');
+    localStorage.removeItem('crescent_name');
+    setIsCheckedIn(true);
+  };
+
+  const logout = () => {
+    localStorage.removeItem('crescent_roll_number');
+    localStorage.removeItem('crescent_name');
+    localStorage.removeItem('crescent_presenter_view');
+    setIsCheckedIn(false);
+    setRollNumber('');
+    setStudentName('');
+  };
 
   // Fullscreen toggle handler
   const toggleFullscreen = () => {
@@ -46,43 +154,6 @@ function App() {
       });
     }
   };
-
-  // Monitor fullscreen changes
-  useEffect(() => {
-    const handleFullscreenChange = () => {
-      setIsFullscreen(!!document.fullscreenElement);
-    };
-    document.addEventListener('fullscreenchange', handleFullscreenChange);
-    return () => document.removeEventListener('fullscreenchange', handleFullscreenChange);
-  }, []);
-
-  // Keyboard navigation controller
-  useEffect(() => {
-    if (currentModuleId === null) return;
-    
-    const handleKeyDown = (e) => {
-      if (['ArrowRight', 'ArrowDown', 'PageDown', ' '].includes(e.key)) {
-        e.preventDefault();
-        nextSlide();
-      } else if (['ArrowLeft', 'ArrowUp', 'PageUp'].includes(e.key)) {
-        e.preventDefault();
-        prevSlide();
-      } else if (e.key === 'Home') {
-        e.preventDefault();
-        setSlideIdx(0);
-      } else if (e.key === 'End') {
-        e.preventDefault();
-        setSlideIdx(slides.length - 1);
-      } else if (e.key.toLowerCase() === 'f') {
-        toggleFullscreen();
-      } else if (e.key === 'Escape') {
-        setSidebarOpen(false);
-      }
-    };
-
-    document.addEventListener('keydown', handleKeyDown);
-    return () => document.removeEventListener('keydown', handleKeyDown);
-  }, [currentModuleId, slideIdx, slides]);
 
   // Touch navigation swiper
   const handleTouchStart = (e) => {
@@ -134,13 +205,172 @@ function App() {
 
   const getSubjectIcon = (iconName) => {
     switch (iconName) {
-      case 'code': return <Code size={32} className="accent" style={{ color: 'var(--accent)' }} />;
-      case 'lightbulb': return <Lightbulb size={32} className="accent" style={{ color: 'var(--rose)' }} />;
-      case 'cpu': return <Cpu size={32} className="accent" style={{ color: 'var(--blue)' }} />;
-      case 'briefcase': return <Briefcase size={32} className="accent" style={{ color: 'var(--green)' }} />;
+      case 'code': return <Code size={32} style={{ color: 'var(--accent)' }} />;
+      case 'lightbulb': return <Lightbulb size={32} style={{ color: 'var(--rose)' }} />;
+      case 'cpu': return <Cpu size={32} style={{ color: 'var(--blue)' }} />;
+      case 'briefcase': return <Briefcase size={32} style={{ color: 'var(--green)' }} />;
       default: return <BookOpen size={32} />;
     }
   };
+
+  // Render Admin Console Dashboard
+  if (isAdminView) {
+    const filteredStudents = adminData.students.filter(s => 
+      s.name.toLowerCase().includes(adminSearch.toLowerCase()) || 
+      s.roll_number.toLowerCase().includes(adminSearch.toLowerCase())
+    );
+
+    // Group stats by slide_id
+    const groupedStats = {};
+    adminData.stats.forEach(item => {
+      if (!groupedStats[item.slide_id]) {
+        groupedStats[item.slide_id] = { correct: 0, incorrect: 0, responses: [] };
+      }
+      if (item.is_correct) {
+        groupedStats[item.slide_id].correct += parseInt(item.count);
+      } else {
+        groupedStats[item.slide_id].incorrect += parseInt(item.count);
+      }
+      groupedStats[item.slide_id].responses.push(item);
+    });
+
+    return (
+      <div style={{ display: 'flex', flexDirection: 'column', height: '100%', background: 'var(--black)' }}>
+        <header style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '1.2rem 3vw', borderBottom: '1px solid var(--border)', background: 'var(--surface)' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.8rem' }}>
+            <button 
+              onClick={() => {
+                window.location.hash = '';
+                setIsAdminView(false);
+              }}
+              className="widget-btn-secondary"
+            >
+              <ChevronLeft size={16} /> Exit Admin Dashboard
+            </button>
+            <span style={{ fontSize: '1.2rem', fontWeight: 'bold', color: 'var(--accent)' }}>CLASSROOM ANALYTICS</span>
+          </div>
+          <button onClick={fetchAdminData} className="widget-btn-secondary" disabled={adminLoading}>
+            <RefreshCw size={16} style={{ animation: adminLoading ? 'spin 1s infinite linear' : 'none' }} /> {adminLoading ? 'Refreshing...' : 'Refresh Data'}
+          </button>
+        </header>
+
+        <div style={{ flex: '1', overflowY: 'auto', padding: '3rem 5vw' }}>
+          <div style={{ maxWidth: '1200px', margin: '0 auto', display: 'flex', flexDirection: 'column', gap: '2.5rem' }}>
+            
+            {/* KPI STATS ROW */}
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '1.5rem' }}>
+              <div style={{ background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: '12px', padding: '2rem', display: 'flex', alignItems: 'center', gap: '1.5rem' }}>
+                <Users size={40} style={{ color: 'var(--accent)' }} />
+                <div>
+                  <h4 style={{ color: 'var(--low)', fontSize: '0.85rem', textTransform: 'uppercase', letterSpacing: '0.1em' }}>Students Checked-in</h4>
+                  <div style={{ fontSize: '2.5rem', fontWeight: 'bold', color: 'var(--hi)' }}>{adminData.students.length}</div>
+                </div>
+              </div>
+              <div style={{ background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: '12px', padding: '2rem', display: 'flex', alignItems: 'center', gap: '1.5rem' }}>
+                <CheckCircle2 size={40} style={{ color: 'var(--green)' }} />
+                <div>
+                  <h4 style={{ color: 'var(--low)', fontSize: '0.85rem', textTransform: 'uppercase', letterSpacing: '0.1em' }}>Total Responses</h4>
+                  <div style={{ fontSize: '2.5rem', fontWeight: 'bold', color: 'var(--hi)' }}>{adminData.rawResponses.length}</div>
+                </div>
+              </div>
+              <div style={{ background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: '12px', padding: '2rem', display: 'flex', alignItems: 'center', gap: '1.5rem' }}>
+                <HelpCircle size={40} style={{ color: 'var(--blue)' }} />
+                <div>
+                  <h4 style={{ color: 'var(--low)', fontSize: '0.85rem', textTransform: 'uppercase', letterSpacing: '0.1em' }}>Active Quiz Elements</h4>
+                  <div style={{ fontSize: '2.5rem', fontWeight: 'bold', color: 'var(--hi)' }}>{Object.keys(groupedStats).length}</div>
+                </div>
+              </div>
+            </div>
+
+            <div className="split" style={{ alignItems: 'stretch', gap: '2rem' }}>
+              {/* ATTENDANCE SECTION */}
+              <div style={{ flex: '1', background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: '16px', padding: '2rem', display: 'flex', flexDirection: 'column' }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem' }}>
+                  <h3 style={{ fontFamily: 'var(--serif)', fontSize: '1.8rem' }}>Checked-in Roll Directory</h3>
+                  <input 
+                    type="text" 
+                    placeholder="Search roll or name..." 
+                    value={adminSearch}
+                    onChange={(e) => setAdminSearch(e.target.value)}
+                    style={{
+                      background: 'var(--surface2)',
+                      border: '1px solid var(--border)',
+                      borderRadius: '6px',
+                      color: 'var(--hi)',
+                      padding: '0.5rem 1rem',
+                      fontSize: '0.95rem',
+                      width: '200px'
+                    }}
+                  />
+                </div>
+                <div style={{ flex: '1', overflowY: 'auto', maxHeight: '400px' }}>
+                  {filteredStudents.length === 0 ? (
+                    <div style={{ padding: '2rem', textAlign: 'center', color: 'var(--low)' }}>No checked-in students found.</div>
+                  ) : (
+                    <table style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'left' }}>
+                      <thead>
+                        <tr style={{ borderBottom: '1px solid var(--border-hi)', color: 'var(--accent)' }}>
+                          <th style={{ padding: '0.8rem' }}>Roll Number</th>
+                          <th style={{ padding: '0.8rem' }}>Student Name</th>
+                          <th style={{ padding: '0.8rem' }}>Registered At</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {filteredStudents.map((st, i) => (
+                          <tr key={i} style={{ borderBottom: '1px solid var(--border)' }}>
+                            <td style={{ padding: '0.8rem', fontWeight: 'bold' }}>{st.roll_number}</td>
+                            <td style={{ padding: '0.8rem' }}>{st.name}</td>
+                            <td style={{ padding: '0.8rem', color: 'var(--low)' }}>{new Date(st.checked_in_at).toLocaleTimeString()}</td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  )}
+                </div>
+              </div>
+
+              {/* QUIZ METRICS SECTION */}
+              <div style={{ flex: '1.2', background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: '16px', padding: '2rem', display: 'flex', flexDirection: 'column' }}>
+                <h3 style={{ fontFamily: 'var(--serif)', fontSize: '1.8rem', marginBottom: '1.5rem' }}>Slide Quiz Analytics</h3>
+                <div style={{ flex: '1', overflowY: 'auto', maxHeight: '400px', display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
+                  {Object.keys(groupedStats).length === 0 ? (
+                    <div style={{ padding: '2rem', textAlign: 'center', color: 'var(--low)' }}>No submissions submitted yet.</div>
+                  ) : (
+                    Object.entries(groupedStats).map(([slideId, data], idx) => {
+                      const total = data.correct + data.incorrect;
+                      const correctPct = total > 0 ? (data.correct / total) * 100 : 0;
+                      return (
+                        <div key={idx} style={{ paddingBottom: '1.2rem', borderBottom: '1px solid var(--border)' }}>
+                          <h4 style={{ fontSize: '1.15rem', color: 'var(--hi)', marginBottom: '0.6rem' }}>{slideId}</h4>
+                          <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
+                            <div style={{ flex: '1', height: '10px', background: 'var(--surface3)', borderRadius: '5px', overflow: 'hidden', display: 'flex' }}>
+                              <div style={{ width: `${correctPct}%`, height: '100%', background: 'var(--green)' }}></div>
+                              <div style={{ width: `${100 - correctPct}%`, height: '100%', background: 'var(--rose)' }}></div>
+                            </div>
+                            <span style={{ fontSize: '0.95rem', fontWeight: 'bold', fontFamily: 'var(--mono)', width: '80px', textAlign: 'right' }}>
+                              {data.correct} / {total} Correct
+                            </span>
+                          </div>
+                          <div style={{ display: 'flex', gap: '0.8rem', marginTop: '0.4rem', fontSize: '0.85rem', color: 'var(--low)' }}>
+                            {data.responses.map((resp, rIdx) => (
+                              <span key={rIdx}>
+                                {resp.answer}: <strong style={{ color: 'var(--hi)' }}>{resp.count}</strong>
+                              </span>
+                            ))}
+                          </div>
+                        </div>
+                      );
+                    })
+                  )}
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="app-root-container" style={{ display: 'flex', flexDirection: 'column', height: '100%', background: 'var(--black)' }}>
@@ -186,42 +416,176 @@ function App() {
           </span>
         </div>
 
-        {currentModuleId !== null && (
-          <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
-            <span style={{ fontSize: '1rem', fontWeight: '500', color: 'var(--low)', fontFamily: 'var(--mono)' }}>
-              {activeModule.title}
-            </span>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
+          {isCheckedIn && (
             <button 
-              onClick={() => setSidebarOpen(!sidebarOpen)}
+              onClick={logout} 
               style={{
                 background: 'transparent',
                 border: '1px solid var(--border)',
+                color: 'var(--low)',
                 borderRadius: '6px',
-                padding: '0.5rem',
-                color: 'var(--mid)',
+                padding: '0.4rem 0.8rem',
+                fontSize: '0.85rem',
                 cursor: 'pointer'
               }}
               className="widget-btn-secondary"
             >
-              {sidebarOpen ? <X size={18} /> : <Menu size={18} />}
+              Logout / Reset check-in
             </button>
-            <button 
-              onClick={toggleFullscreen}
-              style={{
-                background: 'transparent',
-                border: '1px solid var(--border)',
-                borderRadius: '6px',
-                padding: '0.5rem',
-                color: 'var(--mid)',
-                cursor: 'pointer'
-              }}
-              className="widget-btn-secondary"
-            >
-              <Maximize2 size={18} />
-            </button>
-          </div>
-        )}
+          )}
+          {currentModuleId !== null && (
+            <>
+              <span style={{ fontSize: '1rem', fontWeight: '500', color: 'var(--low)', fontFamily: 'var(--mono)' }}>
+                {activeModule.title}
+              </span>
+              <button 
+                onClick={() => setSidebarOpen(!sidebarOpen)}
+                style={{
+                  background: 'transparent',
+                  border: '1px solid var(--border)',
+                  borderRadius: '6px',
+                  padding: '0.5rem',
+                  color: 'var(--mid)',
+                  cursor: 'pointer'
+                }}
+                className="widget-btn-secondary"
+              >
+                {sidebarOpen ? <X size={18} /> : <Menu size={18} />}
+              </button>
+              <button 
+                onClick={toggleFullscreen}
+                style={{
+                  background: 'transparent',
+                  border: '1px solid var(--border)',
+                  borderRadius: '6px',
+                  padding: '0.5rem',
+                  color: 'var(--mid)',
+                  cursor: 'pointer'
+                }}
+                className="widget-btn-secondary"
+              >
+                <Maximize2 size={18} />
+              </button>
+            </>
+          )}
+        </div>
       </header>
+
+      {/* STUDENT REGISTRATION CHECK-IN OVERLAY MODAL */}
+      {!isCheckedIn && (
+        <div style={{
+          position: 'fixed', inset: 0,
+          background: 'rgba(0,0,0,0.85)',
+          backdropFilter: 'blur(8px)',
+          display: 'flex', alignItems: 'center', justifyContent: 'center',
+          zIndex: 100, padding: '1rem'
+        }}>
+          <form 
+            onSubmit={handleCheckInSubmit}
+            style={{
+              background: 'var(--surface)',
+              border: '1px solid var(--accent-soft)',
+              borderRadius: '16px',
+              padding: '3rem',
+              maxWidth: '480px',
+              width: '100%',
+              boxShadow: '0 25px 60px rgba(0,0,0,0.8)',
+              display: 'flex', flexDirection: 'column', gap: '1.5rem'
+            }}
+          >
+            <div style={{ textAlign: 'center', marginBottom: '1rem' }}>
+              <GraduationCap size={48} style={{ color: 'var(--accent)', marginInline: 'auto', marginBottom: '1rem' }} />
+              <h2 style={{ fontFamily: 'var(--serif)', fontSize: '2.2rem', fontWeight: 'bold' }}>Classroom Check-in</h2>
+              <p style={{ color: 'var(--low)', fontSize: '1rem', marginTop: '0.4rem' }}>Register your credentials to log slide observations and quizzes.</p>
+            </div>
+
+            {checkInError && (
+              <div style={{ background: 'rgba(244,63,94,0.1)', borderLeft: '3px solid var(--rose)', color: 'var(--rose)', padding: '0.8rem 1.2rem', borderRadius: '4px', fontSize: '0.95rem' }}>
+                {checkInError}
+              </div>
+            )}
+
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+              <label style={{ fontFamily: 'var(--mono)', fontSize: '0.8rem', color: 'var(--low)', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Roll Number</label>
+              <input 
+                type="text" 
+                placeholder="e.g. 23CSE01 or RR21003" 
+                value={rollNumber}
+                onChange={(e) => setRollNumber(e.target.value)}
+                style={{
+                  background: 'var(--surface2)',
+                  border: '1px solid var(--border)',
+                  borderRadius: '6px',
+                  color: 'var(--hi)',
+                  padding: '0.8rem 1.2rem',
+                  fontSize: '1.05rem',
+                  outline: 'none'
+                }}
+              />
+            </div>
+
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+              <label style={{ fontFamily: 'var(--mono)', fontSize: '0.8rem', color: 'var(--low)', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Student Name</label>
+              <input 
+                type="text" 
+                placeholder="e.g. Arun Kumar" 
+                value={studentName}
+                onChange={(e) => setStudentName(e.target.value)}
+                style={{
+                  background: 'var(--surface2)',
+                  border: '1px solid var(--border)',
+                  borderRadius: '6px',
+                  color: 'var(--hi)',
+                  padding: '0.8rem 1.2rem',
+                  fontSize: '1.05rem',
+                  outline: 'none'
+                }}
+              />
+            </div>
+
+            <button 
+              type="submit" 
+              disabled={checkInLoading}
+              style={{
+                background: 'var(--accent)',
+                color: 'var(--black)',
+                fontWeight: '700',
+                fontSize: '1.05rem',
+                padding: '1rem',
+                border: 'none',
+                borderRadius: '6px',
+                cursor: 'pointer',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                gap: '0.5rem',
+                transition: 'all 0.3s'
+              }}
+            >
+              {checkInLoading ? 'Checking in...' : 'Register & Enter Portal'}
+            </button>
+
+            <button 
+              type="button" 
+              onClick={skipCheckInAsPresenter}
+              style={{
+                background: 'transparent',
+                border: '1px solid var(--border)',
+                color: 'var(--low)',
+                fontSize: '0.95rem',
+                padding: '0.8rem',
+                borderRadius: '6px',
+                cursor: 'pointer',
+                transition: 'all 0.3s'
+              }}
+              className="widget-btn-secondary"
+            >
+              Skip Check-in / Presenter View
+            </button>
+          </form>
+        </div>
+      )}
 
       {/* PORTAL MAIN HOME SCREEN (SUBJECT SELECTION) */}
       {currentSubjectId === null && (
@@ -758,7 +1122,7 @@ function App() {
               {currentSlide.type === 'quiz' && (
                 <div style={{ animation: 'fadeIn 0.6s' }}>
                   <div className="eyebrow">{currentSlide.eyebrow}</div>
-                  <QuizCard question={currentSlide.question} options={currentSlide.options} />
+                  <QuizCard slideId={currentSlide.question || slideIdx} question={currentSlide.question} options={currentSlide.options} />
                 </div>
               )}
 
@@ -767,7 +1131,7 @@ function App() {
                   <div className="eyebrow">{currentSlide.eyebrow}</div>
                   <h2 className="title" style={{ marginBottom: '1rem' }}>{currentSlide.title}</h2>
                   <p className="lede" style={{ marginBottom: '2rem' }}>{currentSlide.lede}</p>
-                  <CodeBlank code={currentSlide.code} blankVal={currentSlide.blankVal} />
+                  <CodeBlank slideId={currentSlide.title || slideIdx} code={currentSlide.code} blankVal={currentSlide.blankVal} />
                 </div>
               )}
 

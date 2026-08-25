@@ -1,6 +1,27 @@
 import React, { useState } from 'react';
 import { Play, RotateCcw, Check, X, Code, HelpCircle, ArrowRight, Layers, Key } from 'lucide-react';
 
+// API submission helper
+async function recordResponse(slideId, answer, isCorrect) {
+  const rollNumber = localStorage.getItem('crescent_roll_number');
+  if (!rollNumber) return;
+
+  try {
+    await fetch('/api/submit-quiz', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        rollNumber,
+        slideId,
+        answer,
+        isCorrect
+      })
+    });
+  } catch (err) {
+    console.error("Failed to submit response to database:", err);
+  }
+}
+
 // ================= 1. SWAPPING LIQUID CUPS =================
 export function SwappingCups() {
   const [step, setStep] = useState(0);
@@ -362,7 +383,7 @@ export function PointerVisualizer() {
 }
 
 // ================= 8. INTERACTIVE QUIZ CARD =================
-export function QuizCard({ question, options }) {
+export function QuizCard({ slideId, question, options }) {
   const [selectedIdx, setSelectedIdx] = useState(null);
   const [isAnswered, setIsAnswered] = useState(false);
 
@@ -370,6 +391,9 @@ export function QuizCard({ question, options }) {
     if (isAnswered) return;
     setSelectedIdx(idx);
     setIsAnswered(true);
+    
+    // Background database submission
+    recordResponse(slideId || question, options[idx].text, options[idx].correct);
   };
 
   const reset = () => {
@@ -410,8 +434,16 @@ export function QuizCard({ question, options }) {
 }
 
 // ================= 9. CODE COMPLETION BLANKS =================
-export function CodeBlank({ code, blankVal }) {
+export function CodeBlank({ slideId, code, blankVal }) {
   const [solved, setSolved] = useState(false);
+
+  const handleSolve = () => {
+    if (solved) return;
+    setSolved(true);
+    
+    // Record solved check in database
+    recordResponse(slideId || 'Code Blank', blankVal, true);
+  };
 
   return (
     <div className="widget-container" style={{ textAlign: 'center' }}>
@@ -422,7 +454,7 @@ export function CodeBlank({ code, blankVal }) {
             {index === 0 && (
               <span 
                 className={`blank-fill ${solved ? 'solved' : ''}`}
-                onClick={() => setSolved(true)}
+                onClick={handleSolve}
               >
                 {solved ? blankVal : '______'}
               </span>
