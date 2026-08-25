@@ -8,533 +8,216 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,700;1,400&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
+
 :root{
   --black:#000000;
-  --surface:#0e0f11;
-  --surface2:#181a1f;
-  --surface3:#22252c;
-  --border:rgba(255,255,255,.08);
-  --border-hi:rgba(255,255,255,.16);
-  --hi:#ffffff;
-  --mid:#cbd5e1;
-  --low:#64748b;
-  --accent:#fbbf24; /* Gold */
-  --accent-soft:rgba(251, 191, 36, 0.15);
-  --blue:#38b6ff; /* Sky blue */
-  --blue-soft:rgba(56, 182, 255, 0.15);
-  --green:#10b981;
-  --green-soft:rgba(16, 185, 129, 0.15);
-  --rose:#f43f5e;
+  --surface:#0a0b0d;
+  --surface2:#12141a;
+  --surface3:#1a1d25;
+  --border:rgba(255,255,255,.06);
+  --border-hi:rgba(255,255,255,.12);
+  --hi:#f1f5f9;
+  --mid:#94a3b8;
+  --low:#475569;
+  --accent:#f59e0b;
+  --accent-soft:rgba(245,158,11,0.10);
+  --blue:#38bdf8;
+  --blue-soft:rgba(56,189,248,0.08);
+  --green:#34d399;
+  --green-soft:rgba(52,211,153,0.08);
+  --rose:#fb7185;
+  --violet:#a78bfa;
   --serif:'Cormorant Garamond',serif;
   --sans:'Inter',sans-serif;
   --mono:'JetBrains Mono',monospace;
+  --ease-out-expo:cubic-bezier(0.16,1,0.3,1);
 }
 *{margin:0;padding:0;box-sizing:border-box;}
 html,body{background:#000;height:100%;overflow:hidden;}
-body{
-  font-family:var(--sans);
-  color:var(--hi);
-  -webkit-font-smoothing:antialiased;
-  text-rendering:optimizeLegibility;
-}
+body{font-family:var(--sans);color:var(--hi);-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;}
 #deck{position:relative;width:100vw;height:100vh;}
 .slide{
-  position:absolute;inset:0;
-  display:flex;flex-direction:column;
-  justify-content:center;
-  padding:6vh 8vw;
-  background:var(--black);
+  position:absolute;inset:0;display:flex;flex-direction:column;
+  justify-content:center;padding:6vh 8vw;background:var(--black);
   opacity:0;visibility:hidden;
-  transform:translateY(16px);
-  transition:opacity .5s cubic-bezier(.22,.61,.36,1), transform .5s cubic-bezier(.22,.61,.36,1);
+  transform:translateY(12px) scale(0.995);
+  transition:opacity .55s var(--ease-out-expo), transform .55s var(--ease-out-expo);
   overflow:hidden;
 }
-.slide.active{opacity:1;visibility:visible;transform:translateY(0);}
-
+.slide.active{opacity:1;visibility:visible;transform:translateY(0) scale(1);}
 .slide > *{position:relative;z-index:1;}
-
-/* Step-by-Step Reveal Animation */
-.step {
-  opacity: 0;
-  transform: translateY(20px) scale(0.98);
-  transition: opacity 0.5s cubic-bezier(0.16, 1, 0.3, 1), transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
-  pointer-events: none;
-}
-.step.revealed {
-  opacity: 1;
-  transform: translateY(0) scale(1);
-  pointer-events: auto;
+.slide::before{
+  content:'';position:absolute;top:-30%;right:-20%;width:60%;height:70%;
+  background:radial-gradient(ellipse at center,rgba(245,158,11,0.03) 0%,transparent 70%);
+  pointer-events:none;z-index:0;
 }
 
-/* Cinematic Blended Image Layouts */
-.cinematic-bg {
-  position: absolute;
-  right: 0; top: 0; bottom: 0;
-  width: 50%;
-  background-size: cover;
-  background-position: center;
-  mask-image: linear-gradient(to left, rgba(0,0,0,1) 50%, rgba(0,0,0,0) 100%);
-  -webkit-mask-image: linear-gradient(to left, rgba(0,0,0,1) 50%, rgba(0,0,0,0) 100%);
-  z-index: 0;
-  pointer-events: none;
-  opacity: 0;
-  transform: scale(1.06) translateX(12px);
-  transition: transform 1.6s cubic-bezier(0.16, 1, 0.3, 1), opacity 1.2s ease;
-}
-.cinematic-bg.revealed {
-  opacity: 0.75;
-  transform: scale(1.01) translateX(0);
-}
+/* Step reveal */
+.step{opacity:0;transform:translateY(16px) scale(0.97);transition:opacity .5s var(--ease-out-expo),transform .5s var(--ease-out-expo);pointer-events:none;}
+.step.revealed{opacity:1;transform:translateY(0) scale(1);pointer-events:auto;}
 
-.eyebrow{
-  font-family:var(--mono);
-  font-size:clamp(0.85rem, 1.2vw, 1.1rem);
-  letter-spacing:.25em;
-  text-transform:uppercase;
-  color:var(--accent);
-  margin-bottom:1.6rem;
-  display:flex;align-items:center;gap:.6em;
-  font-weight:700;
-}
-.eyebrow::before{content:'';width:25px;height:2px;background:var(--accent-soft);display:inline-block;}
+/* Typography */
+.eyebrow{font-family:var(--mono);font-size:clamp(0.72rem,1vw,0.88rem);letter-spacing:.3em;text-transform:uppercase;color:var(--accent);margin-bottom:1.6rem;display:flex;align-items:center;gap:.8em;font-weight:600;}
+.eyebrow::before{content:'';width:28px;height:2px;background:linear-gradient(90deg,var(--accent),transparent);display:inline-block;}
+.title{font-family:var(--serif);font-weight:700;font-size:clamp(2.8rem,5.5vw,4.5rem);line-height:1.06;letter-spacing:-.03em;background:linear-gradient(135deg,#fff 0%,#fef3c7 45%,var(--accent) 100%);-webkit-background-clip:text;background-clip:text;color:transparent;max-width:22ch;}
+.lede{font-size:clamp(1.2rem,1.8vw,1.6rem);color:var(--mid);line-height:1.65;max-width:55ch;font-weight:300;margin-top:1rem;}
+.body-copy{font-size:clamp(1.1rem,1.6vw,1.5rem);line-height:1.75;color:var(--mid);max-width:62ch;font-weight:300;}
+.body-copy b{color:var(--hi);font-weight:600;}
+.accent{color:var(--accent);}
+.mono{font-family:var(--mono);}
 
-.title{
-  font-family:var(--serif);
-  font-weight:700;
-  font-size:clamp(3.0rem, 6.0vw, 5.0rem);
-  line-height:1.08;
-  letter-spacing:-.02em;
-  background:linear-gradient(120deg,#ffffff,#fef3c7 60%,var(--accent));
-  -webkit-background-clip:text;background-clip:text;color:transparent;
-  filter:drop-shadow(0 1px 1px rgba(0,0,0,.7));
-  max-width:24ch;
-}
-
-.lede{
-  font-family:var(--sans);
-  font-size:clamp(1.4rem, 2.3vw, 2.0rem);
-  color:var(--mid);
-  line-height:1.6;
-  max-width:55ch;
-  font-weight:300;
-}
-
-.body-copy{
-  font-size:clamp(1.3rem, 2.1vw, 1.8rem);
-  line-height:1.7;
-  color:var(--mid);
-  max-width:65ch;
-  font-weight:300;
-}
-.body-copy b, .body-copy strong{color:var(--hi);font-weight:600;}
-
-/* code block */
+/* Code block */
 .code{
-  background:var(--surface);
-  border:1px solid var(--border);
-  border-radius:12px;
-  padding:1.6rem 2.2rem;
-  font-family:var(--mono);
-  font-size:clamp(1.1rem, 1.7vw, 1.45rem);
-  line-height:1.8;
-  color:#e2e8f0;
-  white-space:pre;
-  overflow:auto;
-  box-shadow:inset 0 1px 0 rgba(255,255,255,.02);
+  background:var(--surface);border:1px solid var(--border);border-radius:14px;
+  padding:2.2rem 2rem 1.6rem;font-family:var(--mono);
+  font-size:clamp(0.9rem,1.4vw,1.25rem);line-height:1.85;
+  color:#e2e8f0;white-space:pre;overflow:auto;
+  box-shadow:0 8px 32px rgba(0,0,0,0.4),inset 0 1px 0 rgba(255,255,255,.02);
+  position:relative;
 }
+.code::before{content:'';position:absolute;top:10px;left:14px;width:8px;height:8px;border-radius:50%;background:#ff5f57;box-shadow:16px 0 0 #febc2e,32px 0 0 #28c840;}
 .code .kw{color:var(--accent);font-weight:700;}
 .code .cm{color:var(--low);font-style:italic;}
-.code .str{color:#a7f3d0;}
+.code .str{color:#6ee7b7;}
 .code .fn{color:var(--blue);}
+.code .num{color:var(--rose);}
+.code .type{color:var(--blue);font-weight:700;}
+.code .inc{color:var(--violet);}
+.code .pp{color:var(--rose);}
 
-/* simple-list */
-.simple-list{margin-top:1.6rem;}
-.simple-list li{
-  font-size:clamp(1.2rem, 2.0vw, 1.7rem);color:var(--mid);line-height:1.8;list-style:none;padding-left:1.8rem;position:relative;font-weight:300;margin-bottom:.8rem;
-}
-.simple-list li::before{content:'·';position:absolute;left:0;color:var(--accent);font-size:2rem;line-height:0.9;}
+/* Dissection table */
+.dissect-table{width:100%;border-collapse:separate;border-spacing:0;margin-top:1.6rem;border-radius:12px;overflow:hidden;border:1px solid var(--border);}
+.dissect-table th{font-family:var(--mono);font-size:0.75rem;letter-spacing:.15em;text-transform:uppercase;color:var(--accent);padding:0.8rem 1.2rem;background:var(--surface2);border-bottom:1px solid var(--border-hi);text-align:left;font-weight:700;}
+.dissect-table td{padding:0.75rem 1.2rem;border-bottom:1px solid var(--border);font-size:clamp(0.9rem,1.4vw,1.2rem);vertical-align:top;}
+.dissect-table tr:last-child td{border-bottom:none;}
+.dissect-table tr:hover td{background:var(--surface2);}
+.dissect-table .dl{font-family:var(--mono);color:var(--blue);font-size:clamp(0.8rem,1.2vw,1.05rem);white-space:nowrap;}
+.dissect-table .de{color:var(--mid);font-weight:300;line-height:1.6;}
+.dissect-table .de b{color:var(--hi);font-weight:600;}
 
-.split{display:flex;gap:4vw;margin-top:2rem;}
-.split > div{flex:1;}
+/* Inline code span */
+.ic{font-family:var(--mono);font-size:0.88em;color:var(--blue);background:var(--surface2);padding:0.1em 0.45em;border-radius:4px;}
 
-/* section divider slides */
-.section-num{
-  font-family:var(--mono);color:var(--accent);font-size:1.2rem;letter-spacing:.25em;margin-bottom:1.6rem;font-weight:700;
-}
-.section-title{
-  font-family:var(--serif);font-weight:700;font-size:clamp(3.5rem,7vw,6.5rem);line-height:1.05;
-  background:linear-gradient(120deg,#ffffff,#fef3c7 60%,var(--accent));
-  -webkit-background-clip:text;background-clip:text;color:transparent;
-  filter:drop-shadow(0 1px 1px rgba(0,0,0,.7));
-}
-.section-list{margin-top:2rem;display:flex;flex-direction:column;gap:.8rem;}
-.section-list .s-item{font-family:var(--sans);font-size:1.2rem;color:var(--low);font-weight:300;letter-spacing:.02em;}
-.section-list .s-item.now{color:var(--hi);font-weight:500;}
+/* Split layout */
+.split{display:flex;gap:3vw;margin-top:1.6rem;align-items:flex-start;}
+.split > *{flex:1;}
+
+/* Card blocks */
+.card-block{background:var(--surface2);border:1px solid var(--border);border-radius:14px;padding:1.6rem 2rem;transition:border-color .3s;}
+.card-block h4{font-family:var(--serif);font-size:1.5rem;font-weight:700;color:var(--hi);margin-bottom:.8rem;}
+.card-block ul{list-style:none;}
+.card-block li{font-size:clamp(0.9rem,1.4vw,1.2rem);color:var(--mid);line-height:1.7;padding-left:1.2rem;position:relative;margin-bottom:.4rem;font-weight:300;}
+.card-block li::before{content:'—';position:absolute;left:0;color:var(--low);}
+
+/* Two-col */
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:2rem;margin-top:1.6rem;}
+
+/* Simple list */
+.simple-list{margin-top:1.2rem;}
+.simple-list li{font-size:clamp(0.95rem,1.5vw,1.3rem);color:var(--mid);line-height:1.75;list-style:none;padding-left:1.6rem;position:relative;margin-bottom:.6rem;font-weight:300;}
+.simple-list li::before{content:'';position:absolute;left:0;top:.65em;width:6px;height:6px;border-radius:50%;background:var(--accent);}
+.simple-list li b{color:var(--hi);font-weight:600;}
+
+/* Section dividers */
+.section-num{font-family:var(--mono);color:var(--accent);font-size:1.1rem;letter-spacing:.3em;margin-bottom:1.4rem;font-weight:700;}
+.section-title{font-family:var(--serif);font-weight:700;font-size:clamp(3.5rem,7vw,6.5rem);line-height:1.05;background:linear-gradient(135deg,#fff 0%,#fef3c7 45%,var(--accent) 100%);-webkit-background-clip:text;background-clip:text;color:transparent;}
+.section-list{margin-top:2rem;display:flex;flex-direction:column;gap:.6rem;}
+.section-list .s-item{font-family:var(--sans);font-size:1.05rem;color:var(--low);font-weight:300;padding:.35rem .8rem;border-radius:6px;}
+.section-list .s-item.now{color:var(--hi);font-weight:500;background:var(--accent-soft);border-left:3px solid var(--accent);padding-left:1.1rem;}
 .section-list .s-item.now::before{content:'→ ';color:var(--accent);}
+.section-list .s-item.done{opacity:.3;text-decoration:line-through;}
 
-/* Swapping Cups Layout */
-.cup-swapping-sim {
-  margin-top: 2rem;
-  width: 100%;
-}
-.cup-container {
-  display: flex;
-  justify-content: space-around;
-  align-items: flex-end;
-  height: 220px;
-  max-width: 600px;
-  margin: 0 auto;
-}
-.cup {
-  width: 110px;
-  height: 150px;
-  border: 4px solid var(--border-hi);
-  border-top: none;
-  border-radius: 0 0 16px 16px;
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-end;
-  padding-bottom: 10px;
-}
-.cup::before {
-  content: '';
-  position: absolute;
-  top: 0; left: -4px; right: -4px;
-  height: 4px;
-  background: var(--border-hi);
-}
-.liquid {
-  width: 100%;
-  height: 0;
-  border-radius: 0 0 12px 12px;
-  transition: height 0.8s cubic-bezier(0.4, 0, 0.2, 1), background 0.8s;
-}
-.liquid.gold {
-  height: 80%;
-  background: linear-gradient(180deg, rgba(251,191,36,0.8), rgba(251,191,36,0.3));
-  box-shadow: 0 0 15px rgba(251,191,36,0.2);
-}
-.liquid.blue {
-  height: 80%;
-  background: linear-gradient(180deg, rgba(56,182,255,0.8), rgba(56,182,255,0.3));
-  box-shadow: 0 0 15px rgba(56,182,255,0.2);
-}
-.liquid.empty {
-  height: 0%;
-  background: transparent;
-}
-.cup .label {
-  position: absolute;
-  bottom: -2.5rem;
-  left: 0; right: 0;
-  text-align: center;
-  font-family: var(--mono);
-  font-size: 0.9rem;
-  color: var(--low);
-}
+/* Fact grid */
+.fact-grid{display:grid;gap:1rem;margin-top:1.8rem;}
+.fact-grid.cols-2{grid-template-columns:1fr 1fr;}
+.fact-grid.cols-3{grid-template-columns:repeat(3,1fr);}
+.fact{background:var(--surface2);border:1px solid var(--border);padding:1.5rem 1.8rem;border-radius:14px;transition:border-color .3s,transform .3s;}
+.fact:hover{border-color:var(--border-hi);transform:translateY(-2px);}
+.fact .num{font-family:var(--mono);color:var(--accent);font-size:0.75rem;letter-spacing:.15em;font-weight:700;text-transform:uppercase;}
+.fact .txt{margin-top:.7rem;font-size:clamp(1rem,1.5vw,1.3rem);color:var(--mid);line-height:1.6;font-weight:300;}
+.fact .txt b{color:var(--hi);font-weight:600;}
 
-/* Piggy Bank accumulator visualizer */
-.bank-sim {
-  border: 2px dashed var(--border-hi);
-  padding: 2rem;
-  border-radius: 12px;
-  text-align: center;
-  max-width: 450px;
-  margin-left: auto;
-  background: var(--surface);
-  box-shadow: 0 15px 35px rgba(0,0,0,0.5);
-}
-.bank-title {
-  font-family: var(--mono);
-  font-size: 0.85rem;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  color: var(--low);
-}
-.bank-val {
-  font-size: clamp(3rem, 6vw, 4.5rem);
-  font-weight: 700;
-  color: var(--accent);
-  margin-top: 1rem;
-  font-family: var(--mono);
-}
-.bank-inputs {
-  display: flex;
-  gap: 0.5rem;
-  justify-content: center;
-  margin-top: 1.5rem;
-}
-.input-bubble {
-  background: var(--surface2);
-  border: 1px solid var(--border);
-  padding: 0.5rem 1rem;
-  border-radius: 20px;
-  font-family: var(--mono);
-  font-size: 1rem;
-  color: var(--mid);
-  transition: all 0.4s;
-}
-.input-bubble.added {
-  background: var(--blue-soft);
-  border-color: var(--blue);
-  color: var(--hi);
-  transform: translateY(-5px);
-}
+/* Table */
+.ptable{width:100%;border-collapse:separate;border-spacing:0;margin-top:1.6rem;border-radius:12px;overflow:hidden;border:1px solid var(--border);}
+.ptable th{text-align:left;font-family:var(--mono);font-size:.75rem;letter-spacing:.15em;text-transform:uppercase;color:var(--accent);padding:.9rem 1.3rem;background:var(--surface2);border-bottom:1px solid var(--border-hi);font-weight:700;}
+.ptable td{padding:.85rem 1.3rem;border-bottom:1px solid var(--border);font-size:clamp(0.9rem,1.4vw,1.2rem);color:var(--mid);font-weight:300;transition:background .2s;}
+.ptable tr:hover td{background:var(--surface2);}
+.ptable td:first-child,.ptable th:first-child{font-family:var(--mono);color:var(--hi);font-weight:600;}
+.ptable tr:last-child td{border-bottom:none;}
 
-/* Even/Odd Gate style */
-.gate-sim {
-  border: 2px solid var(--border);
-  border-radius: 12px;
-  padding: 2rem;
-  max-width: 450px;
-  margin-left: auto;
-  background: var(--surface);
-  text-align: center;
-}
-.gate-box {
-  background: var(--surface2);
-  border: 1px solid var(--border);
-  padding: 1.5rem;
-  border-radius: 8px;
-  font-family: var(--mono);
-  font-size: 1.8rem;
-  font-weight: 700;
-  color: var(--hi);
-  margin-top: 1.5rem;
-}
-.gate-paths {
-  display: flex;
-  gap: 1.5rem;
-  margin-top: 2rem;
-}
-.gate-path {
-  flex: 1;
-  padding: 1.2rem;
-  border: 2px solid var(--border);
-  border-radius: 8px;
-  font-family: var(--mono);
-  font-weight: 700;
-  font-size: 1.2rem;
-  color: var(--low);
-  transition: all 0.4s;
-}
-.gate-path.open-even {
-  border-color: var(--green);
-  background: var(--green-soft);
-  color: var(--hi);
-  box-shadow: 0 0 15px rgba(16, 185, 129, 0.2);
-}
-.gate-path.open-odd {
-  border-color: var(--accent);
-  background: var(--accent-soft);
-  color: var(--hi);
-  box-shadow: 0 0 15px rgba(251, 191, 36, 0.2);
-}
+/* Simulators */
+.bank-sim{background:var(--surface2);border:1px solid var(--border);border-radius:14px;padding:1.8rem;text-align:center;min-width:180px;}
+.bank-title{font-family:var(--mono);font-size:.8rem;letter-spacing:.15em;text-transform:uppercase;color:var(--low);margin-bottom:.8rem;}
+.bank-val{font-family:var(--serif);font-size:3.5rem;font-weight:700;color:var(--accent);}
+.bank-inputs{display:flex;gap:.8rem;justify-content:center;margin-top:1rem;}
+.input-bubble{background:var(--surface3);border:1px solid var(--border-hi);border-radius:8px;padding:.5rem 1rem;font-family:var(--mono);font-size:1.2rem;color:var(--hi);transition:all .4s;}
+.input-bubble.active{border-color:var(--accent);color:var(--accent);}
 
-/* Call Stack animation widgets */
-.stack-container {
-  display: flex;
-  flex-direction: column-reverse;
-  gap: 0.5rem;
-  width: clamp(280px, 32vw, 420px);
-  margin-left: auto;
-  border-left: 4px solid var(--border);
-  padding-left: 1.5rem;
-  min-height: 250px;
-  justify-content: flex-start;
-}
-.stack-card {
-  background: var(--surface2);
-  border: 1px solid var(--border);
-  border-radius: 6px;
-  padding: 1rem 1.4rem;
-  font-family: var(--mono);
-  font-size: 1rem;
-  color: var(--mid);
-  transform: translateY(20px) scale(0.95);
-  opacity: 0;
-  transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
-}
-.stack-card.active {
-  transform: translateY(0) scale(1);
-  opacity: 1;
-  border-color: var(--accent);
-  background: var(--accent-soft);
-  color: var(--hi);
-}
+/* Cup swapping */
+.cup-swapping-sim{padding:1rem;}
+.cup-container{display:flex;gap:2rem;justify-content:center;align-items:flex-end;}
+.cup{display:flex;flex-direction:column;align-items:center;gap:.5rem;}
+.cup .liquid{width:70px;height:80px;border-radius:0 0 10px 10px;border:2px solid rgba(255,255,255,.15);transition:all .6s ease;}
+.cup .liquid.gold{background:linear-gradient(180deg,rgba(245,158,11,.8),rgba(245,158,11,.4));}
+.cup .liquid.blue{background:linear-gradient(180deg,rgba(56,189,248,.8),rgba(56,189,248,.4));}
+.cup .liquid.empty{background:rgba(255,255,255,.03);}
+.cup .label{font-family:var(--mono);font-size:.85rem;color:var(--mid);}
 
-/* Pointer address box list */
-.ptr-visualizer {
-  display: flex;
-  flex-direction: column;
-  gap: 1.2rem;
-  margin-top: 1.5rem;
-}
-.ptr-box {
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: 8px;
-  padding: 1rem 1.4rem;
-  font-family: var(--mono);
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  transition: all 0.4s;
-}
-.ptr-box.focused {
-  border-color: var(--accent);
-  box-shadow: 0 0 12px rgba(251, 191, 36, 0.15);
-}
+/* Gate sim */
+.gate-sim{text-align:center;padding:1rem;}
+.gate-box{background:var(--surface2);border:1px solid var(--border-hi);border-radius:10px;padding:1rem 2rem;font-family:var(--mono);color:var(--hi);margin-top:1rem;display:inline-block;}
+.gate-paths{display:flex;gap:2rem;justify-content:center;margin-top:1.2rem;}
+.gate-path{background:var(--surface3);border:1px solid var(--border);border-radius:8px;padding:.6rem 1.4rem;font-family:var(--mono);font-size:1.05rem;color:var(--mid);transition:all .4s;}
+.gate-path.active{border-color:var(--green);color:var(--green);}
 
-/* Giant Typography watermark */
-.giant-stat {
-  position: absolute;
-  right: 8vw;
-  bottom: 12vh;
-  font-family: var(--serif);
-  font-weight: 700;
-  font-size: clamp(8rem, 20vw, 18rem);
-  color: transparent;
-  -webkit-text-stroke: 2px rgba(251, 191, 36, 0.16);
-  line-height: 0.9;
-  pointer-events: none;
-  user-select: none;
-  z-index: 0;
-}
+/* Stack visualizer */
+.stack-container{display:flex;flex-direction:column-reverse;gap:.4rem;padding:.5rem;}
+.stack-card{background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:.8rem 1.2rem;font-family:var(--mono);font-size:1rem;color:var(--mid);transition:all .5s;}
+.stack-card.active{border-color:var(--accent);color:var(--accent);}
 
-/* Interactive Quiz Card layout */
-.card-quiz {
-  background: var(--surface2);
-  border: 1px solid var(--border);
-  border-radius: 12px;
-  padding: 2.2rem;
-  width: clamp(320px, 45vw, 600px);
-  margin: 0 auto;
-  text-align: center;
-  box-shadow: 0 25px 60px rgba(0,0,0,0.8);
-}
-.card-question {
-  font-family: var(--serif);
-  font-size: clamp(1.4rem, 2.3vw, 2.0rem);
-  color: var(--hi);
-  line-height: 1.5;
-  margin-bottom: 1.8rem;
-}
-.card-buttons {
-  display: flex;
-  gap: 1rem;
-  justify-content: center;
-}
-.quiz-btn {
-  background: var(--surface3);
-  border: 1px solid var(--border-hi);
-  color: var(--mid);
-  padding: 0.8rem 2.2rem;
-  border-radius: 6px;
-  font-family: var(--mono);
-  font-size: 1.15rem;
-  cursor: pointer;
-  transition: all 0.3s;
-}
-.quiz-btn:hover {
-  border-color: var(--hi);
-  color: var(--hi);
-}
-.quiz-btn.correct {
-  background: var(--green-soft);
-  border-color: var(--green);
-  color: var(--hi);
-}
-.quiz-btn.incorrect {
-  background: rgba(244,63,94,0.15);
-  border-color: var(--rose);
-  color: var(--hi);
-}
-.card-feedback {
-  margin-top: 1.5rem;
-  font-family: var(--mono);
-  font-size: 1.1rem;
-  color: var(--green);
-  transition: opacity 0.4s;
-  min-height: 1.5rem;
-}
+/* Pointer visualizer */
+.ptr-visualizer{display:flex;flex-direction:column;gap:.6rem;padding:.5rem;}
+.ptr-box{display:flex;justify-content:space-between;align-items:center;background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:.8rem 1.2rem;font-family:var(--mono);font-size:.95rem;color:var(--mid);transition:all .4s;}
+.ptr-box .accent{color:var(--accent);font-weight:600;}
+.ptr-box.active{border-color:var(--blue);}
 
-/* Code completion blank field styling */
-.blank-fill {
-  background: var(--surface2);
-  border-bottom: 2px dashed var(--accent);
-  padding: 0.1rem 1rem;
-  color: transparent;
-  cursor: pointer;
-  border-radius: 4px 4px 0 0;
-  transition: all 0.3s;
-  user-select: none;
-}
-.blank-fill:hover {
-  background: var(--surface3);
-}
-.blank-fill.solved {
-  border-bottom: none;
-  color: var(--green);
-  font-weight: 700;
-  background: transparent;
-}
+/* Quiz card */
+.card-quiz{background:var(--surface2);border:1px solid var(--border);border-radius:16px;padding:2.2rem;width:clamp(300px,50vw,640px);margin:0 auto;text-align:center;}
+.card-question{font-family:var(--serif);font-size:clamp(1.3rem,2vw,1.8rem);color:var(--hi);line-height:1.5;margin-bottom:1.8rem;}
+.card-buttons{display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;}
+.quiz-btn{background:var(--surface3);border:1px solid var(--border-hi);color:var(--mid);padding:.75rem 2rem;border-radius:8px;font-family:var(--mono);font-size:1.05rem;cursor:pointer;transition:all .3s var(--ease-out-expo);}
+.quiz-btn:hover{border-color:var(--hi);color:var(--hi);transform:translateY(-2px);}
+.quiz-btn.correct{background:var(--green-soft);border-color:var(--green);color:var(--hi);}
+.quiz-btn.incorrect{background:rgba(251,113,133,.1);border-color:var(--rose);color:var(--hi);}
+.card-feedback{margin-top:1.4rem;font-family:var(--mono);font-size:.95rem;color:var(--green);min-height:1.5rem;}
 
-/* To-Do Activity style card */
-.todo-card {
-  background: linear-gradient(135deg, #181a1f, #070809);
-  border: 1px solid var(--accent-soft);
-  border-radius: 12px;
-  padding: 2.5rem;
-  max-width: 75ch;
-  margin: 0 auto;
-  box-shadow: 0 25px 60px rgba(0,0,0,0.8);
-}
-.todo-title {
-  font-family: var(--mono);
-  font-size: 1rem;
-  color: var(--accent);
-  letter-spacing: 0.15em;
-  text-transform: uppercase;
-  margin-bottom: 1rem;
-  font-weight: 700;
-}
-.todo-text {
-  font-family: var(--serif);
-  font-size: clamp(1.6rem, 2.8vw, 2.5rem);
-  color: var(--hi);
-  line-height: 1.4;
-  margin-bottom: 1.5rem;
-}
-.todo-hint {
-  font-size: 1.1rem;
-  color: var(--low);
-  line-height: 1.6;
-  font-weight: 300;
-}
+/* Code blank */
+.blank-fill{background:var(--surface2);border-bottom:2px dashed var(--accent);padding:.1rem 1rem;color:transparent;cursor:pointer;border-radius:4px 4px 0 0;transition:all .3s;user-select:none;}
+.blank-fill.solved{border-bottom:none;color:var(--green);font-weight:700;background:transparent;}
 
-/* nav ui */
-#progress{position:fixed;top:0;left:0;height:3px;background:var(--accent);z-index:50;transition:width .4s ease;box-shadow:0 0 10px var(--accent);}
-#hud{
-  position:fixed;bottom:0;left:0;right:0;
-  display:flex;justify-content:space-between;align-items:center;
-  padding:1.8rem 8vw;z-index:50;
-  pointer-events:none;
-  font-family:var(--mono);font-size:.8rem;letter-spacing:.14em;color:var(--low);
-}
-#hud .count{pointer-events:auto;}
-#hud .hint{opacity:.65;}
+/* To-do card */
+.todo-card{background:var(--surface2);border:1px solid var(--border);border-left:4px solid var(--violet);border-radius:14px;padding:2rem 2.5rem;max-width:70ch;}
+.todo-title{font-family:var(--serif);font-size:2rem;font-weight:700;color:var(--hi);margin-bottom:1rem;}
+.todo-text{font-size:clamp(1.1rem,1.7vw,1.5rem);color:var(--mid);line-height:1.7;margin-bottom:1rem;font-weight:300;}
+.todo-hint{font-family:var(--mono);font-size:.95rem;color:var(--low);padding:.8rem 1rem;background:var(--surface3);border-radius:6px;}
+
+/* Insight box */
+.insight{margin-top:1.4rem;padding:1rem 1.5rem;background:var(--accent-soft);border-left:3px solid var(--accent);border-radius:0 8px 8px 0;font-size:clamp(0.9rem,1.4vw,1.2rem);color:var(--mid);}
+.insight b{color:var(--hi);}
+.insight.blue{background:var(--blue-soft);border-color:var(--blue);}
+.insight.green{background:var(--green-soft);border-color:var(--green);}
+.insight.rose{background:rgba(251,113,133,.08);border-color:var(--rose);}
+
+/* Nav */
+#progress{position:fixed;top:0;left:0;height:2px;background:linear-gradient(90deg,var(--accent),#fcd34d);z-index:50;transition:width .4s ease;box-shadow:0 0 12px rgba(245,158,11,.3);}
+#hud{position:fixed;bottom:0;left:0;right:0;display:flex;justify-content:space-between;align-items:center;padding:1.4rem 8vw;z-index:50;pointer-events:none;font-family:var(--mono);font-size:.75rem;letter-spacing:.15em;color:var(--low);background:linear-gradient(0deg,rgba(0,0,0,.5) 0%,transparent 100%);}
+#hud .count{pointer-events:auto;background:var(--surface2);border:1px solid var(--border);padding:.35rem .9rem;border-radius:999px;font-weight:600;color:var(--mid);}
+#hud .hint{opacity:.5;}
 .navzone{position:fixed;top:0;bottom:0;width:15%;z-index:40;cursor:pointer;}
-.navzone.left{left:0;}
-.navzone.right{right:0;}
+.navzone.left{left:0;} .navzone.right{right:0;}
+.deck-meta{position:absolute;bottom:7vh;right:9vw;font-family:var(--mono);font-size:.7rem;letter-spacing:.2em;text-transform:uppercase;color:var(--low);}
+@media(max-width:820px){.two-col,.split{flex-direction:column;}.slide{padding:4vh 5vw;}.fact-grid.cols-3{grid-template-columns:1fr;}}
 
-@media(max-width:820px){
-  .two-col,.split{grid-template-columns:1fr;display:flex;flex-direction:column;}
-  .slide{padding:4vh 5vw;}
-  .fact-grid.cols-2{grid-template-columns:1fr;}
-  .cup-container,.bank-sim,.gate-sim,.stack-container,.ptr-visualizer,.card-quiz,.todo-card{width:100%; margin-top:2rem;}
-}
 </style>
 </head>
 <body>
@@ -550,125 +233,194 @@ body{
 
 <script>
 const slidesData = [];
-function S(html, brace){ slidesData.push({html, brace: brace || (slidesData.length%2? '}':'{') }); }
+function S(html, brace){ slidesData.push({html, brace: brace || (slidesData.length%2?'}':'{')}); }
 
-/* ---------- TITLE ---------- */
 S(`
+
 <div class="eyebrow">Crescent Institute of Science &amp; Technology · CSE</div>
-<div class="title" style="font-size:clamp(3rem,7vw,6.5rem); font-weight:900;">PPS Lab Activities</div>
-<div class="title small" style="margin-top:.4rem; font-size:clamp(1.8rem,3.5vw,3rem);"><span class="accent">20 Practical Code Challenges</span></div>
-<p class="lede" style="margin-top:1.8rem; max-width:65ch;">Trace logic, watch 3D animations, and write structured code for all Programming for Problem Solving (PPS) laboratory exercises.</p>
-`);
+<div class="title" style="font-size:clamp(3rem,7vw,6.5rem);font-weight:900;">PPS Lab Activities</div>
+<div style="font-family:var(--serif);font-size:clamp(1.6rem,3vw,2.8rem);margin-top:.5rem;color:var(--accent);">20 Programs · Dissected Line by Line</div>
+<p class="lede" style="margin-top:1.6rem;max-width:60ch;">Every exercise is broken down block-by-block so you understand <em>exactly</em> what each line does before you type it.</p>
+<div class="deck-meta">DEPARTMENT OF COMPUTER SCIENCE &amp; ENGINEERING</div>
 
-/* ---------- EX 1 ---------- */
+`);
 S(`
+
+<div class="eyebrow">Roadmap</div>
+<div class="title" style="font-size:2.8rem;">What's Inside</div>
+<div class="fact-grid cols-3" style="margin-top:1.8rem;">
+  <div class="fact step"><div class="num">Ex 01–05</div><div class="txt"><b>I/O & Math</b><br>printf, scanf, arithmetic, constants, if-else</div></div>
+  <div class="fact step"><div class="num">Ex 06–10</div><div class="txt"><b>Operators</b><br>sizeof, ternary, prefix/postfix, prime, leap year</div></div>
+  <div class="fact step"><div class="num">Ex 11–15</div><div class="txt"><b>Loops & Functions</b><br>factorial, Armstrong, switch, matrices, functions</div></div>
+  <div class="fact step"><div class="num">Ex 16–20</div><div class="txt"><b>Advanced</b><br>recursion, structures, unions, pointers, files</div></div>
+  <div class="fact step"><div class="num">Quizzes</div><div class="txt"><b>Interactive</b><br>True/False cards and code-blank exercises</div></div>
+  <div class="fact step"><div class="num">Challenges</div><div class="txt"><b>Practice Tasks</b><br>Your turn — write it from scratch</div></div>
+</div>
+
+`);
+S(`
+
 <div class="eyebrow">Ex 01 · Terminal I/O</div>
 <div class="title">My First C Program</div>
-<div class="lede" style="margin-top:1.2rem;">Objective: Write a C program to display the message "This is my first C Program" on the terminal screen.</div>
-<div class="code step" style="font-size:1.2rem; margin-top:1.5rem;">
-#include &lt;stdio.h&gt;
+<div class="lede">Objective: Display "This is my first C program" on the terminal screen.</div>
+<div class="code step" style="margin-top:1.4rem;">
+<span class="kw">#include</span> <span class="inc">&lt;stdio.h&gt;</span>
 
-int main() 
+<span class="type">int</span> <span class="fn">main</span>()
 {
-    printf("This is my first C program");
-    return 0;
+    <span class="fn">printf</span>(<span class="str">"This is my first C program"</span>);
+    <span class="kw">return</span> <span class="num">0</span>;
 }
 </div>
-`);
 
-/* ---------- EX 2 ---------- */
+`);
 S(`
+
+<div class="eyebrow">Ex 01 · Dissection</div>
+<div class="title" style="font-size:2.6rem;">Line by Line Breakdown</div>
+<table class="dissect-table">
+  <tr><th>Line</th><th>Plain English Explanation</th></tr>
+  <tr class="step"><td class="dl">#include &lt;stdio.h&gt;</td><td class="de">📦 <b>Import Statement.</b> Loads the Standard Input/Output library. Without this, the compiler has no idea what <span class="ic">printf()</span> means — like calling a mess hotel for sambar before having their number.</td></tr>
+  <tr class="step"><td class="dl">int main()</td><td class="de">🚪 <b>Entry Gate.</b> Every C program must have a <span class="ic">main()</span> function. The CPU jumps here first when your program starts. The <span class="ic">int</span> means it will return a whole number to the OS when done.</td></tr>
+  <tr class="step"><td class="dl">{ ... }</td><td class="de">📦 <b>Function Body Block.</b> The opening brace <span class="ic">{</span> starts the code block, closing brace <span class="ic">}</span> ends it. All instructions inside belong to <span class="ic">main()</span>.</td></tr>
+  <tr class="step"><td class="dl">printf("...");</td><td class="de">📢 <b>Print to Screen.</b> <span class="ic">printf</span> is a standard library function that sends text inside the <span class="ic">" "</span> quotes to the terminal screen. The semicolon <span class="ic">;</span> terminates every statement.</td></tr>
+  <tr class="step"><td class="dl">return 0;</td><td class="de">✅ <b>Exit Code.</b> Returns the value <span class="ic">0</span> to the operating system. By convention, <span class="ic">0</span> = success, any other value = error. Think of it as signing off the attendance register.</td></tr>
+</table>
+
+`);
+S(`
+
 <div class="eyebrow">Ex 02 · Math Operators</div>
 <div class="title">Sum &amp; Average of Three Numbers</div>
-<div class="split" style="align-items: center;">
-  <div class="code step" style="font-size:1.1rem; flex:1.2;">
-#include &lt;stdio.h&gt;
-int main() {
-    int a, b, c, sum;
-    float avg;
-    printf("Enter three numbers: ");
-    scanf("%d %d %d", &amp;a, &amp;b, &amp;c);
-    
+<div class="split" style="align-items:flex-start;">
+  <div class="code step" style="font-size:1.1rem;flex:1.3;">
+<span class="kw">#include</span> <span class="inc">&lt;stdio.h&gt;</span>
+<span class="type">int</span> <span class="fn">main</span>() {
+    <span class="type">int</span> a, b, c, sum;
+    <span class="type">float</span> avg;
+    <span class="fn">printf</span>(<span class="str">"Enter three numbers: "</span>);
+    <span class="fn">scanf</span>(<span class="str">"%d %d %d"</span>, &amp;a, &amp;b, &amp;c);
+
     sum = a + b + c;
-    avg = sum / 3.0; // float division
-    
-    printf("Sum = %d\\nAvg = %.2f\\n", sum, avg);
-    return 0;
+    avg = sum / <span class="num">3.0</span>;
+
+    <span class="fn">printf</span>(<span class="str">"Sum=%d\nAvg=%.2f\n"</span>, sum, avg);
+    <span class="kw">return</span> <span class="num">0</span>;
 }
   </div>
   <div class="bank-sim step">
-    <div class="bank-title">Total Sum</div>
+    <div class="bank-title">Running Total</div>
     <div class="bank-val" id="bank-total">0</div>
     <div class="bank-inputs">
-      <div class="input-bubble" id="in1">10</div>
-      <div class="input-bubble" id="in2">20</div>
-      <div class="input-bubble" id="in3">15</div>
+      <div class="input-bubble" id="in1">a=10</div>
+      <div class="input-bubble" id="in2">b=20</div>
+      <div class="input-bubble" id="in3">c=15</div>
     </div>
   </div>
 </div>
-<div class="step"></div> <!-- step placeholder 1 -->
-<div class="step"></div> <!-- step placeholder 2 -->
-<div class="step"></div> <!-- step placeholder 3 -->
-`);
 
-/* ---------- EX 3 ---------- */
+`);
 S(`
+
+<div class="eyebrow">Ex 02 · Dissection</div>
+<div class="title" style="font-size:2.6rem;">Line by Line Breakdown</div>
+<table class="dissect-table">
+  <tr><th>Line / Concept</th><th>Plain English Explanation</th></tr>
+  <tr class="step"><td class="dl">int a, b, c, sum;</td><td class="de">🗃️ <b>Declare 4 integer variables.</b> This reserves 4 separate boxes in RAM memory to hold whole numbers. You can declare multiple variables of the same type in one line using commas.</td></tr>
+  <tr class="step"><td class="dl">float avg;</td><td class="de">🗃️ <b>Declare a float variable.</b> A <span class="ic">float</span> can hold decimal values (e.g. 15.33). We need this because the average of integers might not be a whole number.</td></tr>
+  <tr class="step"><td class="dl">scanf("%d %d %d", &amp;a, &amp;b, &amp;c);</td><td class="de">⌨️ <b>Read 3 numbers from keyboard.</b> <span class="ic">%d</span> is the format specifier for integers. The <b>&amp; (ampersand)</b> is critical — it gives scanf the exact RAM address where to store the typed value. Without &amp;, it crashes!</td></tr>
+  <tr class="step"><td class="dl">sum = a + b + c;</td><td class="de">➕ <b>Arithmetic addition.</b> Adds all three variables and stores the result in <span class="ic">sum</span>. This executes right-to-left: evaluate the right side, then assign to the left.</td></tr>
+  <tr class="step"><td class="dl">avg = sum / 3.0;</td><td class="de">⚠️ <b>Float Division Trick.</b> Writing <span class="ic">3.0</span> (not <span class="ic">3</span>) forces the CPU to perform decimal division. If you wrote <span class="ic">sum/3</span>, integer division would truncate the decimal and give the wrong answer!</td></tr>
+  <tr class="step"><td class="dl">printf("...%.2f...", avg);</td><td class="de">🖥️ <b>%.2f specifier.</b> Prints the float value with exactly 2 decimal places. The <span class="ic">\n</span> inside strings is an escape sequence that creates a new line.</td></tr>
+</table>
+
+`);
+S(`
+
 <div class="eyebrow">Ex 03 · Constants</div>
 <div class="title">Circle Area &amp; Circumference</div>
-<div class="code step" style="font-size:1.2rem; margin-top:1.5rem;">
-#include &lt;stdio.h&gt;
-#define PI 3.14159 // Unchangeable constant
- 
-int main() {
-    int radius;
-    float area, circumference;
-    
-    printf("Enter radius: ");
-    scanf("%d", &amp;radius);
-    
+<div class="code step" style="font-size:1.15rem;margin-top:1.4rem;">
+<span class="kw">#include</span> <span class="inc">&lt;stdio.h&gt;</span>
+<span class="pp">#define</span> PI <span class="num">3.14159</span>  <span class="cm">// Unchangeable constant</span>
+
+<span class="type">int</span> <span class="fn">main</span>() {
+    <span class="type">int</span> radius;
+    <span class="type">float</span> area, circumference;
+
+    <span class="fn">printf</span>(<span class="str">"Enter radius: "</span>);
+    <span class="fn">scanf</span>(<span class="str">"%d"</span>, &amp;radius);
+
     area = PI * radius * radius;
-    circumference = 2 * PI * radius;
-    
-    printf("Area = %.2f\\nCircumference = %.2f\\n", area, circumference);
-    return 0;
+    circumference = <span class="num">2</span> * PI * radius;
+
+    <span class="fn">printf</span>(<span class="str">"Area=%.2f\nCirc=%.2f\n"</span>, area, circumference);
+    <span class="kw">return</span> <span class="num">0</span>;
 }
 </div>
-`);
 
-/* ---------- EX 4 ---------- */
+`);
 S(`
+
+<div class="eyebrow">Ex 03 · Dissection</div>
+<div class="title" style="font-size:2.6rem;">Line by Line Breakdown</div>
+<table class="dissect-table">
+  <tr><th>Line / Concept</th><th>Plain English Explanation</th></tr>
+  <tr class="step"><td class="dl">#define PI 3.14159</td><td class="de">🔒 <b>Preprocessor Constant Macro.</b> Before compilation even starts, the preprocessor replaces every occurrence of <span class="ic">PI</span> in your code with <span class="ic">3.14159</span>. It's faster than a variable and cannot be accidentally modified.</td></tr>
+  <tr class="step"><td class="dl">float area, circumference;</td><td class="de">📐 <b>Float variables for results.</b> Geometric formulas produce decimal results, so we need <span class="ic">float</span> not <span class="ic">int</span>. Both variables are declared in a single statement separated by commas.</td></tr>
+  <tr class="step"><td class="dl">scanf("%d", &amp;radius);</td><td class="de">⌨️ <b>Read single integer.</b> Only one value this time, so just one <span class="ic">%d</span> and one address <span class="ic">&amp;radius</span>. This stores the user's typed number directly into the <span class="ic">radius</span> memory box.</td></tr>
+  <tr class="step"><td class="dl">area = PI * radius * radius;</td><td class="de">🔢 <b>Area formula (π r²).</b> The preprocessor has already replaced <span class="ic">PI</span> with the number. C evaluates left-to-right: <span class="ic">3.14159 × radius × radius</span>. Since PI is float, the result is automatically promoted to float.</td></tr>
+  <tr class="step"><td class="dl">circumference = 2 * PI * radius;</td><td class="de">🔢 <b>Circumference formula (2πr).</b> Multiplication is associative here — order doesn't change the result. The <span class="ic">2</span> is an integer, but multiplying with PI (float) auto-converts the result to float.</td></tr>
+</table>
+
+`);
+S(`
+
 <div class="eyebrow">Ex 04 · Decision Making</div>
 <div class="title">Greatest of Three Numbers</div>
-<div class="code step" style="font-size:1.1rem; margin-top:1.5rem;">
-#include &lt;stdio.h&gt;
-int main() {
-    int num1, num2, num3;
-    printf("Enter three integers: ");
-    scanf("%d %d %d", &amp;num1, &amp;num2, &amp;num3);
-    
-    if (num1 &gt;= num2 &amp;&amp; num1 &gt;= num3) {
-        printf("%d is largest\\n", num1);
-    } else if (num2 &gt;= num1 &amp;&amp; num2 &gt;= num3) {
-        printf("%d is largest\\n", num2);
-    } else {
-        printf("%d is largest\\n", num3);
+<div class="code step" style="font-size:1.1rem;margin-top:1.4rem;">
+<span class="kw">#include</span> <span class="inc">&lt;stdio.h&gt;</span>
+<span class="type">int</span> <span class="fn">main</span>() {
+    <span class="type">int</span> num1, num2, num3;
+    <span class="fn">printf</span>(<span class="str">"Enter three integers: "</span>);
+    <span class="fn">scanf</span>(<span class="str">"%d %d %d"</span>, &amp;num1, &amp;num2, &amp;num3);
+
+    <span class="kw">if</span> (num1 &gt;= num2 &amp;&amp; num1 &gt;= num3) {
+        <span class="fn">printf</span>(<span class="str">"%d is largest\n"</span>, num1);
+    } <span class="kw">else if</span> (num2 &gt;= num1 &amp;&amp; num2 &gt;= num3) {
+        <span class="fn">printf</span>(<span class="str">"%d is largest\n"</span>, num2);
+    } <span class="kw">else</span> {
+        <span class="fn">printf</span>(<span class="str">"%d is largest\n"</span>, num3);
     }
-    return 0;
+    <span class="kw">return</span> <span class="num">0</span>;
 }
 </div>
-`);
 
-/* ---------- EX 5 ---------- */
+`);
 S(`
+
+<div class="eyebrow">Ex 04 · Dissection</div>
+<div class="title" style="font-size:2.6rem;">Line by Line Breakdown</div>
+<table class="dissect-table">
+  <tr><th>Line / Concept</th><th>Plain English Explanation</th></tr>
+  <tr class="step"><td class="dl">if (num1 &gt;= num2 &amp;&amp; num1 &gt;= num3)</td><td class="de">❓ <b>First check — is num1 the greatest?</b> The <span class="ic">&amp;&amp;</span> (logical AND) means BOTH conditions must be true. If num1 is ≥ num2 AND simultaneously ≥ num3, then num1 wins. Either condition failing skips to else-if.</td></tr>
+  <tr class="step"><td class="dl">} else if (num2 &gt;= ...)</td><td class="de">🔀 <b>Chain check — is num2 the greatest?</b> Only runs if the first <span class="ic">if</span> was false. We already know num1 is NOT the greatest, so now we compare num2 against both others.</td></tr>
+  <tr class="step"><td class="dl">} else { printf(num3) }</td><td class="de">✅ <b>Default fallback — num3 wins.</b> If neither num1 nor num2 was the largest, then by elimination, num3 must be. The <span class="ic">else</span> block has no condition — it runs when everything above fails.</td></tr>
+  <tr class="step"><td class="dl">printf("%d is largest", num1);</td><td class="de">🖥️ <b>%d is the integer placeholder.</b> The value of <span class="ic">num1</span> replaces <span class="ic">%d</span> at runtime. C's printf uses format specifiers to embed variable values directly into the output string.</td></tr>
+</table>
+<div class="insight step">⚠️ <b>Common mistake:</b> Using <span class="ic">if ... if ... if</span> (three separate ifs) instead of <span class="ic">if ... else if ... else</span> causes all three blocks to evaluate independently, printing multiple "largest" lines!</div>
+
+`);
+S(`
+
 <div class="eyebrow">Ex 05 · Variables</div>
 <div class="title">Swapping Values of Two Variables</div>
 <div class="split" style="align-items:center;">
-  <div style="flex:1.1;">
-    <div class="body-copy">Interchanging values with Cup Swapping logic.</div>
-    <ul class="simple-list">
-      <li class="step"><b>Step 1:</b> <span class="mono">temp = x;</span> (Move Gold from X to Temp)</li>
-      <li class="step"><b>Step 2:</b> <span class="mono">x = y;</span> (Move Blue from Y to X)</li>
-      <li class="step"><b>Step 3:</b> <span class="mono">y = temp;</span> (Move Gold from Temp to Y)</li>
+  <div>
+    <div class="body-copy">Interchanging values using a temporary cup (storage).</div>
+    <ul class="simple-list" style="margin-top:1.2rem;">
+      <li class="step"><b>Step 1:</b> <span class="ic">temp = x;</span> &nbsp; Move Gold from X into Temp</li>
+      <li class="step"><b>Step 2:</b> <span class="ic">x = y;</span> &nbsp;&nbsp;&nbsp;&nbsp; Move Blue from Y into X</li>
+      <li class="step"><b>Step 3:</b> <span class="ic">y = temp;</span> &nbsp; Move Gold from Temp into Y</li>
     </ul>
   </div>
   <div class="cup-swapping-sim step">
@@ -679,481 +431,726 @@ S(`
     </div>
   </div>
 </div>
-<div class="step"></div> <!-- step placeholder 1 -->
-<div class="step"></div> <!-- step placeholder 2 -->
-<div class="step"></div> <!-- step placeholder 3 -->
-`);
+<div class="step"></div><div class="step"></div><div class="step"></div>
 
-/* ---------- TO-DO PRACTICE 1 (NEW) ---------- */
+`);
 S(`
+
+<div class="eyebrow">Ex 05 · Dissection</div>
+<div class="title" style="font-size:2.6rem;">Line by Line Breakdown</div>
+<table class="dissect-table">
+  <tr><th>Line / Concept</th><th>Plain English Explanation</th></tr>
+  <tr class="step"><td class="dl">int x = 10, y = 20;</td><td class="de">🗃️ <b>Initialize two variables.</b> Declares and assigns both in one line. <span class="ic">x</span> holds 10 and <span class="ic">y</span> holds 20. We want to swap them so x=20, y=10.</td></tr>
+  <tr class="step"><td class="dl">int temp;</td><td class="de">📦 <b>Temporary placeholder.</b> Without a third box, you can't swap two cups directly — you'd overwrite a value before saving it. <span class="ic">temp</span> is the temporary holding container (the empty cup).</td></tr>
+  <tr class="step"><td class="dl">temp = x;</td><td class="de">💾 <b>Save x into temp first.</b> This is the most critical step. If you first write <span class="ic">x = y;</span>, you lose the original value of x forever. ALWAYS save first!</td></tr>
+  <tr class="step"><td class="dl">x = y;</td><td class="de">🔁 <b>Overwrite x with y's value.</b> Now x = 20. The original x value (10) is safely saved in temp, so we can do this overwrite without data loss.</td></tr>
+  <tr class="step"><td class="dl">y = temp;</td><td class="de">✅ <b>Complete the swap.</b> Now y gets temp's value (10). The swap is complete: x=20, y=10. <b>Key insight:</b> the order of these 3 lines is fixed — changing it breaks the swap.</td></tr>
+</table>
+
+`);
+S(`
+
 <div class="eyebrow">Challenge 01 · Practice Task</div>
 <div class="todo-card step">
-  <div class="todo-title">To-Do Exercise 🧑‍💻</div>
-  <div class="todo-text">Write a C program to swap the values of three variables (a, b, c) such that a becomes b, b becomes c, and c becomes a.</div>
-  <div class="todo-hint">Hint: You still need only one temporary storage container (temp = a; a = b; b = c; c = temp;).</div>
+  <div class="todo-title">Your Turn 🧑‍💻</div>
+  <div class="todo-text">Write a C program to swap three variables (a, b, c) such that <b>a gets b's value, b gets c's value, and c gets a's value</b> — a circular rotation!</div>
+  <div class="todo-hint">💡 Hint: You still only need one temp variable. Think of the order: temp=a; a=b; b=c; c=temp;</div>
 </div>
-`);
 
-/* ---------- EX 6 ---------- */
+`);
 S(`
+
 <div class="eyebrow">Ex 06 · Sizing</div>
 <div class="title">Size of Data Types (sizeof)</div>
-<div class="code step" style="font-size:1.15rem; margin-top:1.5rem;">
-#include &lt;stdio.h&gt;
- 
-int main() {
-    printf("char   : %lu bytes\\n", sizeof(char));
-    printf("int    : %lu bytes\\n", sizeof(int));
-    printf("float  : %lu bytes\\n", sizeof(float));
-    printf("double : %lu bytes\\n", sizeof(double));
-    printf("pointer: %lu bytes\\n", sizeof(void *));
-    return 0;
+<div class="code step" style="font-size:1.15rem;margin-top:1.4rem;">
+<span class="kw">#include</span> <span class="inc">&lt;stdio.h&gt;</span>
+
+<span class="type">int</span> <span class="fn">main</span>() {
+    <span class="fn">printf</span>(<span class="str">"char   : %lu bytes\n"</span>, <span class="kw">sizeof</span>(<span class="type">char</span>));
+    <span class="fn">printf</span>(<span class="str">"int    : %lu bytes\n"</span>, <span class="kw">sizeof</span>(<span class="type">int</span>));
+    <span class="fn">printf</span>(<span class="str">"float  : %lu bytes\n"</span>, <span class="kw">sizeof</span>(<span class="type">float</span>));
+    <span class="fn">printf</span>(<span class="str">"double : %lu bytes\n"</span>, <span class="kw">sizeof</span>(<span class="type">double</span>));
+    <span class="fn">printf</span>(<span class="str">"pointer: %lu bytes\n"</span>, <span class="kw">sizeof</span>(<span class="type">void</span> *));
+    <span class="kw">return</span> <span class="num">0</span>;
 }
 </div>
-`);
 
-/* ---------- PLAY CARD 1 (NEW) ---------- */
+`);
 S(`
+
+<div class="eyebrow">Ex 06 · Dissection</div>
+<div class="title" style="font-size:2.6rem;">Line by Line Breakdown</div>
+<table class="dissect-table">
+  <tr><th>Line / Concept</th><th>Plain English Explanation</th></tr>
+  <tr class="step"><td class="dl">sizeof(char)</td><td class="de">📏 <b>sizeof is a compile-time operator</b> (not a function!) that returns the number of bytes a type occupies in memory. For <span class="ic">char</span> it always returns <b>1 byte</b> = 8 bits = can store 256 values.</td></tr>
+  <tr class="step"><td class="dl">sizeof(int)</td><td class="de">📏 Returns <b>4 bytes</b> on most modern 32/64-bit systems. An int stores whole numbers from -2,147,483,648 to +2,147,483,647.</td></tr>
+  <tr class="step"><td class="dl">sizeof(float)</td><td class="de">📏 Returns <b>4 bytes</b>. Stores decimal numbers with ~7 digits of precision using IEEE 754 floating-point format.</td></tr>
+  <tr class="step"><td class="dl">sizeof(double)</td><td class="de">📏 Returns <b>8 bytes</b>. The "double precision" float — double the storage of float, giving ~15 decimal digits of precision.</td></tr>
+  <tr class="step"><td class="dl">%lu format specifier</td><td class="de">🔢 <b>%lu = unsigned long integer.</b> The <span class="ic">sizeof</span> operator returns a <span class="ic">size_t</span> type which is always unsigned and large. Using <span class="ic">%d</span> here can cause warnings on 64-bit systems.</td></tr>
+</table>
+
+`);
+S(`
+
 <div class="eyebrow">Interactive Quiz Card</div>
 <div class="card-quiz step">
-  <div class="card-question">True or False: A C variable name can start with a digit (for example: int 2roll_num;).</div>
+  <div class="card-question">True or False: A C variable name can start with a digit (e.g., int 2rollNum;).</div>
   <div class="card-buttons">
-    <button class="quiz-btn step" onclick="verifyCard(this, false, '✔ Correct! Variable names must begin with a letter or an underscore.')">True</button>
-    <button class="quiz-btn step" onclick="verifyCard(this, true, '✔ Correct! Variable names cannot begin with digits (e.g. 2var is invalid).')">False</button>
+    <button class="quiz-btn step" onclick="verifyCard(this, false, '✗ Incorrect. Variable names MUST begin with a letter (a-z, A-Z) or an underscore (_). Starting with a digit like 2rollNum causes a compile error.')">True</button>
+    <button class="quiz-btn step" onclick="verifyCard(this, true, '✓ Correct! Identifiers must start with a letter or underscore. Only after the first character can digits appear (e.g., roll2 is valid).')">False</button>
   </div>
   <div class="card-feedback" style="opacity:0;"></div>
 </div>
-`);
 
-/* ---------- EX 7 ---------- */
+`);
 S(`
+
 <div class="eyebrow">Ex 07 · Ternary Operator</div>
 <div class="title">Voting Eligibility Checker</div>
 <div class="split" style="align-items:center;">
   <div style="flex:1.2;">
-    <p class="lede">Using conditional operator to evaluate eligibility: <span class="mono">(age &gt;= 18) ? "Eligible" : "Not"</span>.</p>
-    <ul class="simple-list" style="margin-top:1.4rem;">
-      <li class="step">Ternary is a compact shorthand for simple \`if-else\` return expressions.</li>
-    </ul>
+    <div class="code step" style="font-size:1.1rem;">
+<span class="kw">#include</span> <span class="inc">&lt;stdio.h&gt;</span>
+<span class="type">int</span> <span class="fn">main</span>() {
+    <span class="type">int</span> age;
+    <span class="fn">printf</span>(<span class="str">"Enter age: "</span>);
+    <span class="fn">scanf</span>(<span class="str">"%d"</span>, &amp;age);
+    <span class="fn">printf</span>(<span class="str">"%s\n"</span>, (age &gt;= <span class="num">18</span>) ? <span class="str">"Eligible"</span> : <span class="str">"Not Eligible"</span>);
+    <span class="kw">return</span> <span class="num">0</span>;
+}
+    </div>
   </div>
   <div class="gate-sim step">
     <div class="bank-title">User Age: <span id="gate-input-val">20</span></div>
-    <div class="gate-box" style="font-size:1.4rem;">(Age &gt;= 18) ?</div>
+    <div class="gate-box">(age &gt;= 18) ?</div>
     <div class="gate-paths">
-      <div class="gate-path" id="g-even" style="font-size:1.05rem;">Eligible</div>
-      <div class="gate-path" id="g-odd" style="font-size:1.05rem;">Not Eligible</div>
+      <div class="gate-path" id="g-even">✅ Eligible</div>
+      <div class="gate-path" id="g-odd">❌ Not Eligible</div>
     </div>
   </div>
 </div>
-<div class="step"></div> <!-- step placeholder 1 -->
-<div class="step"></div> <!-- step placeholder 2 -->
-`);
+<div class="step"></div><div class="step"></div>
 
-/* ---------- CODE COMPLETION BLANK 1 (NEW) ---------- */
+`);
 S(`
+
+<div class="eyebrow">Ex 07 · Dissection</div>
+<div class="title" style="font-size:2.6rem;">Ternary Operator Breakdown</div>
+<table class="dissect-table">
+  <tr><th>Part</th><th>Plain English Explanation</th></tr>
+  <tr class="step"><td class="dl">condition ? A : B</td><td class="de">❓ <b>Ternary = three-part operator.</b> It evaluates a <b>condition</b>, if TRUE it returns value A, if FALSE it returns value B. It's a compact one-line alternative to an if-else block.</td></tr>
+  <tr class="step"><td class="dl">(age &gt;= 18)</td><td class="de">🔍 <b>The condition part.</b> Evaluates whether age is 18 or older. This returns 1 (true) or 0 (false). The outer parentheses are optional but improve readability.</td></tr>
+  <tr class="step"><td class="dl">? "Eligible"</td><td class="de">✅ <b>True branch.</b> If the condition is true (age ≥ 18), the expression evaluates to the string "Eligible".</td></tr>
+  <tr class="step"><td class="dl">: "Not Eligible"</td><td class="de">❌ <b>False branch.</b> If the condition is false (age &lt; 18), the expression evaluates to "Not Eligible". The colon acts as the separator between true and false outcomes.</td></tr>
+  <tr class="step"><td class="dl">printf("%s\n", ...);</td><td class="de">🖥️ <b>%s prints a string.</b> The ternary expression produces one of the two strings, and <span class="ic">%s</span> tells printf to display it as a character string.</td></tr>
+</table>
+
+`);
+S(`
+
 <div class="eyebrow">Interactive Code Completion</div>
-<div class="title">scanf Address Operator</div>
-<div class="lede" style="margin-top:1.2rem;">Complete the line to read keyboard input into the variable score:</div>
-<div class="code step" style="font-size:1.35rem; margin-top:2rem;">
-#include &lt;stdio.h&gt;
-int main() {
-    int score;
-    printf("Enter score: ");
-    scanf("%d", <span class="blank-fill step" onclick="solveBlank(this, '&amp;score')">______</span>);
-    return 0;
+<div class="title" style="font-size:2.8rem;">scanf Address Operator</div>
+<div class="lede">Complete the line to correctly read keyboard input into the variable <span class="ic">score</span>:</div>
+<div class="code step" style="font-size:1.3rem;margin-top:1.8rem;">
+<span class="kw">#include</span> <span class="inc">&lt;stdio.h&gt;</span>
+<span class="type">int</span> <span class="fn">main</span>() {
+    <span class="type">int</span> score;
+    <span class="fn">printf</span>(<span class="str">"Enter score: "</span>);
+    <span class="fn">scanf</span>(<span class="str">"%d"</span>, <span class="blank-fill step" onclick="solveBlank(this, '&amp;score')">______</span>);
+    <span class="kw">return</span> <span class="num">0</span>;
 }
 </div>
-<div class="lede step" style="color:var(--low); margin-top:2rem; font-size:1.2rem;">Click the dashed blank space to reveal the solution.</div>
-`);
+<div class="insight step">💡 The <span class="ic">&amp;</span> operator gives the <b>memory address</b> of the variable. scanf needs to know <em>where</em> in RAM to write the typed number — not the variable's current value.</div>
 
-/* ---------- EX 8 ---------- */
+`);
 S(`
+
 <div class="eyebrow">Ex 08 · Unary Operators</div>
-<div class="title">Prefix &amp; Postfix Operations</div>
-<div class="code step" style="font-size:1.15rem; margin-top:1.5rem;">
-#include &lt;stdio.h&gt;
-int main() {
-    int a = 5, b = 5, c = 5, d = 5;
-    a++; // postfix increment (value updated after evaluation)
-    ++b; // prefix increment (value updated before evaluation)
-    c--; // postfix decrement
-    --d; // prefix decrement
-    
-    printf("a = %d, b = %d, c = %d, d = %d\\n", a, b, c, d);
-    return 0;
+<div class="title">Prefix &amp; Postfix Increment</div>
+<div class="code step" style="font-size:1.15rem;margin-top:1.4rem;">
+<span class="kw">#include</span> <span class="inc">&lt;stdio.h&gt;</span>
+<span class="type">int</span> <span class="fn">main</span>() {
+    <span class="type">int</span> a = <span class="num">5</span>, b = <span class="num">5</span>, c = <span class="num">5</span>, d = <span class="num">5</span>;
+
+    a++;  <span class="cm">// Postfix: value used first, then incremented</span>
+    ++b;  <span class="cm">// Prefix: incremented first, then used</span>
+    c--;  <span class="cm">// Postfix decrement</span>
+    --d;  <span class="cm">// Prefix decrement</span>
+
+    <span class="fn">printf</span>(<span class="str">"a=%d  b=%d  c=%d  d=%d\n"</span>, a, b, c, d);
+    <span class="kw">return</span> <span class="num">0</span>;
 }
 </div>
-`);
 
-/* ---------- PLAY CARD 2 (NEW) ---------- */
+`);
 S(`
+
+<div class="eyebrow">Ex 08 · Dissection</div>
+<div class="title" style="font-size:2.6rem;">Prefix vs Postfix Breakdown</div>
+<table class="dissect-table">
+  <tr><th>Operation</th><th>Plain English Explanation</th></tr>
+  <tr class="step"><td class="dl">a++; (Postfix)</td><td class="de">🔢 <b>Postfix Increment: Evaluate Then Add.</b> The current value of <span class="ic">a</span> is used in any surrounding expression FIRST, then the increment (+1) happens. Alone on a line: <span class="ic">a=5</span> → after → <span class="ic">a=6</span>.</td></tr>
+  <tr class="step"><td class="dl">++b; (Prefix)</td><td class="de">🔢 <b>Prefix Increment: Add Then Evaluate.</b> <span class="ic">b</span> is incremented to 6 BEFORE it's used in any expression. Alone on a line: same result (b=6). The difference appears only inside expressions like <span class="ic">y = ++b</span> vs <span class="ic">y = b++</span>.</td></tr>
+  <tr class="step"><td class="dl">c--; (Postfix)</td><td class="de">🔢 <b>Postfix Decrement.</b> Uses c's current value (5) first, then subtracts 1. Result: c = 4.</td></tr>
+  <tr class="step"><td class="dl">--d; (Prefix)</td><td class="de">🔢 <b>Prefix Decrement.</b> Subtracts 1 from d first, then the value is ready. Result: d = 4.</td></tr>
+  <tr class="step"><td class="dl">All results: 6, 6, 4, 4</td><td class="de">✅ <b>Output confirmation.</b> When used alone on a line (not inside a larger expression), prefix and postfix produce the same final stored value. The difference in order only matters inside compound expressions.</td></tr>
+</table>
+
+`);
+S(`
+
 <div class="eyebrow">Interactive Quiz Card</div>
 <div class="card-quiz step">
-  <div class="card-question">True or False: y = ++x; and y = x++; yield the exact same value of y.</div>
+  <div class="card-question">Consider: int x=5; int y = x++; — what is the value of y?</div>
   <div class="card-buttons">
-    <button class="quiz-btn step" onclick="verifyCard(this, false, '✔ Correct! ++x increments first, while x++ assigns the original value before adding.')">True</button>
-    <button class="quiz-btn step" onclick="verifyCard(this, true, '✔ Correct! Prefix (++x) increments first, whereas Postfix (x++) assigns first.')">False</button>
+    <button class="quiz-btn step" onclick="verifyCard(this, true, '✓ Correct! Postfix (x++) means: assign the CURRENT value of x to y first (y=5), THEN increment x to 6.')">5</button>
+    <button class="quiz-btn step" onclick="verifyCard(this, false, '✗ Incorrect. Postfix means the current value is used before the increment. y gets the value before x becomes 6.')">6</button>
   </div>
   <div class="card-feedback" style="opacity:0;"></div>
 </div>
-`);
 
-/* ---------- EX 9 ---------- */
+`);
 S(`
+
 <div class="eyebrow">Ex 09 · Iteration Logic</div>
 <div class="title">Prime Number Checker</div>
-<div class="code step" style="font-size:1.15rem; margin-top:1.5rem;">
-#include &lt;stdio.h&gt;
-int main() {
-    int n, flag = 0;
-    printf("Enter number: ");
-    scanf("%d", &amp;n);
-    
-    for (int i = 2; i &lt;= n/2; i++) {
-        if (n % i == 0) {
-            flag = 1; // found divider factor
-            break;
+<div class="code step" style="font-size:1.1rem;margin-top:1.4rem;">
+<span class="kw">#include</span> <span class="inc">&lt;stdio.h&gt;</span>
+<span class="type">int</span> <span class="fn">main</span>() {
+    <span class="type">int</span> n, flag = <span class="num">0</span>;
+    <span class="fn">printf</span>(<span class="str">"Enter number: "</span>);
+    <span class="fn">scanf</span>(<span class="str">"%d"</span>, &amp;n);
+
+    <span class="kw">for</span> (<span class="type">int</span> i = <span class="num">2</span>; i &lt;= n/<span class="num">2</span>; i++) {
+        <span class="kw">if</span> (n % i == <span class="num">0</span>) {
+            flag = <span class="num">1</span>;  <span class="cm">// found a divisor — not prime</span>
+            <span class="kw">break</span>;    <span class="cm">// no need to check further</span>
         }
     }
-    if (flag == 0) printf("%d is Prime\\n", n);
-    else printf("%d is Not Prime\\n", n);
-    return 0;
+    <span class="kw">if</span> (flag == <span class="num">0</span>) <span class="fn">printf</span>(<span class="str">"%d is Prime\n"</span>, n);
+    <span class="kw">else</span>           <span class="fn">printf</span>(<span class="str">"%d is Not Prime\n"</span>, n);
+    <span class="kw">return</span> <span class="num">0</span>;
 }
 </div>
-`);
 
-/* ---------- EX 10 ---------- */
+`);
 S(`
+
+<div class="eyebrow">Ex 09 · Dissection</div>
+<div class="title" style="font-size:2.6rem;">Prime Checker Breakdown</div>
+<table class="dissect-table">
+  <tr><th>Line / Concept</th><th>Plain English Explanation</th></tr>
+  <tr class="step"><td class="dl">int flag = 0;</td><td class="de">🚩 <b>Flag variable pattern.</b> A flag is a boolean sentinel — we start it at 0 meaning "prime so far". If we find any divisor, we flip it to 1 meaning "not prime". Checking the flag at the end gives the verdict.</td></tr>
+  <tr class="step"><td class="dl">for (int i = 2; i &lt;= n/2; i++)</td><td class="de">🔄 <b>Efficient loop bounds.</b> We start from 2 (since 1 divides everything). We only need to check up to <span class="ic">n/2</span> — no factor of n can be larger than its half. This cuts the work in half compared to looping to n.</td></tr>
+  <tr class="step"><td class="dl">if (n % i == 0)</td><td class="de">🔢 <b>Divisibility test using modulo.</b> <span class="ic">n % i</span> gives the remainder of n ÷ i. If the remainder is 0, then i divides n evenly — meaning n has a factor, so it's NOT prime.</td></tr>
+  <tr class="step"><td class="dl">flag = 1; break;</td><td class="de">⚡ <b>Early exit optimization.</b> Once we find ONE divisor, we know it's not prime — no point checking more numbers. The <span class="ic">break</span> statement immediately exits the for loop, saving unnecessary CPU work.</td></tr>
+  <tr class="step"><td class="dl">if (flag == 0)</td><td class="de">✅ <b>Final verdict check.</b> After the loop, if flag is still 0, no divisor was found → it's prime. If flag is 1, a divisor was found → not prime.</td></tr>
+</table>
+
+`);
+S(`
+
 <div class="eyebrow">Ex 10 · Decisions</div>
 <div class="title">Leap Year Checker</div>
-<div class="code step" style="font-size:1.15rem; margin-top:1.5rem;">
-#include &lt;stdio.h&gt;
-int main() {
-    int yr;
-    printf("Enter year: ");
-    scanf("%d", &amp;yr);
-    
-    if ((yr % 400 == 0) || ((yr % 4 == 0) &amp;&amp; (yr % 100 != 0))) {
-        printf("%d is a Leap Year\\n", yr);
-    } else {
-        printf("%d is Not a Leap Year\\n", yr);
+<div class="code step" style="font-size:1.15rem;margin-top:1.4rem;">
+<span class="kw">#include</span> <span class="inc">&lt;stdio.h&gt;</span>
+<span class="type">int</span> <span class="fn">main</span>() {
+    <span class="type">int</span> yr;
+    <span class="fn">printf</span>(<span class="str">"Enter year: "</span>);
+    <span class="fn">scanf</span>(<span class="str">"%d"</span>, &amp;yr);
+
+    <span class="kw">if</span> ((yr % <span class="num">400</span> == <span class="num">0</span>) || ((yr % <span class="num">4</span> == <span class="num">0</span>) &amp;&amp; (yr % <span class="num">100</span> != <span class="num">0</span>))) {
+        <span class="fn">printf</span>(<span class="str">"%d is a Leap Year\n"</span>, yr);
+    } <span class="kw">else</span> {
+        <span class="fn">printf</span>(<span class="str">"%d is Not a Leap Year\n"</span>, yr);
     }
-    return 0;
+    <span class="kw">return</span> <span class="num">0</span>;
 }
 </div>
-`);
 
-/* ---------- TO-DO PRACTICE 2 (NEW) ---------- */
+`);
 S(`
+
+<div class="eyebrow">Ex 10 · Dissection</div>
+<div class="title" style="font-size:2.6rem;">Leap Year Logic Breakdown</div>
+<table class="dissect-table">
+  <tr><th>Condition Part</th><th>Plain English Explanation</th></tr>
+  <tr class="step"><td class="dl">yr % 400 == 0</td><td class="de">✅ <b>Rule 1: Divisible by 400 → Always a Leap Year.</b> Years like 1600, 2000, 2400 are leap years. The <span class="ic">||</span> (OR) means: if THIS condition alone is true, the whole expression is true — no need to check anything else.</td></tr>
+  <tr class="step"><td class="dl">yr % 4 == 0</td><td class="de">🔢 <b>Rule 2a: Divisible by 4 is the base leap year rule.</b> Most leap years (1996, 2004, 2008...) just need to be divisible by 4. BUT there's an exception for century years — hence the next check.</td></tr>
+  <tr class="step"><td class="dl">yr % 100 != 0</td><td class="de">⚠️ <b>Rule 2b: NOT a century year (exception).</b> Century years divisible by 4 (1700, 1800, 1900) are NOT leap years UNLESS they also pass Rule 1 (divisible by 400). The <span class="ic">&amp;&amp;</span> means BOTH must be true.</td></tr>
+  <tr class="step"><td class="dl">|| vs &amp;&amp; grouping</td><td class="de">🔗 <b>Operator precedence matters!</b> <span class="ic">&amp;&amp;</span> binds tighter than <span class="ic">||</span>. The parentheses make the logic explicit: <span class="ic">OR (divisible by 400) OR (divisible by 4 AND not a century)</span>.</td></tr>
+</table>
+<div class="insight step">📅 <b>Verify:</b> Year 2000 → passes rule 1 (2000%400=0). Year 1900 → passes 1900%4=0 BUT fails 1900%100=0, so NOT a leap year.</div>
+
+`);
+S(`
+
 <div class="eyebrow">Challenge 10 · Practice Task</div>
 <div class="todo-card step">
-  <div class="todo-title">To-Do Exercise 🧑‍💻</div>
-  <div class="todo-text">Write a C program to check whether a user-input number is divisible by both 5 and 11.</div>
-  <div class="todo-hint">Hint: Use the logical AND operator (num % 5 == 0 &amp;&amp; num % 11 == 0).</div>
+  <div class="todo-title">Your Turn 🧑‍💻</div>
+  <div class="todo-text">Write a C program to check whether a user-input number is <b>divisible by both 5 and 11</b>. Print "Divisible" or "Not Divisible".</div>
+  <div class="todo-hint">💡 Hint: Use the logical AND operator — <span style="font-family:var(--mono);">if (num % 5 == 0 &amp;&amp; num % 11 == 0)</span></div>
 </div>
-`);
 
-/* ---------- EX 11 ---------- */
+`);
 S(`
+
 <div class="eyebrow">Ex 11 · Loop Accumulation</div>
 <div class="title">Factorial of a Number</div>
-<div class="code step" style="font-size:1.15rem; margin-top:1.5rem;">
-#include &lt;stdio.h&gt;
-int main() {
-    int n;
-    unsigned long long fact = 1;
-    printf("Enter integer: ");
-    scanf("%d", &amp;n);
-    
-    if (n &lt; 0) printf("Negative values invalid.\\n");
-    else {
-        for (int i = 1; i &lt;= n; i++) {
-            fact *= i; // multiply loop
+<div class="code step" style="font-size:1.15rem;margin-top:1.4rem;">
+<span class="kw">#include</span> <span class="inc">&lt;stdio.h&gt;</span>
+<span class="type">int</span> <span class="fn">main</span>() {
+    <span class="type">int</span> n;
+    <span class="type">unsigned long long</span> fact = <span class="num">1</span>;
+    <span class="fn">printf</span>(<span class="str">"Enter integer: "</span>);
+    <span class="fn">scanf</span>(<span class="str">"%d"</span>, &amp;n);
+
+    <span class="kw">if</span> (n &lt; <span class="num">0</span>)
+        <span class="fn">printf</span>(<span class="str">"Negative values invalid.\n"</span>);
+    <span class="kw">else</span> {
+        <span class="kw">for</span> (<span class="type">int</span> i = <span class="num">1</span>; i &lt;= n; i++) {
+            fact *= i;  <span class="cm">// fact = fact * i</span>
         }
-        printf("Factorial of %d = %llu\\n", n, fact);
+        <span class="fn">printf</span>(<span class="str">"%d! = %llu\n"</span>, n, fact);
     }
-    return 0;
+    <span class="kw">return</span> <span class="num">0</span>;
 }
 </div>
-`);
 
-/* ---------- EX 12 ---------- */
+`);
 S(`
+
+<div class="eyebrow">Ex 11 · Dissection</div>
+<div class="title" style="font-size:2.6rem;">Factorial Loop Breakdown</div>
+<table class="dissect-table">
+  <tr><th>Line / Concept</th><th>Plain English Explanation</th></tr>
+  <tr class="step"><td class="dl">unsigned long long fact = 1;</td><td class="de">🔢 <b>Large number storage.</b> Factorials grow extremely fast — 20! = 2,432,902,008,176,640,000 which overflows a regular int. <span class="ic">unsigned long long</span> gives 8 bytes = 18.4 quintillion max. Initialize to <span class="ic">1</span> not <span class="ic">0</span> — multiplying by 0 would always give 0!</td></tr>
+  <tr class="step"><td class="dl">if (n &lt; 0)</td><td class="de">🛡️ <b>Input validation guard.</b> Factorial is undefined for negative numbers. Good programs always validate inputs before processing them. This prevents the loop from running with invalid data.</td></tr>
+  <tr class="step"><td class="dl">for (int i = 1; i &lt;= n; i++)</td><td class="de">🔄 <b>Accumulator loop: multiply each integer 1 to n.</b> For n=5: the loop runs with i=1,2,3,4,5. We initialize <span class="ic">i=1</span> since multiplying by 0 would erase everything.</td></tr>
+  <tr class="step"><td class="dl">fact *= i;</td><td class="de">➕ <b>Compound assignment shorthand.</b> <span class="ic">fact *= i</span> means <span class="ic">fact = fact * i</span>. Each loop iteration multiplies the running total by the next integer. After 5 iterations: 1×1×2×3×4×5 = 120.</td></tr>
+  <tr class="step"><td class="dl">printf("%llu", fact);</td><td class="de">🖥️ <b>%llu format specifier.</b> For <span class="ic">unsigned long long</span>, use <span class="ic">%llu</span>. Using the wrong format specifier (like <span class="ic">%d</span> for a long long) causes undefined behavior and garbled output.</td></tr>
+</table>
+
+`);
+S(`
+
 <div class="eyebrow">Ex 12 · Modulo &amp; Loops</div>
 <div class="title">Armstrong Number Checker</div>
-<div class="code step" style="font-size:1.1rem; margin-top:1.5rem;">
-#include &lt;stdio.h&gt;
-int main() {
-    int num, originalNum, remainder, result = 0;
-    printf("Enter 3-digit integer: ");
-    scanf("%d", &amp;num);
-    
-    originalNum = num;
-    while (originalNum != 0) {
-        remainder = originalNum % 10; // get last digit
-        result += remainder * remainder * remainder; // sum cube
-        originalNum /= 10; // remove last digit
+<div class="code step" style="font-size:1.05rem;margin-top:1.2rem;">
+<span class="kw">#include</span> <span class="inc">&lt;stdio.h&gt;</span>
+<span class="type">int</span> <span class="fn">main</span>() {
+    <span class="type">int</span> num, originalNum, remainder, result = <span class="num">0</span>;
+    <span class="fn">printf</span>(<span class="str">"Enter 3-digit integer: "</span>);
+    <span class="fn">scanf</span>(<span class="str">"%d"</span>, &amp;num);
+
+    originalNum = num;  <span class="cm">// save original before destroying it</span>
+    <span class="kw">while</span> (originalNum != <span class="num">0</span>) {
+        remainder = originalNum % <span class="num">10</span>; <span class="cm">// extract last digit</span>
+        result += remainder * remainder * remainder; <span class="cm">// cube it</span>
+        originalNum /= <span class="num">10</span>;  <span class="cm">// remove last digit</span>
     }
-    if (result == num) printf("%d is Armstrong\\n", num);
-    else printf("%d is Not Armstrong\\n", num);
-    return 0;
+    <span class="kw">if</span> (result == num) <span class="fn">printf</span>(<span class="str">"%d is Armstrong\n"</span>, num);
+    <span class="kw">else</span>               <span class="fn">printf</span>(<span class="str">"%d is Not Armstrong\n"</span>, num);
+    <span class="kw">return</span> <span class="num">0</span>;
 }
 </div>
-`);
 
-/* ---------- EX 13 ---------- */
+`);
 S(`
+
+<div class="eyebrow">Ex 12 · Dissection</div>
+<div class="title" style="font-size:2.6rem;">Armstrong Algorithm Breakdown</div>
+<table class="dissect-table">
+  <tr><th>Line / Concept</th><th>Plain English Explanation</th></tr>
+  <tr class="step"><td class="dl">originalNum = num;</td><td class="de">💾 <b>Save a copy before modifying.</b> The while loop will destroy <span class="ic">originalNum</span> by dividing it down to 0. We need the original value at the end to compare. Always save a copy before a destructive loop.</td></tr>
+  <tr class="step"><td class="dl">remainder = originalNum % 10;</td><td class="de">🔢 <b>Digit extraction trick.</b> Any number modulo 10 gives the rightmost digit. For 153: <span class="ic">153 % 10 = 3</span>. Then for 15: <span class="ic">15 % 10 = 5</span>. Then for 1: <span class="ic">1 % 10 = 1</span>. We peel off one digit per iteration.</td></tr>
+  <tr class="step"><td class="dl">result += remainder * remainder * remainder;</td><td class="de">➕ <b>Cube and accumulate.</b> Armstrong condition: each digit cubed, summed = original number. For 153: 1³+5³+3³ = 1+125+27 = 153 ✓. The <span class="ic">+=</span> adds each cube to the running total.</td></tr>
+  <tr class="step"><td class="dl">originalNum /= 10;</td><td class="de">🔢 <b>Integer division removes last digit.</b> <span class="ic">153 / 10 = 15</span> (drops the 3). <span class="ic">15 / 10 = 1</span> (drops the 5). <span class="ic">1 / 10 = 0</span> → loop ends. This is the "shift right" digit extraction pattern.</td></tr>
+  <tr class="step"><td class="dl">if (result == num)</td><td class="de">✅ <b>Compare sum of cubes to original.</b> If they match, it's Armstrong. Note: we compare against <span class="ic">num</span> (not <span class="ic">originalNum</span> which is now 0 after the loop).</td></tr>
+</table>
+
+`);
+S(`
+
 <div class="eyebrow">Ex 13 · Multi-Way Decision</div>
 <div class="title">Positive, Negative, or Zero</div>
-<div class="code step" style="font-size:1.15rem; margin-top:1.5rem;">
-#include &lt;stdio.h&gt;
-int main() {
-    int num;
-    printf("Enter number: ");
-    scanf("%d", &amp;num);
-    
-    switch (num &gt; 0) {
-        case 1: printf("%d is Positive\\n", num); break;
-        case 0:
-            switch (num &lt; 0) {
-                case 1: printf("%d is Negative\\n", num); break;
-                case 0: printf("%d is Zero\\n", num); break;
+<div class="code step" style="font-size:1.1rem;margin-top:1.4rem;">
+<span class="kw">#include</span> <span class="inc">&lt;stdio.h&gt;</span>
+<span class="type">int</span> <span class="fn">main</span>() {
+    <span class="type">int</span> num;
+    <span class="fn">printf</span>(<span class="str">"Enter number: "</span>);
+    <span class="fn">scanf</span>(<span class="str">"%d"</span>, &amp;num);
+
+    <span class="kw">switch</span> (num &gt; <span class="num">0</span>) {
+        <span class="kw">case</span> <span class="num">1</span>: <span class="fn">printf</span>(<span class="str">"%d is Positive\n"</span>, num); <span class="kw">break</span>;
+        <span class="kw">case</span> <span class="num">0</span>:
+            <span class="kw">switch</span> (num &lt; <span class="num">0</span>) {
+                <span class="kw">case</span> <span class="num">1</span>: <span class="fn">printf</span>(<span class="str">"%d is Negative\n"</span>, num); <span class="kw">break</span>;
+                <span class="kw">case</span> <span class="num">0</span>: <span class="fn">printf</span>(<span class="str">"Zero\n"</span>); <span class="kw">break</span>;
             }
-            break;
+            <span class="kw">break</span>;
     }
-    return 0;
+    <span class="kw">return</span> <span class="num">0</span>;
 }
 </div>
-`);
 
-/* ---------- EX 14 ---------- */
+`);
 S(`
+
+<div class="eyebrow">Ex 13 · Dissection</div>
+<div class="title" style="font-size:2.6rem;">Switch Statement Breakdown</div>
+<table class="dissect-table">
+  <tr><th>Line / Concept</th><th>Plain English Explanation</th></tr>
+  <tr class="step"><td class="dl">switch (num &gt; 0)</td><td class="de">🔀 <b>Switch on a boolean expression.</b> <span class="ic">num > 0</span> evaluates to either 1 (true) or 0 (false). Switch then jumps to the matching <span class="ic">case</span> label. This is an unusual but valid use of switch.</td></tr>
+  <tr class="step"><td class="dl">case 1: ... break;</td><td class="de">✅ <b>Case 1 = num is positive.</b> When <span class="ic">num > 0</span> is true (=1), we jump here. The <span class="ic">break</span> is CRITICAL — without it, execution "falls through" into the next case and runs that code too!</td></tr>
+  <tr class="step"><td class="dl">case 0: switch(...)</td><td class="de">🔀 <b>Nested switch.</b> When <span class="ic">num > 0</span> is false (=0), num might still be negative or zero. So we nest a second switch on <span class="ic">num < 0</span> to distinguish. Nested switches are legal but can reduce readability.</td></tr>
+  <tr class="step"><td class="dl">break; (after each case)</td><td class="de">⚠️ <b>Fall-through prevention.</b> Without <span class="ic">break</span>, C's switch falls through to the next case automatically. This is the most common switch bug — forgetting break causes multiple cases to run unexpectedly.</td></tr>
+</table>
+<div class="insight step blue">💡 An <span class="ic">if-else if-else</span> chain would be simpler here. This nested switch approach is primarily used to demonstrate switch's fall-through behavior.</div>
+
+`);
+S(`
+
 <div class="eyebrow">Ex 14 · 2D Arrays</div>
 <div class="title">Matrix Addition (2D Arrays)</div>
-<div class="code step" style="font-size:1.05rem; margin-top:1.5rem;">
-#include &lt;stdio.h&gt;
-int main() {
-    int r=2, c=2, a[2][2]={{1,2},{3,4}}, b[2][2]={{5,6},{7,8}}, sum[2][2], i, j;
-    
-    for (i = 0; i &lt; r; ++i)
-        for (j = 0; j &lt; c; ++j) {
-            sum[i][j] = a[i][j] + b[i][j]; // element sum
-        }
-    printf("Sum matrix:\\n");
-    for (i = 0; i &lt; r; ++i) {
-        for (j = 0; j &lt; c; ++j) {
-            printf("%d   ", sum[i][j]);
-        }
-        printf("\\n");
+<div class="code step" style="font-size:1.05rem;margin-top:1.2rem;">
+<span class="kw">#include</span> <span class="inc">&lt;stdio.h&gt;</span>
+<span class="type">int</span> <span class="fn">main</span>() {
+    <span class="type">int</span> r=<span class="num">2</span>, c=<span class="num">2</span>;
+    <span class="type">int</span> a[<span class="num">2</span>][<span class="num">2</span>] = {{<span class="num">1</span>,<span class="num">2</span>},{<span class="num">3</span>,<span class="num">4</span>}};
+    <span class="type">int</span> b[<span class="num">2</span>][<span class="num">2</span>] = {{<span class="num">5</span>,<span class="num">6</span>},{<span class="num">7</span>,<span class="num">8</span>}};
+    <span class="type">int</span> sum[<span class="num">2</span>][<span class="num">2</span>], i, j;
+
+    <span class="kw">for</span> (i = <span class="num">0</span>; i &lt; r; i++)
+        <span class="kw">for</span> (j = <span class="num">0</span>; j &lt; c; j++)
+            sum[i][j] = a[i][j] + b[i][j];
+
+    <span class="fn">printf</span>(<span class="str">"Sum matrix:\n"</span>);
+    <span class="kw">for</span> (i = <span class="num">0</span>; i &lt; r; i++) {
+        <span class="kw">for</span> (j = <span class="num">0</span>; j &lt; c; j++)
+            <span class="fn">printf</span>(<span class="str">"%d  "</span>, sum[i][j]);
+        <span class="fn">printf</span>(<span class="str">"\n"</span>);
     }
-    return 0;
+    <span class="kw">return</span> <span class="num">0</span>;
 }
 </div>
-`);
 
-/* ---------- TO-DO PRACTICE 3 (NEW) ---------- */
+`);
 S(`
+
+<div class="eyebrow">Ex 14 · Dissection</div>
+<div class="title" style="font-size:2.6rem;">2D Array &amp; Matrix Breakdown</div>
+<table class="dissect-table">
+  <tr><th>Line / Concept</th><th>Plain English Explanation</th></tr>
+  <tr class="step"><td class="dl">int a[2][2] = {{1,2},{3,4}};</td><td class="de">🗃️ <b>2D Array Declaration + Initialization.</b> Think of it as a grid (table): <span class="ic">a[0][0]=1, a[0][1]=2, a[1][0]=3, a[1][1]=4</span>. The first index is the <b>row</b>, second is the <b>column</b>. Outer braces = all rows, inner braces = one row.</td></tr>
+  <tr class="step"><td class="dl">for (i=0; i&lt;r; i++)</td><td class="de">🔄 <b>Outer loop iterates over rows.</b> For a 2×2 matrix, i goes 0,1 (two rows). Each iteration of the outer loop processes one complete row of the matrix.</td></tr>
+  <tr class="step"><td class="dl">for (j=0; j&lt;c; j++)</td><td class="de">🔄 <b>Inner loop iterates over columns.</b> For each row position i, j goes through all column positions 0,1. The combination of (i,j) visits every single cell in the matrix.</td></tr>
+  <tr class="step"><td class="dl">sum[i][j] = a[i][j] + b[i][j];</td><td class="de">➕ <b>Element-wise addition.</b> For each position (row i, column j), add the corresponding elements from both matrices. This is the fundamental rule of matrix addition: matching positions are summed.</td></tr>
+  <tr class="step"><td class="dl">printf("\n"); after inner loop</td><td class="de">🖥️ <b>Newline after each row.</b> Placed after the inner loop completes (all columns printed), this moves to the next line for the next matrix row, creating the grid visual output.</td></tr>
+</table>
+
+`);
+S(`
+
 <div class="eyebrow">Challenge 14 · Practice Task</div>
 <div class="todo-card step">
-  <div class="todo-title">To-Do Exercise 🧑‍💻</div>
-  <div class="todo-text">Write a C program to calculate and display the transpose of a 2x2 matrix.</div>
-  <div class="todo-hint">Hint: Swapping row and column coordinates: transpose[c][r] = original[r][c].</div>
+  <div class="todo-title">Your Turn 🧑‍💻</div>
+  <div class="todo-text">Write a C program to calculate and display the <b>transpose of a 2×2 matrix</b>. In a transpose, rows become columns and columns become rows.</div>
+  <div class="todo-hint">💡 Hint: Swap row and column indices: <span style="font-family:var(--mono);">transpose[j][i] = original[i][j]</span></div>
 </div>
-`);
 
-/* ---------- EX 15 ---------- */
+`);
 S(`
+
 <div class="eyebrow">Ex 15 · Modularity</div>
 <div class="title">Arithmetic Operations via Functions</div>
-<div class="code step" style="font-size:1.1rem; margin-top:1.5rem;">
-#include &lt;stdio.h&gt;
- 
-int addition(int a, int b) { return a + b; }
-int subtract(int a, int b) { return a - b; }
-int multiply(int a, int b) { return a * b; }
-float division(float a, float b) { return a / b; }
- 
-int main() {
-    int x = 8, y = 3;
-    printf("Add: %d\\n", addition(x, y));
-    printf("Sub: %d\\n", subtract(x, y));
-    printf("Mul: %d\\n", multiply(x, y));
-    printf("Div: %f\\n", division(x, y));
-    return 0;
+<div class="code step" style="font-size:1.05rem;margin-top:1.2rem;">
+<span class="kw">#include</span> <span class="inc">&lt;stdio.h&gt;</span>
+
+<span class="type">int</span>   <span class="fn">addition</span>(<span class="type">int</span> a, <span class="type">int</span> b)   { <span class="kw">return</span> a + b; }
+<span class="type">int</span>   <span class="fn">subtract</span>(<span class="type">int</span> a, <span class="type">int</span> b)   { <span class="kw">return</span> a - b; }
+<span class="type">int</span>   <span class="fn">multiply</span>(<span class="type">int</span> a, <span class="type">int</span> b)   { <span class="kw">return</span> a * b; }
+<span class="type">float</span> <span class="fn">division</span>(<span class="type">float</span> a, <span class="type">float</span> b) { <span class="kw">return</span> a / b; }
+
+<span class="type">int</span> <span class="fn">main</span>() {
+    <span class="type">int</span> x = <span class="num">8</span>, y = <span class="num">3</span>;
+    <span class="fn">printf</span>(<span class="str">"Add: %d\n"</span>, <span class="fn">addition</span>(x, y));
+    <span class="fn">printf</span>(<span class="str">"Sub: %d\n"</span>, <span class="fn">subtract</span>(x, y));
+    <span class="fn">printf</span>(<span class="str">"Mul: %d\n"</span>, <span class="fn">multiply</span>(x, y));
+    <span class="fn">printf</span>(<span class="str">"Div: %f\n"</span>, <span class="fn">division</span>(x, y));
+    <span class="kw">return</span> <span class="num">0</span>;
 }
 </div>
-`);
 
-/* ---------- CODE COMPLETION BLANK 2 (NEW) ---------- */
+`);
 S(`
+
+<div class="eyebrow">Ex 15 · Dissection</div>
+<div class="title" style="font-size:2.6rem;">Functions Breakdown</div>
+<table class="dissect-table">
+  <tr><th>Line / Concept</th><th>Plain English Explanation</th></tr>
+  <tr class="step"><td class="dl">int addition(int a, int b)</td><td class="de">🧩 <b>Function definition anatomy.</b> <span class="ic">int</span> = return type (what it gives back). <span class="ic">addition</span> = function name. <span class="ic">(int a, int b)</span> = parameters (inputs it accepts). The curly braces contain the function's body.</td></tr>
+  <tr class="step"><td class="dl">{ return a + b; }</td><td class="de">↩️ <b>Return statement.</b> The <span class="ic">return</span> keyword sends a value back to whoever called this function. The returned value must match the declared return type (<span class="ic">int</span> here). Execution of the function ends at <span class="ic">return</span>.</td></tr>
+  <tr class="step"><td class="dl">float division(float a, float b)</td><td class="de">🔢 <b>Return type determines precision.</b> We use <span class="ic">float</span> parameters and return type for division because 8÷3 = 2.666... which needs decimal precision. If we used <span class="ic">int</span> parameters, 8/3 would return just 2.</td></tr>
+  <tr class="step"><td class="dl">printf("Add: %d", addition(x, y));</td><td class="de">🔗 <b>Calling a function inside printf.</b> C evaluates <span class="ic">addition(x, y)</span> first (getting 11), then passes that result to <span class="ic">printf</span> as the argument for <span class="ic">%d</span>. Functions can be used anywhere an expression is valid.</td></tr>
+  <tr class="step"><td class="dl">Functions defined before main()</td><td class="de">📋 <b>Declaration order.</b> Functions must be defined or declared BEFORE they're called. Placing helper functions above <span class="ic">main()</span> is the simple approach. Alternatively, use forward declarations (prototypes) at the top.</td></tr>
+</table>
+
+`);
+S(`
+
 <div class="eyebrow">Interactive Code Completion</div>
-<div class="title">Function Return Types</div>
-<div class="lede" style="margin-top:1.2rem;">Define a function that multiplies two integers and returns the integer result:</div>
-<div class="code step" style="font-size:1.35rem; margin-top:2rem;">
-#include &lt;stdio.h&gt;
- 
-<span class="blank-fill step" onclick="solveBlank(this, 'int')">______</span> multiply(int a, int b) 
+<div class="title" style="font-size:2.8rem;">Function Return Types</div>
+<div class="lede">Define a function that multiplies two integers and returns the integer product:</div>
+<div class="code step" style="font-size:1.3rem;margin-top:1.8rem;">
+<span class="kw">#include</span> <span class="inc">&lt;stdio.h&gt;</span>
+
+<span class="blank-fill step" onclick="solveBlank(this, 'int')">______</span> <span class="fn">multiply</span>(<span class="type">int</span> a, <span class="type">int</span> b)
 {
-    return a * b;
+    <span class="kw">return</span> a * b;
 }
 </div>
-<div class="lede step" style="color:var(--low); margin-top:2rem; font-size:1.2rem;">Click the dashed blank space to reveal the solution.</div>
-`);
+<div class="insight step">💡 The return type must match what you actually <span class="ic">return</span> inside the function. Returning a float from an int function silently truncates the decimal!</div>
 
-/* ---------- EX 16 ---------- */
+`);
 S(`
+
 <div class="eyebrow">Ex 16 · Recursion</div>
-<div class="title">Sum of Digits (Recursive Stack)</div>
-<div class="split" style="align-items: center;">
-  <div class="code step" style="font-size:1.1rem; flex:1.2;">
-#include &lt;stdio.h&gt;
-int sumOfDigits(int n) {
-    if (n == 0) return 0; // base case
-    return (n % 10) + sumOfDigits(n / 10);
+<div class="title">Sum of Digits (Recursive)</div>
+<div class="split" style="align-items:flex-start;">
+  <div class="code step" style="font-size:1.05rem;flex:1.2;">
+<span class="kw">#include</span> <span class="inc">&lt;stdio.h&gt;</span>
+
+<span class="type">int</span> <span class="fn">sumOfDigits</span>(<span class="type">int</span> n) {
+    <span class="kw">if</span> (n == <span class="num">0</span>) <span class="kw">return</span> <span class="num">0</span>; <span class="cm">// base case</span>
+    <span class="kw">return</span> (n % <span class="num">10</span>) + <span class="fn">sumOfDigits</span>(n / <span class="num">10</span>);
 }
-int main() {
-    int num = 123;
-    printf("Sum = %d\\n", sumOfDigits(num));
-    return 0;
+<span class="type">int</span> <span class="fn">main</span>() {
+    <span class="type">int</span> num = <span class="num">123</span>;
+    <span class="fn">printf</span>(<span class="str">"Sum = %d\n"</span>, <span class="fn">sumOfDigits</span>(num));
+    <span class="kw">return</span> <span class="num">0</span>;
 }
   </div>
   <div class="stack-container step">
     <div class="stack-card" id="st1">sumOfDigits(123)</div>
     <div class="stack-card" id="st2">3 + sumOfDigits(12)</div>
     <div class="stack-card" id="st3">2 + sumOfDigits(1)</div>
-    <div class="stack-card" id="st4">1 + sumOfDigits(0)</div>
+    <div class="stack-card" id="st4">1 + sumOfDigits(0) = 0</div>
   </div>
 </div>
-<div class="step"></div> <!-- step placeholder 1 -->
-<div class="step"></div> <!-- step placeholder 2 -->
-<div class="step"></div> <!-- step placeholder 3 -->
-<div class="step"></div> <!-- step placeholder 4 -->
-`);
+<div class="step"></div><div class="step"></div><div class="step"></div><div class="step"></div>
 
-/* ---------- EX 17 ---------- */
+`);
 S(`
+
+<div class="eyebrow">Ex 16 · Dissection</div>
+<div class="title" style="font-size:2.6rem;">Recursion Breakdown</div>
+<table class="dissect-table">
+  <tr><th>Part</th><th>Plain English Explanation</th></tr>
+  <tr class="step"><td class="dl">if (n == 0) return 0;</td><td class="de">🛑 <b>Base Case — The stop condition.</b> Every recursive function MUST have a base case, otherwise it would call itself forever (infinite recursion → stack overflow crash). When n reaches 0, no more digits to extract, so return 0.</td></tr>
+  <tr class="step"><td class="dl">n % 10</td><td class="de">🔢 <b>Extract the last digit.</b> For 123: <span class="ic">123 % 10 = 3</span> (the rightmost digit). This is the digit we add in this particular call.</td></tr>
+  <tr class="step"><td class="dl">sumOfDigits(n / 10)</td><td class="de">🔁 <b>Recursive Call — Solve a smaller version.</b> <span class="ic">123 / 10 = 12</span>. We call the SAME function with a smaller number (dropped the last digit). This is the recursive step — calling yourself on a simpler version of the problem.</td></tr>
+  <tr class="step"><td class="dl">Call Stack buildup</td><td class="de">📚 <b>How the call stack works.</b> Each function call is "stacked" in memory: sumOfDigits(123) calls sumOfDigits(12) which calls sumOfDigits(1) which calls sumOfDigits(0). Then they unwind from the bottom: 0 → 1+0=1 → 2+1=3 → 3+3=6.</td></tr>
+  <tr class="step"><td class="dl">Return value: 6</td><td class="de">✅ <b>Final result: 1+2+3 = 6.</b> The additions happen during the unwind phase as each function call returns its value to its caller. The original <span class="ic">sumOfDigits(123)</span> call ultimately receives and returns 6.</td></tr>
+</table>
+
+`);
+S(`
+
 <div class="eyebrow">Ex 17 · Structures</div>
-<div class="title">Student Record Structure</div>
-<div class="code step" style="font-size:1.15rem; margin-top:1.5rem;">
-#include &lt;stdio.h&gt;
-struct Student {
-    char name[50];
-    int score;
-    float pct;
+<div class="title">Student Record (struct)</div>
+<div class="code step" style="font-size:1.1rem;margin-top:1.4rem;">
+<span class="kw">#include</span> <span class="inc">&lt;stdio.h&gt;</span>
+
+<span class="kw">struct</span> Student {
+    <span class="type">char</span>  name[<span class="num">50</span>];
+    <span class="type">int</span>   score;
+    <span class="type">float</span> pct;
 };
-int main() {
-    struct Student s = {"Arun", 450, 90.0};
-    printf("Name: %s\\nScore: %d\\nPct: %.2f%%\\n", s.name, s.score, s.pct);
-    return 0;
+
+<span class="type">int</span> <span class="fn">main</span>() {
+    <span class="kw">struct</span> Student s = {<span class="str">"Arun"</span>, <span class="num">450</span>, <span class="num">90.0</span>};
+    <span class="fn">printf</span>(<span class="str">"Name: %s\nScore: %d\nPct: %.2f%%\n"</span>,
+           s.name, s.score, s.pct);
+    <span class="kw">return</span> <span class="num">0</span>;
 }
 </div>
-`);
 
-/* ---------- EX 18 ---------- */
+`);
 S(`
+
+<div class="eyebrow">Ex 17 · Dissection</div>
+<div class="title" style="font-size:2.6rem;">Structures Breakdown</div>
+<table class="dissect-table">
+  <tr><th>Line / Concept</th><th>Plain English Explanation</th></tr>
+  <tr class="step"><td class="dl">struct Student { ... };</td><td class="de">🏛️ <b>Structure definition — a custom data blueprint.</b> A struct groups multiple related variables of different types under one name. Think of it as a form template: a Student "form" has fields for name, score, and percentage. The semicolon after <span class="ic">}</span> is mandatory!</td></tr>
+  <tr class="step"><td class="dl">char name[50];</td><td class="de">🔤 <b>Character array as a string.</b> C has no built-in string type. A string is an array of characters ending with a null terminator <span class="ic">\0</span>. <span class="ic">char name[50]</span> reserves 50 bytes — enough for 49 characters + the terminator.</td></tr>
+  <tr class="step"><td class="dl">struct Student s = {"Arun", 450, 90.0};</td><td class="de">📋 <b>Struct variable declaration + initialization.</b> <span class="ic">struct Student s</span> creates one Student record. The values in <span class="ic">{}</span> initialize each member in order: name="Arun", score=450, pct=90.0.</td></tr>
+  <tr class="step"><td class="dl">s.name, s.score, s.pct</td><td class="de">🔑 <b>Dot operator for member access.</b> The <span class="ic">.</span> (dot/member access) operator accesses a specific field inside the struct. <span class="ic">s.score</span> reads the <span class="ic">score</span> field of the <span class="ic">s</span> variable. This is how you read/write struct data.</td></tr>
+  <tr class="step"><td class="dl">%%  in printf format</td><td class="de">🖥️ <b>Printing a literal % sign.</b> In printf, <span class="ic">%</span> starts a format specifier. To print an actual <span class="ic">%</span> character, you must escape it as <span class="ic">%%</span>.</td></tr>
+</table>
+
+`);
+S(`
+
 <div class="eyebrow">Ex 18 · Unions</div>
 <div class="title">Union Memory Sharing</div>
-<div class="code step" style="font-size:1.15rem; margin-top:1.5rem;">
-#include &lt;stdio.h&gt;
-union Data {
-    int i;
-    float f;
+<div class="code step" style="font-size:1.15rem;margin-top:1.4rem;">
+<span class="kw">#include</span> <span class="inc">&lt;stdio.h&gt;</span>
+
+<span class="kw">union</span> Data {
+    <span class="type">int</span>   i;
+    <span class="type">float</span> f;
 };
-int main() {
-    union Data d;
-    d.i = 10;
-    d.f = 220.5; // overwrites d.i shared memory!
-    printf("Shared space overwrite: d.i = %d, d.f = %f\\n", d.i, d.f);
-    return 0;
+
+<span class="type">int</span> <span class="fn">main</span>() {
+    <span class="kw">union</span> Data d;
+    d.i = <span class="num">10</span>;
+    d.f = <span class="num">220.5</span>;  <span class="cm">// overwrites d.i (shared memory!)</span>
+    <span class="fn">printf</span>(<span class="str">"d.i = %d\n"</span>, d.i);  <span class="cm">// garbled — floats corrupt int bits</span>
+    <span class="fn">printf</span>(<span class="str">"d.f = %f\n"</span>, d.f);  <span class="cm">// correct — last written</span>
+    <span class="kw">return</span> <span class="num">0</span>;
 }
 </div>
-`);
 
-/* ---------- PLAY CARD 3 (NEW) ---------- */
+`);
 S(`
+
+<div class="eyebrow">Ex 18 · Dissection</div>
+<div class="title" style="font-size:2.6rem;">Union Memory Breakdown</div>
+<table class="dissect-table">
+  <tr><th>Concept</th><th>Plain English Explanation</th></tr>
+  <tr class="step"><td class="dl">union vs struct</td><td class="de">🏛️ <b>The key difference:</b> A <span class="ic">struct</span> allocates separate memory for EACH member (total size = sum of all). A <span class="ic">union</span> allocates ONE shared memory block sized for only the LARGEST member. All members share the same physical RAM location.</td></tr>
+  <tr class="step"><td class="dl">union Data { int i; float f; };</td><td class="de">📦 <b>Size of this union = 4 bytes</b> (max of int=4, float=4). If a double (8 bytes) was added, the union would be 8 bytes. Both <span class="ic">i</span> and <span class="ic">f</span> live at the exact same memory address.</td></tr>
+  <tr class="step"><td class="dl">d.i = 10; then d.f = 220.5;</td><td class="de">⚠️ <b>Writing one member corrupts the other.</b> Since they share the same bytes, writing to <span class="ic">d.f</span> overwrites the exact bytes that <span class="ic">d.i</span> uses. The bit pattern of 220.5 (as IEEE 754 float) is NOT a valid integer representation.</td></tr>
+  <tr class="step"><td class="dl">printf d.i after writing d.f</td><td class="de">🔢 <b>Reading a "wrong" member gives garbage.</b> After writing <span class="ic">d.f=220.5</span>, the bytes at that address now hold the float representation. Reading those same bytes as an <span class="ic">int</span> interprets the float bits as an integer — giving an unpredictable number.</td></tr>
+  <tr class="step"><td class="dl">When are unions useful?</td><td class="de">✅ <b>Memory-efficient type variants.</b> Unions are used in embedded systems and protocol parsers where you know only ONE field will be active at a time, and want to save memory by not allocating space for all possible fields simultaneously.</td></tr>
+</table>
+
+`);
+S(`
+
 <div class="eyebrow">Interactive Quiz Card</div>
 <div class="card-quiz step">
-  <div class="card-question">True or False: A union allocates separate memory blocks for all its members simultaneously.</div>
+  <div class="card-question">True or False: A union allocates separate memory blocks for ALL its members simultaneously (like a struct does).</div>
   <div class="card-buttons">
-    <button class="quiz-btn step" onclick="verifyCard(this, false, '✔ Correct! Unions share the same memory space to optimize sizing.')">True</button>
-    <button class="quiz-btn step" onclick="verifyCard(this, true, '✔ Correct! Unlike structs, unions allocate memory only for the largest member, sharing space.')">False</button>
+    <button class="quiz-btn step" onclick="verifyCard(this, false, '✗ Incorrect. Unions allocate memory only for the LARGEST member. All members SHARE the same memory block.')">True</button>
+    <button class="quiz-btn step" onclick="verifyCard(this, true, '✓ Correct! Union = shared single block (largest member size). Struct = separate block per member (total of all sizes).')">False</button>
   </div>
   <div class="card-feedback" style="opacity:0;"></div>
 </div>
-`);
 
-/* ---------- EX 19 ---------- */
+`);
 S(`
+
 <div class="eyebrow">Ex 19 · Pointers</div>
 <div class="title">Array Traversal via Pointers</div>
-<div class="split" style="align-items: center;">
-  <div class="code step" style="font-size:1.1rem; flex:1.2;">
-#include &lt;stdio.h&gt;
-int main() {
-    int arr[3] = {10, 20, 30};
-    int *ptr = arr; // ptr points to arr[0]
-    
-    for (int i = 0; i &lt; 3; i++) {
-        printf("Addr: %p, Val: %d\\n", (ptr+i), *(ptr+i));
+<div class="split" style="align-items:flex-start;">
+  <div class="code step" style="font-size:1.05rem;flex:1.2;">
+<span class="kw">#include</span> <span class="inc">&lt;stdio.h&gt;</span>
+<span class="type">int</span> <span class="fn">main</span>() {
+    <span class="type">int</span> arr[<span class="num">3</span>] = {<span class="num">10</span>, <span class="num">20</span>, <span class="num">30</span>};
+    <span class="type">int</span> *ptr = arr; <span class="cm">// ptr → arr[0]</span>
+
+    <span class="kw">for</span> (<span class="type">int</span> i = <span class="num">0</span>; i &lt; <span class="num">3</span>; i++) {
+        <span class="fn">printf</span>(<span class="str">"Addr:%p  Val:%d\n"</span>,
+               (ptr+i), *(ptr+i));
     }
-    return 0;
+    <span class="kw">return</span> <span class="num">0</span>;
 }
   </div>
   <div class="ptr-visualizer step">
-    <div class="ptr-box" id="p0"><span>arr[0] (Addr: 1000)</span><span class="accent">*ptr → 10</span></div>
-    <div class="ptr-box" id="p1"><span>arr[1] (Addr: 1004)</span><span class="accent">*(ptr+1) → 20</span></div>
-    <div class="ptr-box" id="p2"><span>arr[2] (Addr: 1008)</span><span class="accent">*(ptr+2) → 30</span></div>
+    <div class="ptr-box" id="p0"><span>arr[0] · Addr 0x1000</span><span class="accent">*ptr → 10</span></div>
+    <div class="ptr-box" id="p1"><span>arr[1] · Addr 0x1004</span><span class="accent">*(ptr+1) → 20</span></div>
+    <div class="ptr-box" id="p2"><span>arr[2] · Addr 0x1008</span><span class="accent">*(ptr+2) → 30</span></div>
   </div>
 </div>
-<div class="step"></div> <!-- step placeholder 1 -->
-<div class="step"></div> <!-- step placeholder 2 -->
-<div class="step"></div> <!-- step placeholder 3 -->
-`);
+<div class="step"></div><div class="step"></div><div class="step"></div>
 
-/* ---------- CODE COMPLETION BLANK 3 (NEW) ---------- */
+`);
 S(`
+
+<div class="eyebrow">Ex 19 · Dissection</div>
+<div class="title" style="font-size:2.6rem;">Pointers &amp; Addresses Breakdown</div>
+<table class="dissect-table">
+  <tr><th>Line / Concept</th><th>Plain English Explanation</th></tr>
+  <tr class="step"><td class="dl">int *ptr = arr;</td><td class="de">📍 <b>Pointer declaration and initialization.</b> The <span class="ic">*</span> in the declaration means "pointer to int". Arrays naturally decay to a pointer to their first element, so <span class="ic">ptr = arr</span> makes ptr point to <span class="ic">arr[0]</span>. No <span class="ic">&amp;</span> needed here!</td></tr>
+  <tr class="step"><td class="dl">ptr + i</td><td class="de">➡️ <b>Pointer arithmetic.</b> Adding <span class="ic">i</span> to a pointer doesn't add i bytes — it adds <span class="ic">i × sizeof(int)</span> bytes (4 bytes each). So <span class="ic">ptr+1</span> points to addr 0x1004, <span class="ic">ptr+2</span> to 0x1008 — advancing one int-sized step at a time.</td></tr>
+  <tr class="step"><td class="dl">*(ptr + i)</td><td class="de">🔍 <b>Dereferencing — reading the value at an address.</b> The <span class="ic">*</span> before a pointer (called the dereference operator) means "go to this address and read/write the value stored there". <span class="ic">*(ptr+1)</span> goes to address 0x1004 and reads 20.</td></tr>
+  <tr class="step"><td class="dl">%p format specifier</td><td class="de">🖥️ <b>Printing memory addresses.</b> <span class="ic">%p</span> prints a pointer (memory address) in hexadecimal notation like <span class="ic">0x7fff5fbff5c0</span>. Never use <span class="ic">%d</span> to print a pointer — it's the wrong size on 64-bit systems.</td></tr>
+  <tr class="step"><td class="dl">arr[i] vs *(ptr+i)</td><td class="de">✅ <b>These are exactly equivalent!</b> Array subscript notation <span class="ic">arr[i]</span> is syntactic sugar — the compiler converts it to <span class="ic">*(arr + i)</span> automatically. Pointers and arrays are deeply connected in C.</td></tr>
+</table>
+
+`);
+S(`
+
 <div class="eyebrow">Interactive Code Completion</div>
-<div class="title">Pointer Dereferencing</div>
-<div class="lede" style="margin-top:1.2rem;">Complete the line to display the integer value pointed to by ptr:</div>
-<div class="code step" style="font-size:1.35rem; margin-top:2rem;">
-#include &lt;stdio.h&gt;
-int main() {
-    int val = 99;
-    int *ptr = &amp;val;
-    printf("Value is %d\\n", <span class="blank-fill step" onclick="solveBlank(this, '*ptr')">______</span>);
-    return 0;
+<div class="title" style="font-size:2.8rem;">Pointer Dereferencing</div>
+<div class="lede">Complete the line to print the value stored at the pointer <span class="ic">ptr</span>:</div>
+<div class="code step" style="font-size:1.3rem;margin-top:1.8rem;">
+<span class="kw">#include</span> <span class="inc">&lt;stdio.h&gt;</span>
+<span class="type">int</span> <span class="fn">main</span>() {
+    <span class="type">int</span> val = <span class="num">99</span>;
+    <span class="type">int</span> *ptr = &amp;val;
+    <span class="fn">printf</span>(<span class="str">"Value is %d\n"</span>, <span class="blank-fill step" onclick="solveBlank(this, '*ptr')">______</span>);
+    <span class="kw">return</span> <span class="num">0</span>;
 }
 </div>
-<div class="lede step" style="color:var(--low); margin-top:2rem; font-size:1.2rem;">Click the dashed blank space to reveal the solution.</div>
-`);
+<div class="insight step">💡 <span class="ic">&amp;val</span> gets the address of val. <span class="ic">*ptr</span> dereferences (reads the value at) that address. Together: <span class="ic">ptr = &amp;val</span> means "ptr holds val's address", and <span class="ic">*ptr</span> reads val through that address.</div>
 
-/* ---------- EX 20 ---------- */
+`);
 S(`
+
 <div class="eyebrow">Ex 20 · File Handling</div>
-<div class="title">File Write Operations (emp.rec)</div>
-<div class="code step" style="font-size:1.1rem; margin-top:1.5rem;">
-#include &lt;stdio.h&gt;
-int main() {
-    FILE *fptr = fopen("emp.rec", "w");
-    if (fptr == NULL) return 1;
-    
-    char name[] = "Raj"; int age = 28; float sal = 75000;
-    fprintf(fptr, "Name: %s, Age: %d, Salary: %.2f\\n", name, age, sal);
-    
-    fclose(fptr); // close file
-    printf("Employee records saved successfully in emp.rec.\\n");
-    return 0;
+<div class="title">Write Employee Record to File</div>
+<div class="code step" style="font-size:1.05rem;margin-top:1.2rem;">
+<span class="kw">#include</span> <span class="inc">&lt;stdio.h&gt;</span>
+<span class="type">int</span> <span class="fn">main</span>() {
+    FILE *fptr = <span class="fn">fopen</span>(<span class="str">"emp.rec"</span>, <span class="str">"w"</span>);
+    <span class="kw">if</span> (fptr == NULL) <span class="kw">return</span> <span class="num">1</span>; <span class="cm">// file open failed</span>
+
+    <span class="type">char</span> name[] = <span class="str">"Raj"</span>;
+    <span class="type">int</span>  age    = <span class="num">28</span>;
+    <span class="type">float</span> sal  = <span class="num">75000</span>;
+
+    <span class="fn">fprintf</span>(fptr, <span class="str">"Name:%s Age:%d Sal:%.2f\n"</span>,
+            name, age, sal);
+
+    <span class="fn">fclose</span>(fptr);
+    <span class="fn">printf</span>(<span class="str">"Saved to emp.rec successfully.\n"</span>);
+    <span class="kw">return</span> <span class="num">0</span>;
 }
 </div>
+
+`);
+S(`
+
+<div class="eyebrow">Ex 20 · Dissection</div>
+<div class="title" style="font-size:2.6rem;">File Handling Breakdown</div>
+<table class="dissect-table">
+  <tr><th>Line / Concept</th><th>Plain English Explanation</th></tr>
+  <tr class="step"><td class="dl">FILE *fptr</td><td class="de">📁 <b>FILE pointer — a handle to the file.</b> <span class="ic">FILE</span> is a structure defined in <span class="ic">stdio.h</span> that contains all the internal state of an open file (position, buffers, error flags). <span class="ic">fptr</span> is a pointer to this structure — your "handle" to the file.</td></tr>
+  <tr class="step"><td class="dl">fopen("emp.rec", "w")</td><td class="de">🚪 <b>Open file for writing.</b> <span class="ic">fopen</span> opens (or creates) the named file. Mode <span class="ic">"w"</span> = write mode (creates new or overwrites existing). Other modes: <span class="ic">"r"</span> = read, <span class="ic">"a"</span> = append, <span class="ic">"r+"</span> = read+write.</td></tr>
+  <tr class="step"><td class="dl">if (fptr == NULL) return 1;</td><td class="de">🛡️ <b>Always check if fopen succeeded.</b> If the file can't be opened (wrong path, no permissions), fopen returns NULL. Continuing without this check and writing to a NULL pointer causes an immediate crash. Good practice: always handle the error case.</td></tr>
+  <tr class="step"><td class="dl">fprintf(fptr, "...", ...);</td><td class="de">🖊️ <b>Write formatted text to file.</b> <span class="ic">fprintf</span> works exactly like <span class="ic">printf</span> but takes a FILE pointer as the first argument. Instead of printing to the screen, it writes to the file.</td></tr>
+  <tr class="step"><td class="dl">fclose(fptr);</td><td class="de">🔒 <b>ALWAYS close files after use.</b> Closing flushes the internal buffer to disk and releases the file handle. Forgetting <span class="ic">fclose</span> can cause data loss (buffered data never written to disk) and resource leaks (OS runs out of file handles).</td></tr>
+</table>
+
+`);
+S(`
+
+<div class="eyebrow">Crescent Institute of Science &amp; Technology · CSE</div>
+<div class="title" style="font-size:clamp(3.5rem,8vw,7.5rem);">All Done! 🎉</div>
+<div class="lede" style="margin-top:1.6rem;max-width:55ch;">You've dissected all <b>20 programs</b> line by line. Now write them from memory — that's how mastery is built.</div>
+<div class="fact-grid cols-3" style="margin-top:2.2rem;">
+  <div class="fact step"><div class="num">Next Step</div><div class="txt"><b>Write each program by hand</b> without looking, then compile and run it.</div></div>
+  <div class="fact step"><div class="num">Debug Habit</div><div class="txt">When stuck, read the error on the <b>first listed line</b> — compilers report top-down.</div></div>
+  <div class="fact step"><div class="num">Golden Rule</div><div class="txt"><b>Every { needs a }</b> and every statement needs a <b>;</b> — these two cause 80% of beginner errors.</div></div>
+</div>
+<div class="deck-meta">DEPARTMENT OF COMPUTER SCIENCE &amp; ENGINEERING</div>
+
 `);
 
-/* ---------- CLOSING ---------- */
-S(`
-<div class="eyebrow">Crescent Institute of Science &amp; Technology</div>
-<div class="title" style="font-size:clamp(3.5rem,8vw,7.5rem);">Activity Done</div>
-<div class="lede" style="margin-top:2rem;">Start writing your observation codes with clean alignment now!</div>
-<div class="deck-meta" style="position:static; margin-top:2.5rem; color:var(--low);">DEPARTMENT OF COMPUTER SCIENCE &amp; ENGINEERING</div>
-`);
 
 /* ================= RENDER + CONTROLLER ================= */
 const deck = document.getElementById('deck');
@@ -1166,276 +1163,79 @@ slidesData.forEach((s,i)=>{
 });
 const slideEls = Array.from(document.querySelectorAll('.slide'));
 document.getElementById('tot').textContent = String(slideEls.length).padStart(2,'0');
-
 let idx = 0;
 function render(){
-  slideEls.forEach((el,i)=> {
-    el.classList.toggle('active', i===idx);
-  });
+  slideEls.forEach((el,i)=>el.classList.toggle('active',i===idx));
   document.getElementById('cur').textContent = String(idx+1).padStart(2,'0');
   document.getElementById('progress').style.width = ((idx+1)/slideEls.length*100)+'%';
-  
-  const activeSlide = slideEls[idx];
-  const revealedStepsCount = activeSlide.querySelectorAll('.step.revealed').length;
-  
-  // 1. Swapping Liquid Animation Controller
-  const swapSim = activeSlide.querySelector('.cup-swapping-sim');
-  if(swapSim) {
-    const cupA = document.getElementById('cup-a').querySelector('.liquid');
-    const cupTemp = document.getElementById('cup-temp').querySelector('.liquid');
-    const cupB = document.getElementById('cup-b').querySelector('.liquid');
-    
-    if(revealedStepsCount === 1) {
-      cupA.className = "liquid empty";
-      cupTemp.className = "liquid gold";
-      cupB.className = "liquid blue";
-    } else if(revealedStepsCount === 2) {
-      cupA.className = "liquid blue";
-      cupTemp.className = "liquid gold";
-      cupB.className = "liquid empty";
-    } else if(revealedStepsCount === 3) {
-      cupA.className = "liquid blue";
-      cupTemp.className = "liquid empty";
-      cupB.className = "liquid gold";
-    } else {
-      cupA.className = "liquid gold";
-      cupTemp.className = "liquid empty";
-      cupB.className = "liquid blue";
+  const a = slideEls[idx];
+  const rc = a.querySelectorAll('.step.revealed').length;
+  // Bank sim
+  const bank = a.querySelector('#bank-total');
+  if(bank){ const vals=[10,20,15]; let t=0; for(let i=0;i<rc&&i<3;i++){t+=vals[i]; document.getElementById('in'+(i+1)).classList.add('active');} bank.textContent=t; }
+  // Cup swap
+  const swap = a.querySelector('.cup-swapping-sim');
+  if(swap){
+    const cA=document.getElementById('cup-a')?.querySelector('.liquid'),
+          cT=document.getElementById('cup-temp')?.querySelector('.liquid'),
+          cB=document.getElementById('cup-b')?.querySelector('.liquid');
+    if(cA&&cT&&cB){
+      if(rc===1){cA.className='liquid empty';cT.className='liquid gold';cB.className='liquid blue';}
+      else if(rc===2){cA.className='liquid blue';cT.className='liquid gold';cB.className='liquid empty';}
+      else if(rc>=3){cA.className='liquid blue';cT.className='liquid empty';cB.className='liquid gold';}
     }
   }
-  
-  // 2. Average Sum Accumulator Animation Controller
-  const bankSim = activeSlide.querySelector('.bank-sim');
-  if(bankSim) {
-    const total = document.getElementById('bank-total');
-    const bubble1 = document.getElementById('in1');
-    const bubble2 = document.getElementById('in2');
-    const bubble3 = document.getElementById('in3');
-    
-    if(revealedStepsCount === 1) {
-      bubble1.classList.add('added');
-      bubble2.classList.remove('added');
-      bubble3.classList.remove('added');
-      total.textContent = "10";
-    } else if(revealedStepsCount === 2) {
-      bubble1.classList.add('added');
-      bubble2.classList.add('added');
-      bubble3.classList.remove('added');
-      total.textContent = "30";
-    } else if(revealedStepsCount === 3) {
-      bubble1.classList.add('added');
-      bubble2.classList.add('added');
-      bubble3.classList.add('added');
-      total.textContent = "45";
-    } else {
-      bubble1.classList.remove('added');
-      bubble2.classList.remove('added');
-      bubble3.classList.remove('added');
-      total.textContent = "0";
-    }
+  // Gate sim
+  const gate = a.querySelector('.gate-sim');
+  if(gate){
+    const age=20;
+    document.querySelectorAll('.gate-path').forEach(p=>p.classList.remove('active'));
+    if(rc>=1){ const id=age>=18?'g-even':'g-odd'; const el=document.getElementById(id); if(el)el.classList.add('active'); }
   }
-  
-  // 3. Vote Ternary Gate path controller
-  const gateSim = activeSlide.querySelector('.gate-sim');
-  if(gateSim) {
-    const inputVal = document.getElementById('gate-input-val');
-    const gEven = document.getElementById('g-even');
-    const gOdd = document.getElementById('g-odd');
-    
-    if(revealedStepsCount === 1) {
-      inputVal.textContent = "15";
-      gEven.classList.remove('open-even');
-      gOdd.classList.add('open-odd');
-    } else if(revealedStepsCount === 2) {
-      inputVal.textContent = "20";
-      gEven.classList.add('open-even');
-      gOdd.classList.remove('open-odd');
-    } else {
-      inputVal.textContent = "?";
-      gEven.className = "gate-path";
-      gOdd.className = "gate-path";
-    }
+  // Stack
+  const stack = a.querySelector('.stack-container');
+  if(stack){
+    const cards=stack.querySelectorAll('.stack-card');
+    cards.forEach((c,i)=>c.classList.toggle('active',i===rc-1));
   }
-
-  // 4. Recursion Stack Card Animation Controller
-  const stackSim = activeSlide.querySelector('.stack-container');
-  if(stackSim) {
-    const st1 = document.getElementById('st1');
-    const st2 = document.getElementById('st2');
-    const st3 = document.getElementById('st3');
-    const st4 = document.getElementById('st4');
-    
-    if(revealedStepsCount === 1) {
-      st1.classList.add('active');
-      st2.classList.remove('active');
-      st3.classList.remove('active');
-      st4.classList.remove('active');
-    } else if(revealedStepsCount === 2) {
-      st1.classList.add('active');
-      st2.classList.add('active');
-      st3.classList.remove('active');
-      st4.classList.remove('active');
-    } else if(revealedStepsCount === 3) {
-      st1.classList.add('active');
-      st2.classList.add('active');
-      st3.classList.add('active');
-      st4.classList.remove('active');
-    } else if(revealedStepsCount === 4) {
-      st1.classList.add('active');
-      st2.classList.add('active');
-      st3.classList.add('active');
-      st4.classList.add('active');
-    } else {
-      st1.classList.remove('active');
-      st2.classList.remove('active');
-      st3.classList.remove('active');
-      st4.classList.remove('active');
-    }
-  }
-
-  // 5. Pointer index traversal controller
-  const ptrSim = activeSlide.querySelector('.ptr-visualizer');
-  if(ptrSim) {
-    const p0 = document.getElementById('p0');
-    const p1 = document.getElementById('p1');
-    const p2 = document.getElementById('p2');
-    
-    if(revealedStepsCount === 1) {
-      p0.classList.add('focused');
-      p1.classList.remove('focused');
-      p2.classList.remove('focused');
-    } else if(revealedStepsCount === 2) {
-      p0.classList.remove('focused');
-      p1.classList.add('focused');
-      p2.classList.remove('focused');
-    } else if(revealedStepsCount === 3) {
-      p0.classList.remove('focused');
-      p1.classList.remove('focused');
-      p2.classList.add('focused');
-    } else {
-      p0.classList.remove('focused');
-      p1.classList.remove('focused');
-      p2.classList.remove('focused');
-    }
-  }
+  // Ptr
+  const ptrs = a.querySelectorAll('.ptr-box');
+  if(ptrs.length){ptrs.forEach((p,i)=>p.classList.toggle('active',i<rc));}
 }
-
-function verifyCard(btn, isCorrect, feedbackText) {
-  const btns = btn.parentNode.querySelectorAll('.quiz-btn');
-  btns.forEach(b => {
-    b.classList.remove('correct', 'incorrect');
-    b.style.pointerEvents = 'none';
-  });
-  const feedback = btn.parentNode.parentNode.querySelector('.card-feedback');
-  feedback.style.opacity = '1';
-  if (isCorrect) {
-    btn.classList.add('correct');
-    feedback.textContent = feedbackText;
-    feedback.style.color = "var(--green)";
-  } else {
-    btn.classList.add('incorrect');
-    btns.forEach(b => {
-      if (b !== btn) b.classList.add('correct');
-    });
-    feedback.textContent = feedbackText;
-    feedback.style.color = "var(--rose)";
-  }
+function next(){
+  const a=slideEls[idx];
+  const steps=a.querySelectorAll('.step:not(.revealed)');
+  if(steps.length>0){steps[0].classList.add('revealed');render();}
+  else if(idx<slideEls.length-1){idx++;render();}
 }
-
-function solveBlank(el, val) {
-  el.textContent = val;
-  el.classList.add('solved');
+function prev(){
+  const a=slideEls[idx];
+  const rev=a.querySelectorAll('.step.revealed');
+  if(rev.length>0){rev[rev.length-1].classList.remove('revealed');render();}
+  else if(idx>0){idx--;slideEls[idx].querySelectorAll('.step').forEach(s=>s.classList.add('revealed'));render();}
 }
-
-function next() {
-  const currentSlide = slideEls[idx];
-  const nextStep = currentSlide.querySelector('.step:not(.revealed)');
-  if (nextStep) {
-    nextStep.classList.add('revealed');
-    render();
-  } else {
-    if (idx < slideEls.length - 1) {
-      idx++;
-      const newSlide = slideEls[idx];
-      newSlide.querySelectorAll('.step.revealed').forEach(s => s.classList.remove('revealed'));
-      
-      // Reset quiz card layouts when returning
-      const quizExplanation = newSlide.querySelector('.card-feedback');
-      if (quizExplanation) {
-        quizExplanation.style.opacity = '0';
-        const quizOpts = newSlide.querySelectorAll('.quiz-btn');
-        quizOpts.forEach(o => {
-          o.classList.remove('correct', 'incorrect');
-          o.style.pointerEvents = 'auto';
-        });
-      }
-      // Reset code completion blank solves when returning
-      const solvedBlanks = newSlide.querySelectorAll('.blank-fill.solved');
-      solvedBlanks.forEach(b => {
-        b.classList.remove('solved');
-        b.textContent = '______';
-      });
-      
-      render();
-    }
-  }
-}
-
-function prev() {
-  const currentSlide = slideEls[idx];
-  const revealedSteps = currentSlide.querySelectorAll('.step.revealed');
-  if (revealedSteps.length > 0) {
-    revealedSteps[revealedSteps.length - 1].classList.remove('revealed');
-    render();
-  } else {
-    if (idx > 0) {
-      idx--;
-      const newSlide = slideEls[idx];
-      newSlide.querySelectorAll('.step').forEach(s => s.classList.add('revealed'));
-      render();
-    }
-  }
-}
-
-function go(delta) {
-  if (delta > 0) next();
-  else prev();
-}
-
-document.addEventListener('keydown', e=>{
-  if(['ArrowRight','ArrowDown','PageDown',' '].includes(e.key)){ e.preventDefault(); next(); }
-  else if(['ArrowLeft','ArrowUp','PageUp'].includes(e.key)){ e.preventDefault(); prev(); }
-  else if(e.key==='Home'){ 
-    idx=0; 
-    slideEls.forEach(el => el.querySelectorAll('.step.revealed').forEach(s => s.classList.remove('revealed')));
-    render(); 
-  }
-  else if(e.key==='End'){ 
-    idx=slideEls.length-1; 
-    slideEls.forEach(el => el.querySelectorAll('.step').forEach(s => s.classList.add('revealed')));
-    render(); 
-  }
-  else if(e.key.toLowerCase()==='f'){
-    if(!document.fullscreenElement) document.documentElement.requestFullscreen();
-    else document.exitFullscreen();
-  }
+function go(d){if(d>0)next();else prev();}
+document.addEventListener('keydown',e=>{
+  if(['ArrowRight','ArrowDown','PageDown',' '].includes(e.key)){e.preventDefault();next();}
+  else if(['ArrowLeft','ArrowUp','PageUp'].includes(e.key)){e.preventDefault();prev();}
+  else if(e.key==='Home'){idx=0;slideEls.forEach(el=>el.querySelectorAll('.step.revealed').forEach(s=>s.classList.remove('revealed')));render();}
+  else if(e.key==='End'){idx=slideEls.length-1;slideEls.forEach(el=>el.querySelectorAll('.step').forEach(s=>s.classList.add('revealed')));render();}
+  else if(e.key.toLowerCase()==='f'){if(!document.fullscreenElement)document.documentElement.requestFullscreen();else document.exitFullscreen();}
 });
-
-let touchX=null;
-document.addEventListener('touchstart', e=> touchX = e.touches[0].clientX, { passive: true });
-document.addEventListener('touchend', e=>{
-  if(touchX===null) return;
-  const dx = e.changedTouches[0].clientX - touchX;
-  if(Math.abs(dx)>50) go(dx<0?1:-1);
-  touchX=null;
-}, { passive: true });
-
+let tx=null;
+document.addEventListener('touchstart',e=>tx=e.touches[0].clientX,{passive:true});
+document.addEventListener('touchend',e=>{if(tx===null)return;const dx=e.changedTouches[0].clientX-tx;if(Math.abs(dx)>50)go(dx<0?1:-1);tx=null;},{passive:true});
+function verifyCard(btn,isCorrect,feedbackText){
+  const card=btn.closest('.card-quiz');
+  card.querySelectorAll('.quiz-btn').forEach(b=>b.disabled=true);
+  btn.classList.add(isCorrect?'correct':'incorrect');
+  const fb=card.querySelector('.card-feedback');
+  if(fb){fb.style.opacity='1';fb.textContent=feedbackText;}
+}
+function solveBlank(el,val){el.textContent=val;el.classList.add('solved');}
 render();
+
 </script>
-
-
-
-
 
 
 <!-- DATABASE CHECKIN OVERLAY -->
