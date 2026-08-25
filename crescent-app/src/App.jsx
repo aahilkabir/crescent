@@ -14,6 +14,8 @@ import {
   TodoCard,
   StringGarland
 } from './components/InteractiveWidgets';
+import MarkdownSlideViewer from './components/MarkdownSlideViewer';
+import CodePlayground from './components/CodePlayground';
 import { Play, Home, ChevronRight, Menu, X, ArrowLeft, ArrowRight, Maximize2, Monitor, BookOpen, Terminal, CheckCircle2, Code, Lightbulb, Cpu, Briefcase, ExternalLink, RefreshCw, Users, HelpCircle, GraduationCap, ChevronLeft } from 'lucide-react';
 
 function App() {
@@ -658,13 +660,69 @@ function App() {
                   </button>
                 </div>
               ))}
+
+              {/* INTERACTIVE C PLAYGROUND CARD */}
+              <div 
+                style={{
+                  background: 'var(--surface)',
+                  border: '1px solid rgba(251,191,36,0.5)',
+                  boxShadow: '0px 0px 20px rgba(251,191,36,0.15)',
+                  borderRadius: '16px',
+                  padding: '2rem',
+                  display: 'flex',
+                  flexDirection: 'column',
+                  justifyContent: 'space-between',
+                  transition: 'transform 0.3s, border-color 0.3s'
+                }}
+                className="dashboard-card"
+              >
+                <div>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '0.8rem', marginBottom: '1.2rem' }}>
+                    <Terminal size={24} style={{ color: 'var(--accent)' }} />
+                    <span style={{ fontSize: '0.8rem', fontFamily: 'var(--mono)', letterSpacing: '0.12em', color: 'var(--accent)', fontWeight: '600' }}>
+                      PLAYGROUND
+                    </span>
+                  </div>
+
+                  <h3 style={{ fontFamily: 'var(--serif)', fontSize: '1.8rem', color: 'var(--hi)', fontWeight: '700', marginBottom: '1rem', lineHeight: '1.2' }}>
+                    C Code Sandbox
+                  </h3>
+                  <p style={{ fontSize: '1.1rem', color: 'var(--mid)', fontWeight: '300', lineHeight: '1.6', marginBottom: '2rem' }}>
+                    Write C programs, compile in real-time, trigger terminal inputs, and trace variable storage addresses in a live RAM memory simulator.
+                  </p>
+                </div>
+
+                <button 
+                  onClick={() => handleSubjectSelect('sandbox')}
+                  style={{
+                    width: '100%',
+                    background: 'var(--accent)',
+                    color: 'var(--black)',
+                    border: 'none',
+                    fontFamily: 'var(--sans)',
+                    fontWeight: '700',
+                    fontSize: '1rem',
+                    padding: '0.9rem',
+                    borderRadius: '8px',
+                    cursor: 'pointer',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    gap: '0.6rem',
+                    transition: 'all 0.3s'
+                  }}
+                  className="start-module-btn"
+                >
+                  Start Playground <ChevronRight size={18} />
+                </button>
+              </div>
             </div>
           </div>
         </div>
       )}
 
       {/* SUBJECT MODULES PAGE */}
-      {currentSubjectId !== null && currentModuleId === null && (
+      {currentSubjectId !== null && currentSubjectId !== 'sandbox' && currentModuleId === null && (
         <div style={{ flex: '1', overflowY: 'auto', padding: '4rem 6vw' }}>
           <div style={{ maxWidth: '1000px', margin: '0 auto' }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', marginBottom: '1.5rem' }}>
@@ -703,7 +761,7 @@ function App() {
                     </p>
                   </div>
 
-                  {mod.isReact ? (
+                  {mod.isReact || mod.isMarkdown ? (
                     <button 
                       onClick={() => handleModuleSelect(mod.id)}
                       style={{
@@ -725,7 +783,7 @@ function App() {
                       }}
                       className="widget-btn"
                     >
-                      Launch Slider <ChevronRight size={16} />
+                      {mod.isMarkdown ? 'Launch Slide Deck' : 'Launch Slider'} <ChevronRight size={16} />
                     </button>
                   ) : (
                     <a 
@@ -752,7 +810,7 @@ function App() {
                       }}
                       className="widget-btn-secondary"
                     >
-                      Open Slide Deck <ExternalLink size={16} />
+                      Open Course <ExternalLink size={16} />
                     </a>
                   )}
                 </div>
@@ -762,8 +820,39 @@ function App() {
         </div>
       )}
 
+      {/* INTERACTIVE CODE SANDBOX PLAYGROUND */}
+      {currentSubjectId === 'sandbox' && (
+        <div style={{ display: 'flex', flexDirection: 'column', height: '100%', background: 'var(--black)' }}>
+          <header style={{
+            display: 'flex',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+            padding: '1.2rem 3vw',
+            borderBottom: '1px solid var(--border)',
+            background: 'var(--surface)',
+            zIndex: 40
+          }}>
+            <button onClick={() => handleSubjectSelect(null)} className="widget-btn-secondary" style={{ display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
+              <ChevronLeft size={16} /> Back to Courses
+            </button>
+            <span style={{ fontSize: '1.1rem', fontWeight: 'bold', color: 'var(--hi)' }}>C Coding Sandbox Playground</span>
+            <div style={{ width: '100px' }}></div> {/* Spacer */}
+          </header>
+          <CodePlayground />
+        </div>
+      )}
+
+      {/* DYNAMIC MARKDOWN SLIDE VIEW COMPONENT */}
+      {currentSubjectId !== null && currentSubjectId !== 'sandbox' && currentModuleId !== null && activeModule?.isMarkdown && (
+        <MarkdownSlideViewer 
+          filePath={activeModule.path} 
+          title={activeModule.title} 
+          onBack={() => setCurrentModuleId(null)} 
+        />
+      )}
+
       {/* SLIDE PORTAL ENGINE VIEWPORT */}
-      {currentSubjectId !== null && currentModuleId !== null && (
+      {currentSubjectId !== null && currentSubjectId !== 'sandbox' && currentModuleId !== null && !activeModule?.isMarkdown && (
         <div style={{ flex: '1', display: 'flex', overflow: 'hidden', position: 'relative' }} onTouchStart={handleTouchStart} onTouchEnd={handleTouchEnd}>
           {/* SIDEBAR NAVIGATION */}
           <aside style={{
