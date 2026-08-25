@@ -547,6 +547,22 @@ S(`
 </div>
 `, '{');
 
+/* ---------- 02B DENNIS RITCHIE LEGACY ---------- */
+S(`
+<div class="eyebrow">Part 01 · Origins &amp; Nature</div>
+<div class="title">Dennis Ritchie &amp; Unix</div>
+<div class="split" style="align-items: center; gap: 4vw;">
+  <div style="flex: 1.1;">
+    <div class="body-copy">In 1972, at AT&amp;T Bell Labs, <b>Dennis Ritchie</b> designed the C programming language to rewrite the Unix operating system kernel.</div>
+    <div class="body-copy step" style="margin-top:1.2rem;">By choosing to build C, he created a language that was high-level enough to be easily readable, yet low-level enough to talk directly to memory chips.</div>
+    <div style="margin-top:1.8rem; padding:1.2rem; background:var(--accent-soft); border-left:4px solid var(--accent); border-radius:0 8px 8px 0;" class="step">
+      <span style="color:var(--hi); font-style:italic;">"C is quirky, flawed, and an enormous success."</span> — Dennis Ritchie
+    </div>
+  </div>
+  <div style="flex: 0.9; height: 350px; border-radius: 12px; border: 1px solid var(--border-hi); background: url('../../assets/retro_computer_lab.jpg') center/cover; box-shadow: 0 20px 45px rgba(0,0,0,0.55);"></div>
+</div>
+`);
+
 /* ---------- 03 WHAT IS C ---------- */
 S(`
 <div class="eyebrow">Part 01 · Origins &amp; Nature</div>
@@ -626,13 +642,29 @@ S(`
 <div class="body-copy step" style="margin-top:1.6rem;">A programming language is a <b>translator</b>. It lets you write logic using English-like words, and converts it into pure, machine-readable binary code.</div>
 `);
 
-/* ---------- 08 MACHINE LANGUAGE ---------- */
+/* ---------- 08A MACHINE LANGUAGE HERO ---------- */
+S(`
+<div class="eyebrow">Part 02 · Source → Machine</div>
+<div class="title">The Language of Electricity</div>
+<div class="split" style="align-items: center; gap: 4vw;">
+  <div style="flex: 1.1;">
+    <div class="body-copy">At their core, microprocessors only understand <b>electricity</b>. High voltage represents a <b>1</b>, and Low voltage represents a <b>0</b>.</div>
+    <div class="body-copy step" style="margin-top:1.2rem;">Every single instruction, calculation, image pixel, and text document is represented as massive streams of these binary bits.</div>
+    <div style="margin-top:1.8rem; padding:1.2rem; background:var(--blue-soft); border-left:4px solid var(--blue); border-radius:0 8px 8px 0;" class="step">
+      C acts as a compiler bridge, translating your readable logic commands into this raw electrical binary language.
+    </div>
+  </div>
+  <div style="flex: 0.9; height: 350px; border-radius: 12px; border: 1px solid var(--border-hi); background: url('../../assets/binary_matrix.jpg') center/cover; box-shadow: 0 20px 45px rgba(0,0,0,0.55);"></div>
+</div>
+`);
+
+/* ---------- 08B MACHINE LANGUAGE STUDY ---------- */
 S(`
 <div class="eyebrow">Part 02 · Source → Machine</div>
 <div class="title">Machine Language (Binary)</div>
 <div class="split">
   <div>
-    <div class="body-copy">The raw language of the processor. Sequences of bits like:</div>
+    <div class="body-copy">The raw hardware language of the processor. Sequences of bits like:</div>
     <div class="code step" style="margin-top:1.2rem; font-size:1.3rem;">10110000 01100001</div>
     <div class="body-copy step" style="margin-top:1.2rem;">This is direct instruction, but impossible to write, debug, or maintain.</div>
   </div>
@@ -958,7 +990,23 @@ S(`
 </div>
 `);
 
-/* ---------- 21 TOKENS OVERVIEW ---------- */
+/* ---------- 21A TOKENS LEGACY HERO ---------- */
+S(`
+<div class="eyebrow">Part 04 · Vocabulary</div>
+<div class="title">Code Building Blocks</div>
+<div class="split" style="align-items: center; gap: 4vw;">
+  <div style="flex: 1.1;">
+    <div class="body-copy">A C program is like a structure built out of lego bricks. The compiler cannot understand your sentences all at once.</div>
+    <div class="body-copy step" style="margin-top:1.2rem;">Instead, it scans your code and breaks it down into individual, indivisible items called <b>Tokens</b>.</div>
+    <div style="margin-top:1.8rem; padding:1.2rem; background:var(--accent-soft); border-left:4px solid var(--accent); border-radius:0 8px 8px 0;" class="step">
+      If any token is invalid (like a misspelled keyword or unrecognized symbol), compilation fails immediately with a syntax error.
+    </div>
+  </div>
+  <div style="flex: 0.9; height: 350px; border-radius: 12px; border: 1px solid var(--border-hi); background: url('../../assets/code_tokens.jpg') center/cover; box-shadow: 0 20px 45px rgba(0,0,0,0.55);"></div>
+</div>
+`);
+
+/* ---------- 21B TOKENS OVERVIEW ---------- */
 S(`
 <div class="eyebrow">Part 04 · Vocabulary</div>
 <div class="title">C Tokens</div>
@@ -1274,7 +1322,23 @@ int max = (a &gt; b) ? a : b;
 </div>
 `);
 
-/* ---------- 35 BITWISE ---------- */
+/* ---------- 35A BITWISE HERO ---------- */
+S(`
+<div class="eyebrow">Part 05 · Operators</div>
+<div class="title">Modifying Bits Directly</div>
+<div class="split" style="align-items: center; gap: 4vw;">
+  <div style="flex: 1.1;">
+    <div class="body-copy">Variables are stored in memory as binary bits. <b>Bitwise Operators</b> let you interact with and manipulate these individual bits directly.</div>
+    <div class="body-copy step" style="margin-top:1.2rem;">Think of a variable as a row of light switches. Operators like Shift (<code>&lt;&lt;</code>, <code>&gt;&gt;</code>) slide the switches left or right, instantly scaling values.</div>
+    <div style="margin-top:1.8rem; padding:1.2rem; background:var(--blue-soft); border-left:4px solid var(--blue); border-radius:0 8px 8px 0;" class="step">
+      This is extremely powerful in hardware drivers, encryption algorithms, and real-time graphics where execution speed is critical.
+    </div>
+  </div>
+  <div style="flex: 0.9; height: 350px; border-radius: 12px; border: 1px solid var(--border-hi); background: url('../../assets/circuit_board.jpg') center/cover; box-shadow: 0 20px 45px rgba(0,0,0,0.55);"></div>
+</div>
+`);
+
+/* ---------- 35B BITWISE ---------- */
 S(`
 <div class="eyebrow">Part 05 · Operators</div>
 <div class="title">Bitwise Operations</div>
@@ -1471,6 +1535,10 @@ char msg[] = "Welcome to C";
 puts(msg);
     </div>
   </div>
+</div>
+<div class="warning-alert step" style="margin-top:1.5rem; background:rgba(244,63,94,0.1); border-left:4px solid var(--rose); padding:1rem 1.5rem; border-radius:4px;">
+  <span style="color:var(--rose); font-weight:bold;">⚠️ Security Warning:</span> 
+  <span style="color:var(--mid);"><code>gets()</code> has no array bounds check, causing dangerous <b>Buffer Overflows</b>. Modern C compilers throw build warnings for it. Prefer <code>fgets(name, 50, stdin)</code> in secure code!</span>
 </div>
 `);
 
@@ -1683,7 +1751,6 @@ document.addEventListener('touchend', e=>{
 
 render();
 </script>
-
 
 <!-- DATABASE CHECKIN OVERLAY -->
 <div id="checkin-overlay" style="position:fixed;inset:0;background:rgba(0,0,0,0.92);backdrop-filter:blur(8px);display:flex;align-items:center;justify-content:center;z-index:9999;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;color:#fff;">
