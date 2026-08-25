@@ -1,0 +1,998 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Control Structures &amp; Arrays in C — Crescent Institute</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,700;1,400&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --black:#000000;
+  --surface:#0e0f11;
+  --surface2:#181a1f;
+  --surface3:#22252c;
+  --border:rgba(255,255,255,.08);
+  --border-hi:rgba(255,255,255,.16);
+  --hi:#ffffff;
+  --mid:#cbd5e1;
+  --low:#64748b;
+  --accent:#fbbf24; /* Gold */
+  --accent-soft:rgba(251, 191, 36, 0.15);
+  --blue:#38b6ff; /* Sky blue */
+  --blue-soft:rgba(56, 182, 255, 0.15);
+  --green:#10b981;
+  --green-soft:rgba(16, 185, 129, 0.15);
+  --rose:#f43f5e;
+  --serif:'Cormorant Garamond',serif;
+  --sans:'Inter',sans-serif;
+  --mono:'JetBrains Mono',monospace;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html,body{background:#000;height:100%;overflow:hidden;}
+body{
+  font-family:var(--sans);
+  color:var(--hi);
+  -webkit-font-smoothing:antialiased;
+  text-rendering:optimizeLegibility;
+}
+#deck{position:relative;width:100vw;height:100vh;}
+.slide{
+  position:absolute;inset:0;
+  display:flex;flex-direction:column;
+  justify-content:center;
+  padding:6vh 8vw;
+  background:var(--black);
+  opacity:0;visibility:hidden;
+  transform:translateY(16px);
+  transition:opacity .5s cubic-bezier(.22,.61,.36,1), transform .5s cubic-bezier(.22,.61,.36,1);
+  overflow:hidden;
+}
+.slide.active{opacity:1;visibility:visible;transform:translateY(0);}
+
+.slide > *{position:relative;z-index:1;}
+
+/* Step-by-Step Reveal Animation */
+.step {
+  opacity: 0;
+  transform: translateY(20px) scale(0.98);
+  transition: opacity 0.5s cubic-bezier(0.16, 1, 0.3, 1), transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+  pointer-events: none;
+}
+.step.revealed {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+  pointer-events: auto;
+}
+
+/* Cinematic Blended Image Layouts */
+.cinematic-bg {
+  position: absolute;
+  right: 0; top: 0; bottom: 0;
+  width: 50%;
+  background-size: cover;
+  background-position: center;
+  mask-image: linear-gradient(to left, rgba(0,0,0,1) 50%, rgba(0,0,0,0) 100%);
+  -webkit-mask-image: linear-gradient(to left, rgba(0,0,0,1) 50%, rgba(0,0,0,0) 100%);
+  z-index: 0;
+  pointer-events: none;
+  opacity: 0;
+  transform: scale(1.06) translateX(12px);
+  transition: transform 1.6s cubic-bezier(0.16, 1, 0.3, 1), opacity 1.2s ease;
+}
+.cinematic-bg.revealed {
+  opacity: 0.75;
+  transform: scale(1.01) translateX(0);
+}
+
+.eyebrow{
+  font-family:var(--mono);
+  font-size:clamp(0.85rem, 1.2vw, 1.1rem);
+  letter-spacing:.25em;
+  text-transform:uppercase;
+  color:var(--accent);
+  margin-bottom:1.6rem;
+  display:flex;align-items:center;gap:.6em;
+  font-weight:700;
+}
+.eyebrow::before{content:'';width:25px;height:2px;background:var(--accent-soft);display:inline-block;}
+
+.title{
+  font-family:var(--serif);
+  font-weight:700;
+  font-size:clamp(3.0rem, 6.0vw, 5.0rem);
+  line-height:1.08;
+  letter-spacing:-.02em;
+  background:linear-gradient(120deg,#ffffff,#fef3c7 60%,var(--accent));
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+  filter:drop-shadow(0 1px 1px rgba(0,0,0,.7));
+  max-width:24ch;
+}
+.title.cool{
+  background:linear-gradient(120deg,#ffffff,#e0f2fe 60%,var(--blue));
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+}
+
+.lede{
+  font-family:var(--sans);
+  font-size:clamp(1.4rem, 2.3vw, 2.0rem);
+  color:var(--mid);
+  line-height:1.6;
+  max-width:55ch;
+  font-weight:300;
+}
+
+.body-copy{
+  font-size:clamp(1.3rem, 2.1vw, 1.8rem);
+  line-height:1.7;
+  color:var(--mid);
+  max-width:65ch;
+  font-weight:300;
+}
+.body-copy b, .body-copy strong{color:var(--hi);font-weight:600;}
+
+.content-row{display:flex;gap:4vw;align-items:flex-start;margin-top:2rem;}
+
+/* grids of small facts */
+.fact-grid{display:grid;gap:1.2rem;margin-top:2rem;}
+.fact-grid.cols-2{grid-template-columns:1fr 1fr;}
+.fact-grid.cols-3{grid-template-columns:repeat(3,1fr);}
+.fact{background:var(--surface);border:1px solid var(--border);padding:1.8rem 2rem;border-radius:12px;}
+.fact .num{font-family:var(--mono);color:var(--accent);font-size:0.9rem;letter-spacing:.12em;font-weight:700;}
+.fact .txt{margin-top:.8rem;font-size:clamp(1.1rem, 1.8vw, 1.5rem);color:var(--mid);line-height:1.6;font-weight:300;}
+.fact .txt b{color:var(--hi);font-weight:600;}
+
+/* code block */
+.code{
+  background:var(--surface);
+  border:1px solid var(--border);
+  border-radius:12px;
+  padding:1.6rem 2.2rem;
+  font-family:var(--mono);
+  font-size:clamp(1.1rem, 1.7vw, 1.45rem);
+  line-height:1.8;
+  color:#e2e8f0;
+  white-space:pre;
+  overflow:auto;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.02);
+}
+.code .kw{color:var(--accent);font-weight:700;}
+.code .cm{color:var(--low);font-style:italic;}
+.code .str{color:#a7f3d0;}
+.code .fn{color:var(--blue);}
+.code-cap{font-family:var(--mono);font-size:.85rem;letter-spacing:.14em;text-transform:uppercase;color:var(--low);margin-bottom:.8rem;}
+
+/* table */
+.ptable{width:100%;border-collapse:collapse;margin-top:1.8rem;}
+.ptable th{
+  text-align:left;font-family:var(--mono);font-size:.85rem;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--accent);padding:1rem 1.4rem;border-bottom:2px solid var(--border-hi);font-weight:700;
+}
+.ptable td{padding:1.1rem 1.4rem;border-bottom:1px solid var(--border);font-size:clamp(1.1rem, 1.8vw, 1.5rem);color:var(--mid);font-weight:300;}
+.ptable td:first-child, .ptable th:first-child{font-family:var(--mono);color:var(--hi);font-weight:600;}
+.ptable tr:last-child td{border-bottom:none;}
+
+/* pill / tag grid for keywords */
+.pillgrid{display:flex;flex-wrap:wrap;gap:.8rem;margin-top:2rem;max-width:70ch;}
+.pill{
+  font-family:var(--mono);font-size:1.05rem;color:var(--mid);
+  background:var(--surface);border:1px solid var(--border);
+  padding:.5rem 1.1rem;border-radius:6px;
+}
+
+/* two-col layout */
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:3rem;margin-top:2rem;align-items:start;}
+.card-block{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:2rem 2.2rem;}
+.card-block h4{
+  font-family:var(--serif);font-size:1.7rem;font-weight:700;color:var(--hi);margin-bottom:1rem;
+}
+.card-block ul{list-style:none;}
+.card-block li{
+  font-size:clamp(1.1rem, 1.8vw, 1.5rem);color:var(--mid);line-height:1.7;padding-left:1.3rem;position:relative;font-weight:300;margin-bottom:.5rem;
+}
+.card-block li::before{content:'—';position:absolute;left:0;color:var(--low);}
+
+/* list simple */
+.simple-list{margin-top:1.6rem;}
+.simple-list li{
+  font-size:clamp(1.2rem, 2.0vw, 1.7rem);color:var(--mid);line-height:1.8;list-style:none;padding-left:1.8rem;position:relative;font-weight:300;margin-bottom:.8rem;
+}
+.simple-list li::before{content:'·';position:absolute;left:0;color:var(--accent);font-size:2rem;line-height:0.9;}
+.simple-list li b{color:var(--hi);font-weight:600;}
+
+.split{display:flex;gap:4vw;margin-top:2rem;}
+.split > div{flex:1;}
+
+/* section divider slides */
+.section-num{
+  font-family:var(--mono);color:var(--accent);font-size:1.2rem;letter-spacing:.25em;margin-bottom:1.6rem;font-weight:700;
+}
+.section-title{
+  font-family:var(--serif);font-weight:700;font-size:clamp(3.5rem,7vw,6.5rem);line-height:1.05;
+  background:linear-gradient(120deg,#ffffff,#fef3c7 60%,var(--accent));
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+  filter:drop-shadow(0 1px 1px rgba(0,0,0,.7));
+}
+.section-list{margin-top:2rem;display:flex;flex-direction:column;gap:.8rem;}
+.section-list .s-item{font-family:var(--sans);font-size:1.2rem;color:var(--low);font-weight:300;letter-spacing:.02em;}
+.section-list .s-item.done{color:var(--low);text-decoration:line-through;opacity:0.4;}
+.section-list .s-item.now{color:var(--hi);font-weight:500;}
+.section-list .s-item.now::before{content:'→ ';color:var(--accent);}
+
+/* Giant Typography watermark */
+.giant-stat {
+  position: absolute;
+  right: 8vw;
+  bottom: 12vh;
+  font-family: var(--serif);
+  font-weight: 700;
+  font-size: clamp(8rem, 20vw, 18rem);
+  color: transparent;
+  -webkit-text-stroke: 2px rgba(251, 191, 36, 0.16);
+  line-height: 0.9;
+  pointer-events: none;
+  user-select: none;
+  z-index: 0;
+}
+
+/* Interactive simulation widgets */
+.sim-console {
+  background: #050505;
+  border: 2px solid #222;
+  border-radius: 8px;
+  width: clamp(300px, 35vw, 450px);
+  margin-left: auto;
+  box-shadow: 0 20px 50px rgba(0,0,0,0.8);
+  font-family: var(--mono);
+}
+.sim-header {
+  background: #111;
+  padding: 0.6rem 1rem;
+  font-size: 0.8rem;
+  color: var(--low);
+  border-bottom: 1px solid #222;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+.sim-body {
+  padding: 1.2rem;
+  min-height: 120px;
+  font-size: 1.15rem;
+  color: #10b981;
+}
+.sim-line {
+  margin-bottom: 0.6rem;
+  min-height: 1.5rem;
+}
+.sim-memory {
+  background: #111;
+  padding: 1rem;
+  border-top: 1px solid #222;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.sim-mem-box {
+  background: var(--surface3);
+  border: 1px solid var(--border);
+  padding: 0.4rem 1rem;
+  border-radius: 4px;
+  font-size: 1.1rem;
+  color: var(--accent);
+  font-weight: 600;
+  transition: all 0.4s;
+}
+.sim-mem-box.active {
+  border-color: var(--green);
+  background: var(--green-soft);
+  color: var(--hi);
+}
+
+/* Array visualization rows */
+.array-row {
+  display: flex;
+  gap: 0.5rem;
+  margin-top: 2rem;
+}
+.array-cell {
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  flex: 1;
+  padding: 1.2rem;
+  text-align: center;
+  border-radius: 6px;
+  font-family: var(--mono);
+  transition: all 0.4s;
+}
+.array-cell.active-cell {
+  border-color: var(--accent);
+  background: var(--accent-soft);
+  box-shadow: 0 0 12px rgba(251, 191, 36, 0.2);
+}
+.cell-val {
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: var(--hi);
+}
+.cell-idx {
+  font-size: 0.8rem;
+  color: var(--low);
+  margin-top: 0.4rem;
+}
+
+/* nav ui */
+#progress{position:fixed;top:0;left:0;height:3px;background:var(--accent);z-index:50;transition:width .4s ease;box-shadow:0 0 10px var(--accent);}
+#hud{
+  position:fixed;bottom:0;left:0;right:0;
+  display:flex;justify-content:space-between;align-items:center;
+  padding:1.8rem 8vw;z-index:50;
+  pointer-events:none;
+  font-family:var(--mono);font-size:.8rem;letter-spacing:.14em;color:var(--low);
+}
+#hud .count{pointer-events:auto;}
+#hud .hint{opacity:.65;}
+.navzone{position:fixed;top:0;bottom:0;width:15%;z-index:40;cursor:pointer;}
+.navzone.left{left:0;}
+.navzone.right{right:0;}
+
+@media(max-width:820px){
+  .two-col,.split{grid-template-columns:1fr;display:flex;flex-direction:column;}
+  .slide{padding:4vh 5vw;}
+  .fact-grid.cols-3{grid-template-columns:1fr;}
+  .sim-console,.array-row{width:100%; margin-top:2rem;}
+}
+</style>
+</head>
+<body>
+
+<div id="progress"></div>
+<div id="deck"></div>
+<div class="navzone left" onclick="go(-1)"></div>
+<div class="navzone right" onclick="go(1)"></div>
+<div id="hud">
+  <div class="count"><span id="cur">01</span> / <span id="tot">00</span></div>
+  <div class="hint">← → or Space to navigate · F fullscreen</div>
+</div>
+
+<script>
+const slidesData = [];
+function S(html, brace){ slidesData.push({html, brace: brace || (slidesData.length%2? '}':'{') }); }
+
+/* ---------- 00 TITLE ---------- */
+S(`
+<div class="eyebrow">Crescent Institute of Science &amp; Technology · CSE</div>
+<div class="title" style="font-size:clamp(4rem,10vw,8.5rem); font-weight:900;">C</div>
+<div class="title small" style="margin-top:.4rem; font-size:clamp(2rem,4vw,3.5rem);">Module 3: <span class="accent">Control Structures &amp; Arrays</span></div>
+<p class="lede" style="margin-top:1.8rem; max-width:65ch;">Mastering logic flow, repeat cycles, matrices, and text strings — from building loops to handling multi-dimensional data blocks.</p>
+`);
+
+/* ---------- 01 AGENDA ---------- */
+S(`
+<div class="eyebrow">Module 3 Roadmap</div>
+<div class="title" style="font-size:3rem;">Syllabus Chapters</div>
+<div class="fact-grid cols-3">
+  <div class="fact step"><div class="num">01</div><div class="txt"><b>Decision Making</b><br>Decisions in code: if, if-else, switch case.</div></div>
+  <div class="fact step"><div class="num">02</div><div class="txt"><b>Loop Structures</b><br>Repeating work: for, while, do-while loops.</div></div>
+  <div class="fact step"><div class="num">03</div><div class="txt"><b>1D Arrays</b><br>Linear lists of identical data.</div></div>
+  <div class="fact step"><div class="num">04</div><div class="txt"><b>2D Arrays</b><br>Grids and matrices in memory.</div></div>
+  <div class="fact step"><div class="num">05</div><div class="txt"><b>Strings</b><br>Character arrays and string manipulation.</div></div>
+</div>
+`);
+
+/* ---------- 02 SECTION DIVIDER: PART 1 ---------- */
+S(`
+<div class="section-num">Part 01</div>
+<div class="section-title">Decision Making<br>in C</div>
+<div class="section-list">
+  <div class="s-item now">Decision Making (if, if-else, switch)</div>
+  <div class="s-item">Loop Structures (for, while, do-while)</div>
+  <div class="s-item">One-Dimensional Arrays</div>
+  <div class="s-item">Two-Dimensional Arrays (Matrices)</div>
+  <div class="s-item">Character Arrays &amp; Strings</div>
+</div>
+`, '{');
+
+/* ---------- 03 DECISION MAKING OVERVIEW ---------- */
+S(`
+<div class="eyebrow">Part 01 · Decision Making</div>
+<div class="title">Making Decisions in Code</div>
+<div class="lede" style="margin-top:1.8rem;">Programs shouldn't execute in a straight, predictable line. They need to choose different paths based on conditions.</div>
+<div class="content-row">
+  <ul class="simple-list">
+    <li class="step"><b>Conditional Branching:</b> Executing code only if an expression is True.</li>
+    <li class="step"><b>Decision Statements:</b> <span class="mono" style="color:var(--accent);">if</span>, <span class="mono" style="color:var(--accent);">if-else</span>, nested <span class="mono" style="color:var(--accent);">if</span> ladders.</li>
+    <li class="step"><b>Multi-way Branching:</b> Selecting one block out of many using <span class="mono" style="color:var(--accent);">switch-case</span>.</li>
+  </ul>
+</div>
+`);
+
+/* ---------- 04 IF-ELSE ANALOGY ---------- */
+S(`
+<div class="eyebrow">Part 01 · Decision Making</div>
+<div class="title">if-else: The Helmet Checkpoint</div>
+<div class="split">
+  <div style="flex: 1.2;">
+    <p class="lede">The <span class="mono" style="color:var(--accent);">if-else</span> statement evaluates a condition. If true, path A is taken; otherwise, path B is taken.</p>
+    <ul class="simple-list" style="margin-top:1.4rem;">
+      <li class="step"><b>Helmet Checkpoint:</b> Imagine a traffic checkpoint. The condition: "Is the rider wearing a helmet?"</li>
+      <li class="step"><b>True (if block):</b> Helmet is present → Proceed safely home.</li>
+      <li class="step"><b>False (else block):</b> No helmet → Stop and pay fine.</li>
+    </ul>
+  </div>
+  <div class="card-block step">
+    <h4>C Code Syntax</h4>
+    <code class="mono" style="font-size:1.15rem; line-height:1.8; color:var(--accent);">
+    if (helmet == 1)<br>
+    {<br>
+    &nbsp;&nbsp;printf("Safe Ride\n");<br>
+    }<br>
+    else<br>
+    {<br>
+    &nbsp;&nbsp;printf("Fine Rs. 1000\n");<br>
+    }
+    </code>
+  </div>
+</div>
+`);
+
+/* ---------- 05 SWITCH CASE ANALOGY ---------- */
+S(`
+<div class="eyebrow">Part 01 · Decision Making</div>
+<div class="title">switch: The Elevator buttons</div>
+<div class="split">
+  <div style="flex:1.2;">
+    <p class="lede">Instead of checking conditions sequentially (if/else if/else if), <span class="mono" style="color:var(--accent);">switch-case</span> jumps directly to the matching block.</p>
+    <ul class="simple-list" style="margin-top:1.4rem;">
+      <li class="step"><b>Elevator buttons:</b> You walk into a building elevator. You press "3". The lift goes directly to Floor 3.</li>
+      <li class="step">It doesn't open the door at Floor 1, then Floor 2 to verify if you want to exit. Jumps directly!</li>
+      <li class="step"><b>Default:</b> If you press an invalid floor number, the lift screen shows an error.</li>
+    </ul>
+  </div>
+  <div class="card-block step">
+    <h4>C Code Syntax</h4>
+    <code class="mono" style="font-size:1.1rem; line-height:1.7; color:var(--accent);">
+    switch (floor)<br>
+    {<br>
+    &nbsp;&nbsp;case 1: printf("Floor 1\n"); break;<br>
+    &nbsp;&nbsp;case 2: printf("Floor 2\n"); break;<br>
+    &nbsp;&nbsp;case 3: printf("Floor 3\n"); break;<br>
+    &nbsp;&nbsp;default: printf("Error\n");<br>
+    }
+    </code>
+  </div>
+</div>
+`);
+
+/* ---------- 06 SWITCH RULES ---------- */
+S(`
+<div class="eyebrow">Part 01 · Decision Making</div>
+<div class="title">Rules for switch-case</div>
+<div class="split">
+  <div class="card-block step">
+    <h4>Key Rules</h4>
+    <ul>
+      <li>Switch expression must evaluate to an <b>integer</b> or a <b>character</b> constant. Floats are NOT allowed!</li>
+      <li>Case labels must be constants (e.g. <span class="mono">case 1:</span> or <span class="mono">case 'A':</span>).</li>
+      <li>No two case labels can be identical.</li>
+      <li>The <span class="mono" style="color:var(--accent);">break;</span> statement exits the block. Omitting it leads to **Fall-Through**.</li>
+    </ul>
+  </div>
+  <div>
+    <div class="giant-stat step">switch</div>
+  </div>
+</div>
+`);
+
+/* ---------- 07 SECTION DIVIDER: PART 2 ---------- */
+S(`
+<div class="section-num">Part 02</div>
+<div class="section-title">Loops &amp;<br>Iteration</div>
+<div class="section-list">
+  <div class="s-item done">Decision Making (if, if-else, switch)</div>
+  <div class="s-item now">Loop Structures (for, while, do-while)</div>
+  <div class="s-item">One-Dimensional Arrays</div>
+  <div class="s-item">Two-Dimensional Arrays (Matrices)</div>
+  <div class="s-item">Character Arrays &amp; Strings</div>
+</div>
+`, '}');
+
+/* ---------- 08 LOOPS OVERVIEW ---------- */
+S(`
+<div class="eyebrow">Part 02 · Loops &amp; Iteration</div>
+<div class="title">Repeating Work: Loops</div>
+<div class="lede" style="margin-top:1.8rem;">Computers excel at repeating identical calculations a million times without getting tired. Loops are how we declare repetition.</div>
+<div class="fact-grid cols-3" style="margin-top:1.6rem;">
+  <div class="fact step"><div class="num">while</div><div class="txt">Entry-controlled loop. Checks condition first, loops if true.</div></div>
+  <div class="fact step"><div class="num">for</div><div class="txt">Entry-controlled. Compact layout incorporating init, test, and update.</div></div>
+  <div class="fact step"><div class="num">do-while</div><div class="txt">Exit-controlled loop. Executes statements at least once, checks condition at bottom.</div></div>
+</div>
+`);
+
+/* ---------- 09 WHILE LOOP ANALOGY (CINEMATIC) ---------- */
+S(`
+<div class="eyebrow">Part 02 · Loops &amp; Iteration</div>
+<div class="title">while loop: The Wet Grinder Analogy</div>
+<div class="split" style="position:relative; min-height:60vh;">
+  <div style="flex:1.2; z-index:2; position:relative;">
+    <p class="lede">A <b>while loop</b> repeats actions while a condition remains True.</p>
+    <ul class="simple-list">
+      <li class="step"><b>Grinding Batter:</b> You dump rice inside the grinding machine. <b>Condition:</b> "Is the batter still coarse?"</li>
+      <li class="step"><b>Loop:</b> If yes, the stone keeps rotating (grinds batter).</li>
+      <li class="step"><b>Check again:</b> Every rotation, the stone grinds, then checks: "Is it smooth yet?"</li>
+      <li class="step"><b>Halt:</b> The loop terminates only when the batter is smooth (Condition becomes False).</li>
+    </ul>
+  </div>
+  <div class="cinematic-bg step" style="background-image: url('../../assets/wet_grinder.jpg');"></div>
+</div>
+`);
+
+/* ---------- 10 FOR LOOP ANALOGY ---------- */
+S(`
+<div class="eyebrow">Part 02 · Loops &amp; Iteration</div>
+<div class="title">for loop: Eating Idlis!</div>
+<div class="split">
+  <div style="flex: 1.2;">
+    <p class="lede">The <span class="mono" style="color:var(--accent);">for loop</span> is used when you know the exact iteration count beforehand.</p>
+    <ul class="simple-list" style="margin-top:1.4rem;">
+      <li class="step"><b>Eating Idlis:</b> You sit down to eat. You decide: "I am going to eat exactly 3 idlis."</li>
+      <li class="step"><b>Initialization:</b> Set count <span class="mono">i = 1</span>.</li>
+      <li class="step"><b>Condition test:</b> <span class="mono">i &lt;= 3</span>.</li>
+      <li class="step"><b>Eat &amp; Update:</b> Eat an idli, increment count <span class="mono">i++</span>. Repeat.</li>
+    </ul>
+  </div>
+  <div class="card-block step" style="flex: 0.9;">
+    <h4>C Code Syntax</h4>
+    <code class="mono" style="font-size:1.15rem; line-height:1.8; color:var(--accent);">
+    for (int i = 1; i &lt;= 3; i++)<br>
+    {<br>
+    &nbsp;&nbsp;printf("Eating Idli %d\n", i);<br>
+    }
+    </code>
+  </div>
+</div>
+`);
+
+/* ---------- INTERACTIVE LOOP TRACE SLIDE (NEW) ---------- */
+S(`
+<div class="eyebrow">Part 02 · Interactive Trace</div>
+<div class="title">for Loop Variable Tracking</div>
+<div class="split" style="margin-top:2rem; align-items:center;">
+  <div class="code" style="font-size:1.15rem; flex:1.2;">
+for (int i = 1; i &lt;= 3; i++) {
+    printf("i is %d\n", i);
+}
+  </div>
+  <div class="sim-console step">
+    <div class="sim-header">Loop Engine Console</div>
+    <div class="sim-body" id="loop-term">
+      <i>Press Space to trace loop steps...</i>
+    </div>
+    <div class="sim-memory">
+      <div class="mem-label">Loop Index (i)</div>
+      <div class="sim-mem-box" id="loop-val">?</div>
+    </div>
+  </div>
+</div>
+<div class="step"></div> <!-- step placeholder 1 -->
+<div class="step"></div> <!-- step placeholder 2 -->
+<div class="step"></div> <!-- step placeholder 3 -->
+`);
+
+/* ---------- 11 DO WHILE LOOP ---------- */
+S(`
+<div class="eyebrow">Part 02 · Loops &amp; Iteration</div>
+<div class="title">do-while loop: Ride First, Pay Later!</div>
+<div class="split">
+  <div style="flex: 1.2;">
+    <p class="lede">An exit-controlled loop. The block executes once BEFORE the condition is checked.</p>
+    <ul class="simple-list" style="margin-top:1.4rem;">
+      <li class="step"><b>Theme Park Ride:</b> The operator lets you sit and enjoy the roller coaster ride first.</li>
+      <li class="step">Once the ride is over, he checks: "Do you have a valid token to repeat?"</li>
+      <li class="step">If yes, you repeat the loop. If no, you exit. But you got the first ride anyway!</li>
+    </ul>
+  </div>
+  <div class="card-block step">
+    <h4>C Code Syntax</h4>
+    <code class="mono" style="font-size:1.15rem; line-height:1.8; color:var(--accent);">
+    int token = 0;<br>
+    do<br>
+    {<br>
+    &nbsp;&nbsp;printf("Enjoying Ride\n");<br>
+    } while (token == 1);
+    </code>
+  </div>
+</div>
+`);
+
+/* ---------- 12 SECTION DIVIDER: PART 3 ---------- */
+S(`
+<div class="section-num">Part 03</div>
+<div class="section-title">One-Dimensional<br>Arrays</div>
+<div class="section-list">
+  <div class="s-item done">Decision Making (if, if-else, switch)</div>
+  <div class="s-item done">Loop Structures (for, while, do-while)</div>
+  <div class="s-item now">One-Dimensional Arrays</div>
+  <div class="s-item">Two-Dimensional Arrays (Matrices)</div>
+  <div class="s-item">Character Arrays &amp; Strings</div>
+</div>
+`, '{');
+
+/* ---------- 13 WHAT IS AN ARRAY ---------- */
+S(`
+<div class="eyebrow">Part 03 · 1D Arrays</div>
+<div class="title">The Cinema Seat Row Analogy</div>
+<div class="split">
+  <div style="flex: 1.2;">
+    <p class="lede">An <b>Array</b> is a collection of identical data items stored in contiguous memory boxes.</p>
+    <ul class="simple-list" style="margin-top:1.4rem;">
+      <li class="step"><b>Theater Seats:</b> Row J inside the cinema hall is reserved for you. It has 5 seats side-by-side.</li>
+      <li class="step"><b>Index starting from 0:</b> The seats are numbered from <span class="mono">seats[0]</span> to <span class="mono">seats[4]</span>.</li>
+      <li class="step">All seats store the same kind of data (people). You don't park a bike in Seat seats[3]!</li>
+    </ul>
+  </div>
+  <div class="card-block step">
+    <h4>C Code Syntax</h4>
+    <code class="mono" style="font-size:1.15rem; line-height:1.8; color:var(--accent);">
+    int seats[5]; <span class="cm">// 5 integer boxes</span><br><br>
+    seats[0] = 120; <span class="cm">// Seat 0 cost</span><br>
+    seats[1] = 150; <span class="cm">// Seat 1 cost</span>
+    </code>
+  </div>
+</div>
+`);
+
+/* ---------- 14 ARRAY DECLARATION ---------- */
+S(`
+<div class="eyebrow">Part 03 · 1D Arrays</div>
+<div class="title">Array Memory Storage</div>
+<div class="split">
+  <div style="flex: 1.2;">
+    <div class="lede">When you declare <span class="mono" style="color:var(--accent);">int numbers[5];</span>, C books 5 adjacent integer boxes in memory.</div>
+    <div class="code step" style="margin-top:1.6rem; font-size:1.3rem;">
+Index:     [0]   [1]   [2]   [3]   [4]
+Value:    | 12  | 98  | 45  | 33  | 77 |
+Address:  1000  1004  1008  1012  1016
+    </div>
+    <div class="body-copy step" style="margin-top:1.8rem;">Accessing <span class="mono">numbers[4]</span> takes the same time as <span class="mono">numbers[0]</span>. We calculate memory address directly: <span class="mono" style="color:var(--accent);">BaseAddress + Index * ElementSize</span>.</div>
+  </div>
+  <div>
+    <div class="giant-stat step">[ ]</div>
+  </div>
+</div>
+`);
+
+/* ---------- INTERACTIVE ARRAY ADDRESS SLIDE (NEW) ---------- */
+S(`
+<div class="eyebrow">Part 03 · Interactive Address Math</div>
+<div class="title">Calculating Seat Addresses</div>
+<div class="lede">Let's calculate addresses for <span class="mono" style="color:var(--accent);">int J[5]</span> starting at base address <b>1000</b> (int = 4 bytes).</div>
+<div class="array-row">
+  <div class="array-cell step" id="c0"><div class="cell-val">90</div><div class="cell-idx">J[0] (Addr: 1000)</div></div>
+  <div class="array-cell step" id="c1"><div class="cell-val">80</div><div class="cell-idx">J[1] (Addr: 1004)</div></div>
+  <div class="array-cell step" id="c2"><div class="cell-val">95</div><div class="cell-idx">J[2] (Addr: 1008)</div></div>
+  <div class="array-cell step" id="c3"><div class="cell-val">70</div><div class="cell-idx">J[3] (Addr: 1012)</div></div>
+  <div class="array-cell step" id="c4"><div class="cell-val">85</div><div class="cell-idx">J[4] (Addr: 1016)</div></div>
+</div>
+<div class="body-copy step" id="addr-formula-text" style="margin-top:2.5rem; text-align:center; font-family:var(--mono); color:var(--accent);">
+  Formula: Address of J[i] = 1000 + i * 4
+</div>
+`);
+
+/* ---------- 15 WORKED EXAMPLE: 1D ARRAY ---------- */
+S(`
+<div class="eyebrow">Part 03 · 1D Arrays</div>
+<div class="title">Reading &amp; Writing Arrays</div>
+<div class="code step" style="font-size:1.15rem;">
+#include &lt;stdio.h&gt;
+
+int main()
+{
+    int marks[5];
+    int sum = 0;
+    
+    for(int i=0; i&lt;5; i++) {
+        printf("Enter student %d marks: ", i);
+        scanf("%d", &amp;marks[i]);
+        sum += marks[i];
+    }
+    printf("Total: %d\nAverage: %.2f", sum, (float)sum/5);
+    return 0;
+}
+</div>
+`);
+
+/* ---------- 16 SECTION DIVIDER: PART 4 ---------- */
+S(`
+<div class="section-num">Part 04</div>
+<div class="section-title">Two-Dimensional<br>Arrays</div>
+<div class="section-list">
+  <div class="s-item done">Decision Making (if, if-else, switch)</div>
+  <div class="s-item done">Loop Structures (for, while, do-while)</div>
+  <div class="s-item done">One-Dimensional Arrays</div>
+  <div class="s-item now">Two-Dimensional Arrays (Matrices)</div>
+  <div class="s-item">Character Arrays &amp; Strings</div>
+</div>
+`, '}');
+
+/* ---------- 17 WHAT IS A 2D ARRAY ---------- */
+S(`
+<div class="eyebrow">Part 04 · 2D Arrays</div>
+<div class="title">2D Array: Classroom Seating Grid</div>
+<div class="split">
+  <div style="flex: 1.2;">
+    <p class="lede">A <b>2D Array</b> arranges data into rows and columns, like a matrix table.</p>
+    <ul class="simple-list" style="margin-top:1.4rem;">
+      <li class="step"><b>Classroom Desks:</b> Student seats are arranged in 3 rows and 4 columns.</li>
+      <li class="step">To locate a student, you need two coordinates: **Row index** and **Column index**.</li>
+      <li class="step"><span class="mono" style="color:var(--accent);">desk[1][2]</span> points to Row 1, Column 2.</li>
+    </ul>
+  </div>
+  <div class="card-block step">
+    <h4>C Code Syntax</h4>
+    <code class="mono" style="font-size:1.15rem; line-height:1.8; color:var(--accent);">
+    int matrix[3][4]; <span class="cm">// 3 rows, 4 cols</span><br><br>
+    matrix[0][0] = 5;  <span class="cm">// Top-Left corner</span><br>
+    matrix[2][3] = 9;  <span class="cm">// Bottom-Right corner</span>
+    </code>
+  </div>
+</div>
+`);
+
+/* ---------- 18 WORKED EXAMPLE: 2D ARRAY ---------- */
+S(`
+<div class="eyebrow">Part 04 · 2D Arrays</div>
+<div class="title">Nested Loops for Matrix Multiplication</div>
+<div class="split">
+  <div class="code step" style="font-size:1.1rem; flex: 1.2;">
+#include &lt;stdio.h&gt;
+int main()
+{
+    int mat[2][2] = {{1, 2}, {3, 4}};
+    int res[2][2];
+    
+    for(int r=0; r&lt;2; r++) {
+        for(int c=0; c&lt;2; c++) {
+            res[r][c] = mat[r][c] * 2;
+            printf("%d ", res[r][c]);
+        }
+        printf("\n");
+    }
+    return 0;
+}
+  </div>
+  <div>
+    <div class="giant-stat step">[ ][ ]</div>
+  </div>
+</div>
+`);
+
+/* ---------- 19 SECTION DIVIDER: PART 5 ---------- */
+S(`
+<div class="section-num">Part 05</div>
+<div class="section-title">Character Arrays<br>&amp; Strings</div>
+<div class="section-list">
+  <div class="s-item done">Decision Making (if, if-else, switch)</div>
+  <div class="s-item done">Loop Structures (for, while, do-while)</div>
+  <div class="s-item done">One-Dimensional Arrays</div>
+  <div class="s-item done">Two-Dimensional Arrays (Matrices)</div>
+  <div class="s-item now">Character Arrays &amp; Strings</div>
+</div>
+`, '{');
+
+/* ---------- 20 WHAT IS A STRING & ANALOGY (CINEMATIC) ---------- */
+S(`
+<div class="eyebrow">Part 05 · Strings</div>
+<div class="title">The Flower Garland Analogy (Strings)</div>
+<div class="split" style="position:relative; min-height:60vh;">
+  <div style="flex:1.2; z-index:2; position:relative;">
+    <p class="lede">A <b>String</b> is a sequence of characters terminated by a null character <span class="mono">\0</span>.</p>
+    <ul class="simple-list">
+      <li class="step"><b>The Garland:</b> String is like tying flowers together. Each flower represents a character ('C', 'o', 'd', 'e').</li>
+      <li class="step"><b>The Null Terminator:</b> How do you stop the flowers from falling off? You tie a <b>knot at the end</b>.</li>
+      <li class="step">In C, the knot is the **Null Character** <span class="mono" style="color:var(--accent);">\0</span> (ASCII value 0) marking the string's end.</li>
+    </ul>
+  </div>
+  <div class="cinematic-bg step" style="background-image: url('../../assets/flower_garland.jpg');"></div>
+</div>
+`);
+
+/* ---------- INTERACTIVE NULL TERMINATOR SLIDE (NEW) ---------- */
+S(`
+<div class="eyebrow">Part 05 · Interactive String Visualizer</div>
+<div class="title">Null Terminator (\0) String End Check</div>
+<div class="lede">See how C reads <span class="mono" style="color:var(--accent);">char msg[] = "HI";</span> in memory, character by character.</div>
+<div class="array-row">
+  <div class="array-cell step" id="sc0"><div class="cell-val">'H'</div><div class="cell-idx">msg[0]</div></div>
+  <div class="array-cell step" id="sc1"><div class="cell-val">'I'</div><div class="cell-idx">msg[1]</div></div>
+  <div class="array-cell step" id="sc2" style="border-color:var(--rose); background:rgba(244,63,94,0.08);"><div class="cell-val">'\0'</div><div class="cell-idx" style="color:var(--rose);">msg[2] (Null Knot)</div></div>
+</div>
+<div class="body-copy step" id="string-check-text" style="margin-top:2.5rem; text-align:center; font-family:var(--mono); color:var(--accent);">
+  Printf loops printing chars until it reads '\0', and then halts!
+</div>
+`);
+
+/* ---------- 21 STRING FUNCTIONS ---------- */
+S(`
+<div class="eyebrow">Part 05 · Strings</div>
+<div class="title">Standard string.h Functions</div>
+<div class="kicker">Standard library string helpers. Include <span class="mono">&lt;string.h&gt;</span> before calling them.</div>
+<table class="ptable">
+  <tr><th>Function</th><th>Operation</th><th>C Example</th><th>Result</th></tr>
+  <tr class="step"><td>strlen(s)</td><td>Calculates length (excluding \0)</td><td>strlen("Crescent")</td><td>8</td></tr>
+  <tr class="step"><td>strcpy(d, s)</td><td>Copies string s to d</td><td>strcpy(msg, "Hi")</td><td>msg becomes "Hi"</td></tr>
+  <tr class="step"><td>strcat(d, s)</td><td>Concatenates (adds) s to d</td><td>strcat("C ", "Prog")</td><td>"C Prog"</td></tr>
+  <tr class="step"><td>strcmp(s1, s2)</td><td>Compares string characters</td><td>strcmp("A", "B")</td><td>Negative value (A &lt; B)</td></tr>
+</table>
+`);
+
+/* ---------- 22 RECAP ---------- */
+S(`
+<div class="eyebrow">Recap</div>
+<div class="title">Key Takeaways Today</div>
+<div class="fact-grid cols-3">
+  <div class="fact step"><div class="num">01. DECISIONS</div><div class="txt">if-else behaves like a police checkpoint. switch-case behaves like elevator buttons jumping directly to case labels.</div></div>
+  <div class="fact step"><div class="num">02. ITERATION</div><div class="txt">while loop is a wet grinder repeating while conditions hold. for loop counts exactly like eating a fixed count of idlis.</div></div>
+  <div class="fact step"><div class="num">03. STORAGE</div><div class="txt">Arrays are contiguous rows of seats in a cinema hall. Strings are flower garlands terminated by a null knot (\0).</div></div>
+</div>
+`);
+
+/* ---------- 23 CLOSING ---------- */
+S(`
+<div class="eyebrow">Crescent Institute of Science &amp; Technology</div>
+<div class="title" style="font-size:clamp(3.5rem,8vw,7.5rem);">Questions?</div>
+<div class="lede" style="margin-top:2rem;">Start writing loop and array code tonight!</div>
+<div class="deck-meta" style="position:static; margin-top:2.5rem; color:var(--low);">DEPARTMENT OF COMPUTER SCIENCE &amp; ENGINEERING</div>
+`);
+
+/* ================= RENDER + CONTROLLER ================= */
+const deck = document.getElementById('deck');
+slidesData.forEach((s,i)=>{
+  const el = document.createElement('section');
+  el.className = 'slide';
+  el.setAttribute('data-brace', s.brace);
+  el.innerHTML = s.html;
+  deck.appendChild(el);
+});
+const slideEls = Array.from(document.querySelectorAll('.slide'));
+document.getElementById('tot').textContent = String(slideEls.length).padStart(2,'0');
+
+let idx = 0;
+function render(){
+  slideEls.forEach((el,i)=> {
+    el.classList.toggle('active', i===idx);
+  });
+  document.getElementById('cur').textContent = String(idx+1).padStart(2,'0');
+  document.getElementById('progress').style.width = ((idx+1)/slideEls.length*100)+'%';
+  
+  const activeSlide = slideEls[idx];
+  const revealedStepsCount = activeSlide.querySelectorAll('.step.revealed').length;
+  
+  // Custom Loop Simulator Animation Hooks
+  const loopTerm = document.getElementById('loop-term');
+  const loopVal = document.getElementById('loop-val');
+  if(loopTerm) {
+    if(revealedStepsCount === 1) {
+      loopTerm.innerHTML = "<span style='color:var(--accent);'>i = 1:</span> i &lt;= 3 (True) → Print 'i is 1'";
+      loopVal.textContent = "1";
+      loopVal.classList.add('active');
+    } else if(revealedStepsCount === 2) {
+      loopTerm.innerHTML = "<span style='color:var(--accent);'>i = 1:</span> i &lt;= 3 (True) → Print 'i is 1'<br><span style='color:var(--accent);'>i = 2:</span> i &lt;= 3 (True) → Print 'i is 2'";
+      loopVal.textContent = "2";
+      loopVal.classList.add('active');
+    } else if(revealedStepsCount === 3) {
+      loopTerm.innerHTML = "<span style='color:var(--accent);'>i = 1:</span> i &lt;= 3 (True) → Print 'i is 1'<br><span style='color:var(--accent);'>i = 2:</span> i &lt;= 3 (True) → Print 'i is 2'<br><span style='color:var(--accent);'>i = 3:</span> i &lt;= 3 (True) → Print 'i is 3'<br><span style='color:var(--rose);'>i = 4:</span> i &lt;= 3 (False) → Loop Terminates!";
+      loopVal.textContent = "4";
+      loopVal.classList.remove('active');
+    } else {
+      loopTerm.innerHTML = "<i>Press Space to trace loop steps...</i>";
+      loopVal.textContent = "?";
+      loopVal.classList.remove('active');
+    }
+  }
+  
+  // Custom Array Cell Highlight Hooks
+  if (activeSlide.querySelector('.array-cell')) {
+    const cells = activeSlide.querySelectorAll('.array-cell');
+    cells.forEach((cell, i) => {
+      cell.classList.toggle('active-cell', i === (revealedStepsCount - 1));
+    });
+    
+    // Update Array formula text
+    const formulaText = document.getElementById('addr-formula-text');
+    if (formulaText && revealedStepsCount > 0 && revealedStepsCount <= 5) {
+      const activeIdx = revealedStepsCount - 1;
+      formulaText.innerHTML = `Address of J[${activeIdx}] = 1000 + ${activeIdx} * 4 = <span style="color:var(--green); font-weight:700;">${1000 + activeIdx * 4}</span>`;
+    } else if (formulaText && revealedStepsCount === 6) {
+      formulaText.innerHTML = `Formula: Address of J[i] = BaseAddress + i * sizeof(int)`;
+    } else if (formulaText) {
+      formulaText.innerHTML = `Formula: Address of J[i] = 1000 + i * 4`;
+    }
+    
+    // String visualizer slide hooks
+    const stringCheckText = document.getElementById('string-check-text');
+    if (stringCheckText) {
+      if (revealedStepsCount === 1) {
+        stringCheckText.innerHTML = "Read index 0: 'H' != '\\0' → print 'H'";
+      } else if (revealedStepsCount === 2) {
+        stringCheckText.innerHTML = "Read index 0: 'H' != '\\0' → print 'H'<br>Read index 1: 'I' != '\\0' → print 'I'";
+      } else if (revealedStepsCount === 3) {
+        stringCheckText.innerHTML = "Read index 0: 'H' != '\\0' → print 'H'<br>Read index 1: 'I' != '\\0' → print 'I'<br><span style='color:var(--rose);'>Read index 2: '\\0' == '\\0' → HALT!</span>";
+      } else if (revealedStepsCount === 4) {
+        stringCheckText.innerHTML = "Result printed on terminal: <span style='color:var(--green); font-weight:700; font-size:1.4rem;'>HI</span>";
+      } else {
+        stringCheckText.innerHTML = "C iterates printing chars until it reads '\\0', and then halts!";
+      }
+    }
+  }
+}
+
+function next() {
+  const currentSlide = slideEls[idx];
+  const nextStep = currentSlide.querySelector('.step:not(.revealed)');
+  if (nextStep) {
+    nextStep.classList.add('revealed');
+    render();
+  } else {
+    if (idx < slideEls.length - 1) {
+      idx++;
+      const newSlide = slideEls[idx];
+      newSlide.querySelectorAll('.step.revealed').forEach(s => s.classList.remove('revealed'));
+      render();
+    }
+  }
+}
+
+function prev() {
+  const currentSlide = slideEls[idx];
+  const revealedSteps = currentSlide.querySelectorAll('.step.revealed');
+  if (revealedSteps.length > 0) {
+    revealedSteps[revealedSteps.length - 1].classList.remove('revealed');
+    render();
+  } else {
+    if (idx > 0) {
+      idx--;
+      const newSlide = slideEls[idx];
+      newSlide.querySelectorAll('.step').forEach(s => s.classList.add('revealed'));
+      render();
+    }
+  }
+}
+
+function go(delta) {
+  if (delta > 0) next();
+  else prev();
+}
+
+document.addEventListener('keydown', e=>{
+  if(['ArrowRight','ArrowDown','PageDown',' '].includes(e.key)){ e.preventDefault(); next(); }
+  else if(['ArrowLeft','ArrowUp','PageUp'].includes(e.key)){ e.preventDefault(); prev(); }
+  else if(e.key==='Home'){ 
+    idx=0; 
+    slideEls.forEach(el => el.querySelectorAll('.step.revealed').forEach(s => s.classList.remove('revealed')));
+    render(); 
+  }
+  else if(e.key==='End'){ 
+    idx=slideEls.length-1; 
+    slideEls.forEach(el => el.querySelectorAll('.step').forEach(s => s.classList.add('revealed')));
+    render(); 
+  }
+  else if(e.key.toLowerCase()==='f'){
+    if(!document.fullscreenElement) document.documentElement.requestFullscreen();
+    else document.exitFullscreen();
+  }
+});
+
+let touchX=null;
+document.addEventListener('touchstart', e=> touchX = e.touches[0].clientX, { passive: true });
+document.addEventListener('touchend', e=>{
+  if(touchX===null) return;
+  const dx = e.changedTouches[0].clientX - touchX;
+  if(Math.abs(dx)>50) go(dx<0?1:-1);
+  touchX=null;
+}, { passive: true });
+
+render();
+</script>
+</body>
+</html>

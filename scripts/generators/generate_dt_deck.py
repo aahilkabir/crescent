@@ -1,0 +1,1264 @@
+# -*- coding: utf-8 -*-
+import os, sys
+# Dynamic PROJECT_ROOT resolution
+SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
+PROJECT_ROOT = SCRIPT_DIR
+while os.path.basename(PROJECT_ROOT) in ["generators", "modifiers", "scripts", "utilities", "parts"]:
+    PROJECT_ROOT = os.path.dirname(PROJECT_ROOT)
+
+
+html_content = """<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>GEE 1102 — Design Thinking (CAT 1 Scope Masterclass)</title>
+<script src="https://unpkg.com/lucide@latest"></script>
+<style>
+:root{
+  --bg:#07080b;
+  --bg2:#0f1117;
+  --ink:#f8fafc;
+  --dim:#94a3b8;
+  --dimmer:#64748b;
+  --accent:#f59e0b;
+  --accent-soft:rgba(245, 158, 11, 0.15);
+  --blue:#38b6ff;
+  --blue-soft:rgba(56, 182, 255, 0.15);
+  --line:rgba(255,255,255,.10);
+  --card:rgba(255,255,255,.04);
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html,body{height:100%;background:var(--bg);color:var(--ink);
+  font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display","SF Pro Text","Inter","Helvetica Neue",sans-serif;
+  -webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;overflow:hidden;}
+.deck{position:fixed;inset:0;}
+.slide{position:absolute;inset:0;display:flex;flex-direction:column;justify-content:center;
+  padding:3.8vh 5.5vw;opacity:0;transform:scale(1.02);
+  transition:opacity .4s cubic-bezier(.22,.61,.36,1),transform .4s cubic-bezier(.22,.61,.36,1);pointer-events:none;}
+.slide.active{opacity:1;transform:scale(1);pointer-events:auto;}
+.slide.prev{transform:scale(.98);}
+.slide.center{align-items:center;text-align:center;}
+.slide.center .lead{margin-left:auto;margin-right:auto;}
+
+/* Step-by-Step Reveal Animation */
+.step {
+  opacity: 0;
+  transform: translateY(16px);
+  transition: opacity 0.35s cubic-bezier(.22,.61,.36,1), transform 0.35s cubic-bezier(.22,.61,.36,1);
+  pointer-events: none;
+}
+.step.revealed {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+
+/* Subtle Ambient Glow Behind Headers */
+.glow-bg {
+  position: absolute;
+  width: 750px;
+  height: 750px;
+  background: radial-gradient(circle, rgba(245, 158, 11, 0.08) 0%, rgba(56, 182, 255, 0.05) 50%, transparent 70%);
+  top: 25%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Unified Clean Badge System */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.4rem 1.1rem;
+  border-radius: 100px;
+  font-size: clamp(0.85rem, 1.2vw, 1.1rem);
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  margin-bottom: 0.9rem;
+  width: fit-content;
+  background: rgba(255, 255, 255, 0.06);
+  color: var(--ink);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+}
+.badge.accent { background: var(--accent-soft); color: var(--accent); border-color: rgba(245, 158, 11, 0.35); }
+.badge.blue { background: var(--blue-soft); color: var(--blue); border-color: rgba(56, 182, 255, 0.35); }
+
+/* AUDITORIUM-LEVEL HERO TYPOGRAPHY */
+h1{font-size:clamp(3.0rem, 6.8vw, 5.5rem);font-weight:900;letter-spacing:-.03em;line-height:1.06;color:#ffffff;}
+h2{font-size:clamp(2.2rem, 4.6vw, 3.6rem);font-weight:800;letter-spacing:-.025em;line-height:1.12;color:#ffffff;}
+h3{font-size:clamp(1.5rem, 2.8vw, 2.2rem);font-weight:700;letter-spacing:-.02em;line-height:1.2;color:#ffffff;}
+
+.lead{font-size:clamp(1.2rem, 1.9vw, 1.6rem);font-weight:400;color:#cbd5e1;line-height:1.5;max-width:76ch;}
+
+.grad{background:linear-gradient(120deg,#ffffff,#fef3c7 60%,var(--accent));-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;}
+.grad-cool{background:linear-gradient(120deg,#ffffff,#e0f2fe 60%,var(--blue));-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;}
+.mono{font-family:"SF Mono",ui-monospace,Menlo,monospace;font-size:0.92em;color:var(--accent);font-weight:700;}
+
+/* SOCRATIC "THINK" PROMPT & OPTIONS CARDS */
+.think-box {
+  background: rgba(255, 255, 255, 0.04);
+  border-left: 5px solid var(--accent);
+  border-radius: 0 16px 16px 0;
+  padding: 1.4rem 1.8rem;
+  margin-top: 1.0rem;
+}
+.think-box.cool { border-left-color: var(--blue); }
+
+.think-scenario {
+  font-size: clamp(1.4rem, 2.8vw, 2.2rem);
+  font-weight: 700;
+  color: #ffffff;
+  margin-bottom: 0.5rem;
+}
+.think-question {
+  font-size: clamp(1.6rem, 3.2vw, 2.5rem);
+  font-weight: 800;
+  color: #fef3c7;
+  margin-top: 0.4rem;
+}
+
+.option-list {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.9rem;
+  margin-top: 1.1rem;
+  width: 100%;
+}
+.option-item {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 14px;
+  padding: 1.0rem 1.4rem;
+  font-size: clamp(1.15rem, 1.8vw, 1.5rem);
+  font-weight: 600;
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+}
+
+/* ELEGANT UNIFIED HERO REALIZATION CARDS */
+.hero-quote-card {
+  background: rgba(245, 158, 11, 0.06);
+  border: 2px solid rgba(245, 158, 11, 0.4);
+  border-radius: 20px;
+  padding: 1.6rem 2.2rem;
+  margin-top: 1.2rem;
+  text-align: center;
+}
+.hero-quote-card.cool { border-color: rgba(56, 182, 255, 0.4); background: rgba(56, 182, 255, 0.06); }
+
+.hero-quote-title {
+  font-size: clamp(0.85rem, 1.2vw, 1.1rem);
+  font-weight: 800;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 0.5rem;
+}
+.hero-quote-card.cool .hero-quote-title { color: var(--blue); }
+
+.hero-quote-text {
+  font-size: clamp(1.45rem, 3.0vw, 2.4rem);
+  font-weight: 800;
+  line-height: 1.35;
+  color: #ffffff;
+}
+
+/* SUBORDINATE REGIONAL TANGLISH TIP CALLOUT */
+.regional-tip {
+  background: rgba(255, 255, 255, 0.03);
+  border-left: 3px solid rgba(255, 255, 255, 0.2);
+  border-radius: 0 12px 12px 0;
+  padding: 0.6rem 1.0rem;
+  margin-top: 0.8rem;
+}
+.regional-tip .rt-lbl { font-size: 0.7rem; letter-spacing: 0.12em; text-transform: uppercase; font-weight: 700; color: var(--dim); margin-bottom: 0.2rem; }
+.regional-tip .rt-txt { font-size: clamp(0.9rem, 1.2vw, 1.15rem); font-style: italic; color: #cbd5e1; }
+
+.split{display:grid;grid-template-columns:1fr 1fr;gap:clamp(1.5rem, 3.0vw, 2.4rem);align-items:center;width:100%;}
+
+.build{
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 18px;
+  padding: 1.5rem 1.8rem;
+  width: 100%;
+}
+.build .bl{font-size:clamp(0.95rem, 1.4vw, 1.2rem);letter-spacing:.15em;text-transform:uppercase;color:var(--accent);font-weight:800;margin-bottom:0.7rem;display:flex;align-items:center;gap:.5rem;}
+.build ul{list-style:none;display:flex;flex-direction:column;gap:.75rem;}
+.build li{font-size:clamp(1.1rem, 1.6vw, 1.4rem);line-height:1.48;padding-left:1.6rem;position:relative;color:#ffffff;font-weight:400;}
+.build li::before{content:"→";position:absolute;left:0;color:var(--accent);font-weight:800;}
+
+.story-card {
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 18px;
+  padding: 1.4rem 1.8rem;
+}
+.story-card .sc-title { font-size: 1.1rem; font-weight: 800; color: var(--accent); margin-bottom: 0.4rem; display:flex; align-items:center; gap:0.5rem; }
+.story-card .sc-text { font-size: 1.2rem; line-height: 1.5; color: #e2e8f0; }
+
+/* Visual Media Frame */
+.img-frame {
+  border-radius: 16px;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  box-shadow: 0 20px 40px rgba(0,0,0,0.6);
+  width: 100%;
+}
+.img-frame img { width: 100%; height: auto; display: block; object-fit: cover; }
+
+/* REDESIGNED LIGHT LEAN FOOTER (MINIMALIST & CLEAN) */
+.chrome {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 48px;
+  background: rgba(7, 8, 11, 0.65);
+  backdrop-filter: blur(12px);
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 2.0rem;
+  z-index: 100;
+  font-size: 0.86rem;
+  color: var(--dim);
+}
+.chrome .brand { display: flex; align-items: center; gap: 0.6rem; font-weight: 500; color: #cbd5e1; }
+.chrome .brand b { color: #ffffff; font-weight: 700; }
+.chrome .right { display: flex; align-items: center; gap: 1.5rem; }
+.notesbtn {
+  background: transparent;
+  color: #94a3b8;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  padding: 0.35rem 0.9rem;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 0.8rem;
+  transition: all 0.2s ease;
+}
+.notesbtn:hover { background: rgba(255, 255, 255, 0.08); color: #fff; border-color: rgba(255, 255, 255, 0.25); }
+.counter { font-family: "SF Mono", monospace; font-weight: 700; color: var(--accent); font-size:1.0rem; }
+
+/* CLEAN SINGLE ACCENT PROGRESS LINE */
+.progress-bar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 3px;
+  background: var(--accent);
+  z-index: 101;
+  transition: width 0.3s ease;
+}
+
+.notes {
+  position: fixed;
+  bottom: 48px;
+  right: 2.0rem;
+  width: 460px;
+  max-height: 380px;
+  background: rgba(15, 17, 23, 0.96);
+  backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 16px 16px 0 0;
+  padding: 1.2rem;
+  z-index: 99;
+  display: none;
+  flex-direction: column;
+  box-shadow: 0 -10px 40px rgba(0,0,0,0.7);
+}
+.notes.open { display: flex; }
+.notes-head { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 0.6rem; margin-bottom: 0.8rem; }
+.notes-head .lbl { font-size: 0.8rem; letter-spacing: 0.12em; text-transform: uppercase; font-weight: 800; color: var(--accent); }
+.notes-head .x { cursor: pointer; color: var(--dim); font-size: 1.2rem; font-weight: 700; }
+.notes-body { font-size: 0.9rem; line-height: 1.55; color: #cbd5e1; overflow-y: auto; }
+</style>
+</head>
+<body>
+
+<div class="progress-bar" id="progress"></div>
+
+<div class="deck" id="deck">
+
+<!-- SLIDE 1: TITLE SLIDE -->
+<section class="slide center active">
+  <div class="glow-bg"></div>
+  <div class="badge accent"><i data-lucide="graduation-cap"></i> GEE 1102 · DESIGN THINKING · CAT 1 EXAM PREP</div>
+  <h1>Design Thinking <span class="grad">Part 1</span></h1>
+  <p class="lead" style="margin-top:0.8rem;">What I Know About Design Thinking for This Course (CAT 1 Scope)</p>
+  <div class="step" style="margin-top:1.2rem; background:rgba(255,255,255,0.04); border:1px solid rgba(255,255,255,0.12); padding:0.8rem 1.5rem; border-radius:14px; display:inline-block;">
+    <p style="font-weight:700; color:var(--accent); font-size:1.1rem;">Module I: Introduction &amp; Module II: Problem Definition</p>
+    <p style="font-size:0.9rem; color:var(--dim); margin-top:0.2rem;">Classes 1 – 12 Sequential Coverage per Official Lesson Plan &amp; Question Bank</p>
+  </div>
+  <div class="think-box cool step" style="max-width:780px; margin-top:1.2rem; text-align:left;">
+    <div style="font-size:0.8rem; letter-spacing:0.15em; text-transform:uppercase; font-weight:800; color:var(--blue);"><i data-lucide="user-check"></i> Course Instructor Attribution</div>
+    <div style="font-size:1.15rem; font-weight:600; color:#fff; margin-top:0.3rem;"><b>Kabir</b> · Professor of Practice, Department of Computer Science<br>BS Abdur Rahman Crescent Institute of Science and Technology</div>
+  </div>
+</section>
+
+<!-- SLIDE 2: CAT 1 ROADMAP -->
+<section class="slide">
+  <div class="glow-bg"></div>
+  <div class="badge blue"><i data-lucide="target"></i> CAT 1 ASSESSMENT ROADMAP</div>
+  <h2>CAT 1 Weightage &amp; <span class="grad-cool">Question Bank Scope</span></h2>
+  <div class="build step" style="margin-top:1.2rem;">
+    <div class="bl"><i data-lucide="file-text"></i> Assessment Structure</div>
+    <ul>
+      <li><b>60% Written Test</b>: Tests definitions, 5 stages, Empathy Map, 5-Why, &amp; POV formulation (34+ Question Bank questions).</li>
+      <li><b>40% Project Assignment 1</b>: Practical submission based on Crescent campus opportunity identification.</li>
+      <li><b>CO1 &amp; CO2 Alignment</b>: Module I (CO1) + Module II (CO2).</li>
+    </ul>
+  </div>
+</section>
+
+<!-- MODULE 1: WHAT IS DESIGN? -->
+<!-- SLIDE 3: THINK 1 (WITH IMAGE) -->
+<section class="slide">
+  <div class="glow-bg"></div>
+  <div class="badge accent"><i data-lucide="help-circle"></i> MODULE 1 · WHAT IS DESIGN?</div>
+  <h2>Think 🤔</h2>
+  <div class="split" style="margin-top:1.0rem; grid-template-columns: 1.1fr 0.9fr; align-items:center;">
+    <div>
+      <div class="think-box step">
+        <div class="think-scenario">"I am designing a chair."</div>
+        <div class="think-question step">Will everyone use the exact same chair?</div>
+      </div>
+      <div class="option-list step" style="grid-template-columns:1fr 1fr; gap:0.8rem; margin-top:1.0rem;">
+        <div class="option-item"><i data-lucide="user"></i> Grandma?</div>
+        <div class="option-item"><i data-lucide="smile"></i> Baby?</div>
+        <div class="option-item"><i data-lucide="briefcase"></i> Office Employee?</div>
+        <div class="option-item"><i data-lucide="gamepad-2"></i> Gamer?</div>
+      </div>
+    </div>
+    <div class="img-frame step">
+      <img src="../../assets/dt_chair.png" alt="Chair Design Comparison" />
+    </div>
+  </div>
+</section>
+
+<!-- SLIDE 4: UNDERSTAND 1 -->
+<section class="slide">
+  <div class="glow-bg"></div>
+  <div class="badge"><i data-lucide="lightbulb"></i> MODULE 1 · REALIZATION</div>
+  <h2>Understand 💡</h2>
+  <div class="build step" style="margin-top:1.0rem;">
+    <div class="bl"><i data-lucide="check"></i> Design Is Not Just Creating Objects</div>
+    <ul>
+      <li>Designing a chair isn't just crafting an object.</li>
+      <li>Design is creating the <b>Right Solution</b> for the <b>Right Person</b> facing the <b>Right Problem</b>!</li>
+    </ul>
+  </div>
+  <div class="hero-quote-card step">
+    <div class="hero-quote-title">CORE DESIGN PRINCIPLE</div>
+    <div class="hero-quote-text">"Design is not just making things look pretty...<br>It is understanding WHO will use it and WHY."</div>
+  </div>
+  <div class="regional-tip step">
+    <div class="rt-lbl">Regional Context Callout (Tamil)</div>
+    <div class="rt-txt">"Design-na azhaga irukkaradhu illa... Yaar use pannuvanga-nu yosichu create pannradhu."</div>
+  </div>
+</section>
+
+<!-- MODULE 2: ENGINEERING DESIGN -->
+<!-- SLIDE 5: THINK 2 (WITH IMAGE) -->
+<section class="slide">
+  <div class="glow-bg"></div>
+  <div class="badge accent"><i data-lucide="cpu"></i> MODULE 2 · ENGINEERING DESIGN</div>
+  <h2>Think 🤔</h2>
+  <div class="split" style="margin-top:1.0rem; grid-template-columns: 1.1fr 0.9fr; align-items:center;">
+    <div class="think-box step">
+      <div class="think-scenario">Suppose you build a bridge.<br>Strong. Beautiful. Affordable.</div>
+      <div class="think-scenario step" style="color:#f87171; margin-top:0.5rem;">But... Nobody can reach it because there is no road!</div>
+      <div class="think-question step">Is the bridge useful?</div>
+    </div>
+    <div class="img-frame step">
+      <img src="../../assets/dt_bridge.png" alt="Bridge with No Access Road" />
+    </div>
+  </div>
+</section>
+
+<!-- SLIDE 6: UNDERSTAND 2 -->
+<section class="slide">
+  <div class="glow-bg"></div>
+  <div class="badge"><i data-lucide="lightbulb"></i> MODULE 2 · REALIZATION</div>
+  <h2>Understand 💡</h2>
+  <div class="build step" style="margin-top:1.0rem;">
+    <div class="bl"><i data-lucide="award"></i> Engineering Success Criteria</div>
+    <ul>
+      <li>Engineering success is not just finishing construction.</li>
+      <li><b>Can people actually use it to improve their lives?</b> That is true success!</li>
+    </ul>
+  </div>
+  <div class="hero-quote-card cool step">
+    <div class="hero-quote-title">CORE ENGINEERING PRINCIPLE</div>
+    <div class="hero-quote-text">"Engineering is not just building things...<br>It is making human lives better and easier."</div>
+  </div>
+  <div class="regional-tip step">
+    <div class="rt-lbl">Regional Context Callout (Tamil)</div>
+    <div class="rt-txt">"Engineering-na build panradhu illa... People's life easy aakradhu."</div>
+  </div>
+</section>
+
+<!-- CASE STUDY 1: HUMANE AI PIN (RECENT TECH FAILURE) -->
+<section class="slide">
+  <div class="glow-bg"></div>
+  <div class="badge"><i data-lucide="alert-octagon"></i> INDUSTRY CASE STUDY 1 · USABILITY FAILURE</div>
+  <h2>Humane AI Pin: <span class="grad">Why a $699 Gadget Failed</span></h2>
+  <div class="split" style="margin-top:1.0rem; grid-template-columns: 1.1fr 0.9fr; align-items:center;">
+    <div class="build step">
+      <div class="bl"><i data-lucide="x"></i> Engineering Vision vs Real-World Usability</div>
+      <ul>
+        <li><b>Engineering Vision</b>: Screenless $699 pin aiming to replace smartphones using voice &amp; laser palm projection.</li>
+        <li><b>Why It Failed</b>: Laser display was unreadable in sunlight; high voice latency; severe overheating.</li>
+        <li><b>Design Thinking Flaw</b>: Misread user behavior — users didn't want to replace their smartphones!</li>
+      </ul>
+    </div>
+    <div class="story-card step">
+      <div class="sc-title"><i data-lucide="lightbulb"></i> Key Takeaway</div>
+      <div class="sc-text">A futuristic product with impressive engineering will fail if it ignores real human constraints and usability.</div>
+    </div>
+  </div>
+</section>
+
+<!-- MODULE 3: DESIGN THINKING -->
+<!-- SLIDE 8: THINK 3 -->
+<section class="slide">
+  <div class="glow-bg"></div>
+  <div class="badge accent"><i data-lucide="compass"></i> MODULE 3 · DESIGN THINKING</div>
+  <h2>Think 🤔</h2>
+  <div class="think-box step">
+    <div class="think-scenario">A friend says: "I have a severe headache."</div>
+    <div class="think-question step">Do you hand them medicine immediately?<br>Or do you first ask "What happened?"</div>
+  </div>
+</section>
+
+<!-- SLIDE 9: UNDERSTAND 3 -->
+<section class="slide">
+  <div class="glow-bg"></div>
+  <div class="badge"><i data-lucide="lightbulb"></i> MODULE 3 · REALIZATION</div>
+  <h2>Understand 💡</h2>
+  <div class="build step" style="margin-top:1.0rem;">
+    <div class="bl"><i data-lucide="search"></i> Problem Before Solution</div>
+    <ul>
+      <li>Before jumping to a solution... <b>You MUST understand the root problem!</b></li>
+      <li>That is the core essence of Design Thinking.</li>
+    </ul>
+  </div>
+  <div class="hero-quote-card step">
+    <div class="hero-quote-title">CORE DESIGN THINKING RULE</div>
+    <div class="hero-quote-text">"Design Thinking means understanding the problem...<br>BEFORE jumping to the solution."</div>
+  </div>
+</section>
+
+<!-- CASE STUDY 2: AIRBNB 2009 TURNAROUND -->
+<section class="slide">
+  <div class="glow-bg"></div>
+  <div class="badge accent"><i data-lucide="home"></i> INDUSTRY CASE STUDY 2 · EMBRACING EMPATHY</div>
+  <h2>Airbnb 2009: <span class="grad">The Photography Turnaround</span></h2>
+  <div class="split" style="margin-top:1.0rem; grid-template-columns: 1.1fr 0.9fr; align-items:center;">
+    <div class="build step">
+      <div class="bl"><i data-lucide="trending-up"></i> Joe Gebbia &amp; Brian Chesky Case Study</div>
+      <ul>
+        <li><b>Friction Point</b>: In 2009, Airbnb revenue flatlined at $200/week. Listings were getting zero bookings.</li>
+        <li><b>Empathy Discovery</b>: Founders flew to NYC and looked at site photos. Photos were blurry, dark cell phone shots!</li>
+        <li><b>Non-Scalable Solution</b>: They bought a camera, visited NYC hosts, and took professional photos manually.</li>
+        <li><b>Result</b>: Weekly revenue doubled to $400 in 7 days, launching Airbnb to a $100B valuation!</li>
+      </ul>
+    </div>
+    <div class="story-card step">
+      <div class="sc-title"><i data-lucide="sparkles"></i> Design Lesson</div>
+      <div class="sc-text">"Do things that don't scale first!" Direct human empathy reveals insights data analytics can never show.</div>
+    </div>
+  </div>
+</section>
+
+<!-- MODULE 4: CUSTOMER-CENTRIC DESIGN -->
+<!-- SLIDE 11: THINK 4 -->
+<section class="slide">
+  <div class="glow-bg"></div>
+  <div class="badge accent"><i data-lucide="user-x"></i> MODULE 4 · CUSTOMER-CENTRIC DESIGN</div>
+  <h2>Think 🤔</h2>
+  <div class="think-box step">
+    <div class="think-scenario">When buying a gift for a friend...</div>
+    <div class="think-question step">Do you buy what YOU like?<br>Or what YOUR FRIEND likes?</div>
+  </div>
+</section>
+
+<!-- SLIDE 12: UNDERSTAND 4 -->
+<section class="slide">
+  <div class="glow-bg"></div>
+  <div class="badge"><i data-lucide="lightbulb"></i> MODULE 4 · REALIZATION</div>
+  <h2>Understand 💡</h2>
+  <div class="build step" style="margin-top:1.0rem;">
+    <div class="bl"><i data-lucide="user-check"></i> Who Is The Hero?</div>
+    <ul>
+      <li>Customer-centric design means <b>"I like this"</b> does not matter.</li>
+      <li><b>"Customer likes this"</b> is what truly matters!</li>
+    </ul>
+  </div>
+  <div class="hero-quote-card step">
+    <div class="hero-quote-title">GOLDEN MINDSET RULE</div>
+    <div class="hero-quote-text">"You are not the hero...<br>The Customer is the Hero!"</div>
+  </div>
+</section>
+
+<!-- MODULE 5: USER PERSONA -->
+<!-- SLIDE 13: THINK 5 -->
+<section class="slide">
+  <div class="glow-bg"></div>
+  <div class="badge cool"><i data-lucide="user"></i> MODULE 5 · USER PERSONA</div>
+  <h2>Think 🤔</h2>
+  <div class="think-box cool step">
+    <div class="think-scenario">Designing a motorcycle for a college student:</div>
+    <div class="think-question step">Age? Budget? Daily travel distance? Family? Height? Weight?</div>
+    <p class="lead step" style="margin-top:0.5rem; color:#fff; font-weight:600;">Can you design effectively without knowing these details?</p>
+  </div>
+</section>
+
+<!-- SLIDE 14: UNDERSTAND 5 -->
+<section class="slide">
+  <div class="glow-bg"></div>
+  <div class="badge"><i data-lucide="lightbulb"></i> MODULE 5 · REALIZATION</div>
+  <h2>Understand 💡</h2>
+  <div class="build step" style="margin-top:1.0rem;">
+    <div class="bl"><i data-lucide="contact"></i> Archetype Synthesis</div>
+    <ul>
+      <li>You cannot build a solution for an unknown, generic user.</li>
+      <li>First, synthesize a clear archetype. That is a <b>Persona</b>!</li>
+    </ul>
+  </div>
+  <div class="hero-quote-card cool step">
+    <div class="hero-quote-title">PERSONA DEFINITION</div>
+    <div class="hero-quote-text">"A Persona is the User's Data-Driven Biography."</div>
+  </div>
+</section>
+
+<!-- CASE STUDY 3: NIKE FLYEASE HANDS-FREE SHOES -->
+<section class="slide">
+  <div class="glow-bg"></div>
+  <div class="badge"><i data-lucide="footprints"></i> INDUSTRY CASE STUDY 3 · EXTREME USER EMPATHY</div>
+  <h2>Nike FlyEase: <span class="grad">Designing for Extreme Users</span></h2>
+  <div class="split" style="margin-top:1.0rem; grid-template-columns: 1.1fr 0.9fr; align-items:center;">
+    <div class="build step">
+      <div class="bl"><i data-lucide="heart"></i> Matthew Walzer &amp; Tobie Hatfield (Nike)</div>
+      <ul>
+        <li><b>Friction Point</b>: 16-year-old Matthew Walzer (Cerebral Palsy) wrote to Nike asking for shoes he could put on independently without assistance.</li>
+        <li><b>Extreme User Insight</b>: Designing for a user with physical limitations created a hands-free zipper/hinge entry mechanism.</li>
+        <li><b>Mass Adoption</b>: FlyEase became a global bestseller adopted by athletes, elderly users, and busy parents everywhere!</li>
+      </ul>
+    </div>
+    <div class="story-card step">
+      <div class="sc-title"><i data-lucide="zap"></i> Design Principle</div>
+      <div class="sc-text">"Solve for the extreme, and you benefit the mainstream!" Extreme user empathy creates universally accessible products.</div>
+    </div>
+  </div>
+</section>
+
+<!-- MODULE 6: EMPATHY -->
+<!-- SLIDE 16: THINK 6 -->
+<section class="slide">
+  <div class="glow-bg"></div>
+  <div class="badge accent"><i data-lucide="heart"></i> MODULE 6 · EMPATHY</div>
+  <h2>Think 🤔</h2>
+  <div class="think-box step">
+    <div class="think-scenario">A friend fails an exam. Is saying <i>"It's okay"</i> (sympathy) enough?</div>
+    <div class="think-question step">Or do you need to feel what they are experiencing?</div>
+  </div>
+</section>
+
+<!-- SLIDE 17: UNDERSTAND 6 -->
+<section class="slide">
+  <div class="glow-bg"></div>
+  <div class="badge"><i data-lucide="lightbulb"></i> MODULE 6 · REALIZATION</div>
+  <h2>Understand 💡</h2>
+  <div class="build step" style="margin-top:1.0rem;">
+    <div class="bl"><i data-lucide="footprints"></i> Empathy vs Sympathy</div>
+    <ul>
+      <li>Empathy is NOT feeling pity (sympathy).</li>
+      <li>Empathy is walking in their shoes to experience their real friction!</li>
+    </ul>
+  </div>
+  <div class="hero-quote-card step">
+    <div class="hero-quote-title">EMPATHY DEFINITION</div>
+    <div class="hero-quote-text">"Empathy is not saying 'I feel sorry'...<br>It is asking 'What if I were in their position?'"</div>
+  </div>
+</section>
+
+<!-- MODULE 7: PROBLEM IDENTIFICATION -->
+<!-- SLIDE 18: THINK 7 -->
+<section class="slide">
+  <div class="glow-bg"></div>
+  <div class="badge accent"><i data-lucide="search"></i> MODULE 7 · PROBLEM IDENTIFICATION</div>
+  <h2>Think 🤔</h2>
+  <div class="think-box step">
+    <div class="think-scenario">Students arrive late to an 8:30 AM class!</div>
+    <div class="think-question step">What is the actual problem?</div>
+  </div>
+  <div class="option-list step">
+    <div class="option-item"><i data-lucide="users"></i> Students?</div>
+    <div class="option-item"><i data-lucide="bus"></i> College Bus?</div>
+    <div class="option-item"><i data-lucide="navigation"></i> Traffic Congestion?</div>
+    <div class="option-item"><i data-lucide="clock"></i> Alarm Clock?</div>
+  </div>
+</section>
+
+<!-- SLIDE 19: UNDERSTAND 7 -->
+<section class="slide">
+  <div class="glow-bg"></div>
+  <div class="badge"><i data-lucide="lightbulb"></i> MODULE 7 · REALIZATION</div>
+  <h2>Understand 💡</h2>
+  <div class="build step" style="margin-top:1.0rem;">
+    <div class="bl"><i data-lucide="target"></i> Problem Alignment</div>
+    <ul>
+      <li>Without accurately framing the problem, you will never arrive at the correct solution!</li>
+    </ul>
+  </div>
+  <div class="hero-quote-card cool step">
+    <div class="hero-quote-title">PROBLEM FRAMING RULE</div>
+    <div class="hero-quote-text">"Solving the wrong problem...<br>makes even a perfect solution useless!"</div>
+  </div>
+</section>
+
+<!-- MODULE 8: OPPORTUNITY IDENTIFICATION -->
+<!-- SLIDE 20: THINK 8 -->
+<section class="slide">
+  <div class="glow-bg"></div>
+  <div class="badge accent"><i data-lucide="sparkles"></i> MODULE 8 · OPPORTUNITY IDENTIFICATION</div>
+  <h2>Think 🤔</h2>
+  <div class="think-box step">
+    <div class="think-scenario">Everyone complains about a 30-minute queue at the campus canteen.</div>
+    <div class="think-question step">Is the queue just a problem?<br>Or a massive business opportunity?</div>
+  </div>
+</section>
+
+<!-- SLIDE 21: UNDERSTAND 8 -->
+<section class="slide">
+  <div class="glow-bg"></div>
+  <div class="badge"><i data-lucide="lightbulb"></i> MODULE 8 · REALIZATION</div>
+  <h2>Understand 💡</h2>
+  <div class="build step" style="margin-top:1.0rem;">
+    <div class="bl"><i data-lucide="eye"></i> Designer Mindset</div>
+    <ul>
+      <li>A Design Thinker doesn't just see a complaint.</li>
+      <li><b>They see a high-value opportunity to innovate!</b></li>
+    </ul>
+  </div>
+  <div class="hero-quote-card step">
+    <div class="hero-quote-title">DESIGNER MINDSET RULE</div>
+    <div class="hero-quote-text">"Others see Problems...<br>A Designer sees Possibilities!"</div>
+  </div>
+</section>
+
+<!-- MODULE 9: FRUGAL INNOVATION (JUGAAD) -->
+<!-- SLIDE 22: THINK 9 -->
+<section class="slide">
+  <div class="glow-bg"></div>
+  <div class="badge accent"><i data-lucide="zap"></i> MODULE 9 · FRUGAL INNOVATION</div>
+  <h2>Think 🤔</h2>
+  <div class="think-box step">
+    <div class="think-scenario">If you have a ₹10,000 budget, creating a solution is easy.</div>
+    <div class="think-question step">What if you only have ₹100?</div>
+  </div>
+</section>
+
+<!-- SLIDE 23: UNDERSTAND 9 -->
+<section class="slide">
+  <div class="glow-bg"></div>
+  <div class="badge"><i data-lucide="lightbulb"></i> MODULE 9 · REALIZATION</div>
+  <h2>Understand 💡</h2>
+  <div class="build step" style="margin-top:1.0rem;">
+    <div class="bl"><i data-lucide="scissors"></i> Money vs Creativity</div>
+    <ul>
+      <li>When capital is low... <b>Creativity must be extraordinarily high!</b></li>
+      <li>This is Frugal Innovation / Jugaad.</li>
+    </ul>
+  </div>
+  <div class="hero-quote-card step">
+    <div class="hero-quote-title">JUGAAD FORMULA</div>
+    <div class="hero-quote-text">"Low Capital + High Creativity = Frugal Innovation (Jugaad)."</div>
+  </div>
+</section>
+
+<!-- CASE STUDY 4: EMBRASE INFANT WARMER (FRUGAL INNOVATION) -->
+<section class="slide">
+  <div class="glow-bg"></div>
+  <div class="badge blue"><i data-lucide="heart-pulse"></i> INDUSTRY CASE STUDY 4 · FRUGAL INNOVATION</div>
+  <h2>Embrace Infant Warmer: <span class="grad-cool">The $25 Life-Saver</span></h2>
+  <div class="split" style="margin-top:1.0rem; grid-template-columns: 1.1fr 0.9fr; align-items:center;">
+    <div class="build step">
+      <div class="bl"><i data-lucide="shield-check"></i> Stanford d.school Extreme Affordable Design</div>
+      <ul>
+        <li><b>Friction Point</b>: 4 million premature infants die annually in developing rural areas because traditional hospital incubators cost $20,000+ and require continuous electricity.</li>
+        <li><b>Frugal Solution</b>: Designed a $25 sleeping bag containing phase-change wax heated by boiling water, keeping babies warm for 6+ hours without electricity!</li>
+        <li><b>Impact</b>: Saved over 300,000 premature babies across rural India and 20+ countries!</li>
+      </ul>
+    </div>
+    <div class="story-card step">
+      <div class="sc-title"><i data-lucide="star"></i> Stanford Case Study</div>
+      <div class="sc-text">Frugal Innovation isn't about cheap materials — it's about radical empathy and removing unnecessary complexity!</div>
+    </div>
+  </div>
+</section>
+
+<!-- MODULE 10: PRODUCT -->
+<!-- SLIDE 25: THINK 10 (WITH IMAGE) -->
+<section class="slide">
+  <div class="glow-bg"></div>
+  <div class="badge cool"><i data-lucide="box"></i> MODULE 10 · PRODUCT</div>
+  <h2>Think 🤔</h2>
+  <div class="split" style="margin-top:1.0rem; grid-template-columns: 1.1fr 0.9fr; align-items:center;">
+    <div class="think-box cool step">
+      <div class="think-question">What is a Smartphone or Filter Coffee Maker?</div>
+    </div>
+    <div class="img-frame step">
+      <img src="../../assets/filter_coffee.png" alt="Filter Coffee Maker Product" />
+    </div>
+  </div>
+</section>
+
+<!-- SLIDE 26: UNDERSTAND 10 -->
+<section class="slide">
+  <div class="glow-bg"></div>
+  <div class="badge"><i data-lucide="lightbulb"></i> MODULE 10 · REALIZATION</div>
+  <h2>Understand 💡</h2>
+  <div class="build step" style="margin-top:1.0rem;">
+    <div class="bl"><i data-lucide="hand"></i> Tangible Object</div>
+    <ul>
+      <li>A physical object that you can hold and interact with.</li>
+      <li>That is a <b>Product</b>.</li>
+    </ul>
+  </div>
+  <div class="hero-quote-card cool step">
+    <div class="hero-quote-title">PRODUCT DEFINITION</div>
+    <div class="hero-quote-text">"A Product is a tangible, physical solution in your hands."</div>
+  </div>
+</section>
+
+<!-- MODULE 11: PROCESS -->
+<!-- SLIDE 27: THINK 11 (WITH IMAGE) -->
+<section class="slide">
+  <div class="glow-bg"></div>
+  <div class="badge accent"><i data-lucide="refresh-cw"></i> MODULE 11 · PROCESS</div>
+  <h2>Think 🤔</h2>
+  <div class="split" style="margin-top:1.0rem; grid-template-columns: 1.1fr 0.9fr; align-items:center;">
+    <div class="think-box step">
+      <div class="think-scenario">You have all the finest Biryani ingredients, but no cooking order.</div>
+      <div class="think-question step">Will it turn out delicious?</div>
+    </div>
+    <div class="img-frame step">
+      <img src="../../assets/ml_recipe.png" alt="Cooking Process Recipe" />
+    </div>
+  </div>
+</section>
+
+<!-- SLIDE 28: UNDERSTAND 11 -->
+<section class="slide">
+  <div class="glow-bg"></div>
+  <div class="badge"><i data-lucide="lightbulb"></i> MODULE 11 · REALIZATION</div>
+  <h2>Understand 💡</h2>
+  <div class="build step" style="margin-top:1.0rem;">
+    <div class="bl"><i data-lucide="list-checks"></i> Order Matters</div>
+    <ul>
+      <li>Order matters. Sequence matters.</li>
+      <li>That is a <b>Process</b>!</li>
+    </ul>
+  </div>
+  <div class="hero-quote-card step">
+    <div class="hero-quote-title">PROCESS DEFINITION</div>
+    <div class="hero-quote-text">"A Process is the correct sequence of execution steps."</div>
+  </div>
+</section>
+
+<!-- MODULE 12: SYSTEM -->
+<!-- SLIDE 29: THINK 12 -->
+<section class="slide">
+  <div class="glow-bg"></div>
+  <div class="badge accent"><i data-lucide="network"></i> MODULE 12 · SYSTEM</div>
+  <h2>Think 🤔</h2>
+  <div class="think-box step">
+    <div class="think-scenario">In a hospital, is it just the Doctor?</div>
+    <div class="think-question step">Doctor + Reception + Pharmacy + Lab + Nurses + Ambulance + Billing?</div>
+  </div>
+</section>
+
+<!-- SLIDE 30: UNDERSTAND 12 -->
+<section class="slide">
+  <div class="glow-bg"></div>
+  <div class="badge"><i data-lucide="lightbulb"></i> MODULE 12 · REALIZATION</div>
+  <h2>Understand 💡</h2>
+  <div class="build step" style="margin-top:1.0rem;">
+    <div class="bl"><i data-lucide="share-2"></i> Teamwork of Processes</div>
+    <ul>
+      <li>Multiple interconnected processes working in harmony = A <b>System</b>!</li>
+    </ul>
+  </div>
+  <div class="hero-quote-card step">
+    <div class="hero-quote-title">SYSTEM DEFINITION</div>
+    <div class="hero-quote-text">"A System is the Teamwork of Interconnected Processes."</div>
+  </div>
+</section>
+
+<!-- MODULE 13: SOFTWARE -->
+<!-- SLIDE 31: THINK 13 -->
+<section class="slide">
+  <div class="glow-bg"></div>
+  <div class="badge cool"><i data-lucide="code"></i> MODULE 13 · SOFTWARE</div>
+  <h2>Think 🤔</h2>
+  <div class="think-box cool step">
+    <div class="think-scenario">An ATM machine with its software removed.</div>
+    <div class="think-question step">Will it dispense cash?</div>
+  </div>
+</section>
+
+<!-- SLIDE 32: UNDERSTAND 13 -->
+<section class="slide">
+  <div class="glow-bg"></div>
+  <div class="badge"><i data-lucide="lightbulb"></i> MODULE 13 · REALIZATION</div>
+  <h2>Understand 💡</h2>
+  <div class="build step" style="margin-top:1.0rem;">
+    <div class="bl"><i data-lucide="cpu"></i> Brain of the Machine</div>
+    <ul>
+      <li>Hardware is the body; Software is the brain of the machine.</li>
+    </ul>
+  </div>
+  <div class="hero-quote-card cool step">
+    <div class="hero-quote-title">SOFTWARE DEFINITION</div>
+    <div class="hero-quote-text">"Software is the Intelligence and Brain of the Machine Body."</div>
+  </div>
+</section>
+
+<!-- MODULE 14: EMPATHY MAP -->
+<!-- SLIDE 33: THINK 14 -->
+<section class="slide">
+  <div class="glow-bg"></div>
+  <div class="badge accent"><i data-lucide="layout-grid"></i> MODULE 14 · EMPATHY MAP</div>
+  <h2>Think 🤔</h2>
+  <div class="think-box step">
+    <div class="think-scenario">A friend is smiling.</div>
+    <div class="think-question step">Are they genuinely happy?<br>Or upset on the inside?</div>
+  </div>
+</section>
+
+<!-- SLIDE 34: UNDERSTAND 14 -->
+<section class="slide">
+  <div class="glow-bg"></div>
+  <div class="badge"><i data-lucide="lightbulb"></i> MODULE 14 · REALIZATION</div>
+  <h2>Understand 💡</h2>
+  <div class="build step" style="margin-top:1.0rem;">
+    <div class="bl"><i data-lucide="eye"></i> 4 Sides of User Reality</div>
+    <ul>
+      <li>People often say one thing, think another, and feel something else entirely.</li>
+      <li>An <b>Empathy Map</b> decodes all 4 quadrants: <b>Says / Thinks / Does / Feels</b>.</li>
+    </ul>
+  </div>
+  <div class="hero-quote-card step">
+    <div class="hero-quote-title">EMPATHY MAP PRINCIPLE</div>
+    <div class="hero-quote-text">"Looking at a face reveals a smile...<br>Mapping the mind reveals the User!"</div>
+  </div>
+</section>
+
+<!-- MODULE 15: CUSTOMER JOURNEY MAP -->
+<!-- SLIDE 35: THINK 15 -->
+<section class="slide">
+  <div class="glow-bg"></div>
+  <div class="badge accent"><i data-lucide="map"></i> MODULE 15 · JOURNEY MAP</div>
+  <h2>Think 🤔</h2>
+  <div class="think-box step">
+    <div class="think-scenario">Going to a movie theater — Is the movie the ONLY experience?</div>
+    <div class="think-question step">Parking → Ticket Counter → Queue → Snacks → Seat → Washroom → Exit</div>
+  </div>
+</section>
+
+<!-- SLIDE 36: UNDERSTAND 15 -->
+<section class="slide">
+  <div class="glow-bg"></div>
+  <div class="badge"><i data-lucide="lightbulb"></i> MODULE 15 · REALIZATION</div>
+  <h2>Understand 💡</h2>
+  <div class="build step" style="margin-top:1.0rem;">
+    <div class="bl"><i data-lucide="film"></i> Touchpoint Timeline</div>
+    <ul>
+      <li>Every single touchpoint along the timeline forms the overall experience!</li>
+    </ul>
+  </div>
+  <div class="hero-quote-card step">
+    <div class="hero-quote-title">JOURNEY MAP PRINCIPLE</div>
+    <div class="hero-quote-text">"Using the product is just one scene...<br>The Journey is the entire Movie!"</div>
+  </div>
+</section>
+
+<!-- MODULE 16: 5 WHY -->
+<!-- SLIDE 37: THINK 16 -->
+<section class="slide">
+  <div class="glow-bg"></div>
+  <div class="badge accent"><i data-lucide="help-circle"></i> MODULE 16 · 5 WHY METHOD</div>
+  <h2>Think 🤔</h2>
+  <div class="think-box step">
+    <div class="think-scenario">A motorcycle won't start.</div>
+    <div class="think-question step">Is it immediately the Battery? Petrol? Spark Plug? Fuse? Engine?</div>
+  </div>
+</section>
+
+<!-- SLIDE 38: UNDERSTAND 16 -->
+<section class="slide">
+  <div class="glow-bg"></div>
+  <div class="badge"><i data-lucide="lightbulb"></i> MODULE 16 · REALIZATION</div>
+  <h2>Understand 💡</h2>
+  <div class="build step" style="margin-top:1.0rem;">
+    <div class="bl"><i data-lucide="arrow-down"></i> Drilling to Root Cause</div>
+    <ul>
+      <li>Every "WHY" drills deeper past superficial symptoms until you unearth the true root cause!</li>
+    </ul>
+  </div>
+  <div class="hero-quote-card step">
+    <div class="hero-quote-title">5-WHY METHOD RULE</div>
+    <div class="hero-quote-text">"The first answer is rarely the true cause...<br>The truth emerges after 5 Whys!"</div>
+  </div>
+</section>
+
+<!-- CASE STUDY 5: CROWDSTRIKE JULY 2024 GLOBAL IT OUTAGE (5-WHY DRILLING) -->
+<section class="slide">
+  <div class="glow-bg"></div>
+  <div class="badge"><i data-lucide="server-off"></i> INDUSTRY CASE STUDY 5 · CROWDSTRIKE 2024 OUTAGE</div>
+  <h2>July 2024 Global Outage: <span class="grad">5-Why Root Cause Analysis</span></h2>
+  <div class="split" style="margin-top:1.0rem; grid-template-columns: 1.1fr 0.9fr; align-items:center;">
+    <div class="build step">
+      <div class="bl"><i data-lucide="git-commit"></i> 5-Why Incident Analysis (8.5M Windows Crashes)</div>
+      <ul>
+        <li><b>1. Why BSOD?</b> Memory read out-of-bounds error in Falcon Sensor driver.</li>
+        <li><b>2. Why Memory Error?</b> Channel File 291 content update had 21 fields vs 20 expected fields.</li>
+        <li><b>3. Why Uncaught?</b> Missing runtime array bounds check in Content Interpreter.</li>
+        <li><b>4. Why Deployed?</b> Staged canary deployment was skipped; pushed to all machines globally!</li>
+        <li><b>ROOT CAUSE</b>: System design prioritized rapid update delivery over fault-tolerant staged rollouts.</li>
+      </ul>
+    </div>
+    <div class="story-card step">
+      <div class="sc-title"><i data-lucide="alert-triangle"></i> Engineering Takeaway</div>
+      <div class="sc-text">High-impact software systems must fail gracefully! Staged rollouts and input validation prevent global catastrophes.</div>
+    </div>
+  </div>
+</section>
+
+<!-- MODULE 17: FISHBONE DIAGRAM -->
+<!-- SLIDE 40: THINK 17 -->
+<section class="slide">
+  <div class="glow-bg"></div>
+  <div class="badge accent"><i data-lucide="git-merge"></i> MODULE 17 · FISHBONE DIAGRAM</div>
+  <h2>Think 🤔</h2>
+  <div class="think-box step">
+    <div class="think-scenario">Failing an exam — What is the reason?</div>
+    <div class="think-question step">Instructor? Student effort? Phone distraction? Sleep deficit? Health? Peers?</div>
+  </div>
+</section>
+
+<!-- SLIDE 41: UNDERSTAND 17 -->
+<section class="slide">
+  <div class="glow-bg"></div>
+  <div class="badge"><i data-lucide="lightbulb"></i> MODULE 17 · REALIZATION</div>
+  <h2>Understand 💡</h2>
+  <div class="build step" style="margin-top:1.0rem;">
+    <div class="bl"><i data-lucide="layers"></i> Multi-Cause Categorization</div>
+    <ul>
+      <li>One major problem stems from multiple categorized causes (People, Process, Tools, Environment).</li>
+    </ul>
+  </div>
+  <div class="hero-quote-card step">
+    <div class="hero-quote-title">FISHBONE PRINCIPLE</div>
+    <div class="hero-quote-text">"A single problem rarely has just one single cause."</div>
+  </div>
+</section>
+
+<!-- MODULE 18: POINT OF VIEW (POV) -->
+<!-- SLIDE 42: THINK 18 -->
+<section class="slide">
+  <div class="glow-bg"></div>
+  <div class="badge accent"><i data-lucide="edit-3"></i> MODULE 18 · POINT OF VIEW (POV)</div>
+  <h2>Think 🤔</h2>
+  <div class="think-box step">
+    <div class="think-scenario">"Improve transportation." (Too broad ❌)</div>
+    <div class="think-scenario step" style="color:var(--accent); margin-top:0.5rem;">"Reduce morning college bus arrival delays for Crescent commuter students." (Clear &amp; Actionable ✅)</div>
+  </div>
+</section>
+
+<!-- SLIDE 43: UNDERSTAND 18 -->
+<section class="slide">
+  <div class="glow-bg"></div>
+  <div class="badge"><i data-lucide="lightbulb"></i> MODULE 18 · REALIZATION</div>
+  <h2>Understand 💡</h2>
+  <div class="build step" style="margin-top:1.0rem;">
+    <div class="bl"><i data-lucide="check-circle-2"></i> Problem Framing Blueprint</div>
+    <ul>
+      <li>A tightly framed, human-centered problem statement already outlines the solution direction!</li>
+      <li>Format: <span class="mono">[USER] needs a way to [NEED] because [INSIGHT]</span></li>
+    </ul>
+  </div>
+  <div class="hero-quote-card cool step">
+    <div class="hero-quote-title">POV FORMULATION RULE</div>
+    <div class="hero-quote-text">"When the Problem is crystal clear...<br>the Solution is half ready!"</div>
+  </div>
+</section>
+
+<!-- VISUAL CASE STUDIES SECTION -->
+<!-- SLIDE 44: VISUAL 1 - 5 STAGES OF DESIGN THINKING -->
+<section class="slide">
+  <div class="glow-bg"></div>
+  <div class="badge"><i data-lucide="repeat"></i> CORE VISUAL · THE 5 STAGES</div>
+  <h2>The 5 Iterative Stages <span class="grad">Flowchart</span></h2>
+  <div class="split" style="margin-top:1.0rem; grid-template-columns: 1.1fr 0.9fr; align-items:center;">
+    <div class="build step">
+      <div class="bl"><i data-lucide="refresh-cw"></i> Iterative Innovation Loop</div>
+      <ul>
+        <li><b>1. Empathize</b>: Understand human needs &amp; struggles.</li>
+        <li><b>2. Define</b>: Frame a focused problem statement.</li>
+        <li><b>3. Ideate</b>: Brainstorm wide creative solutions.</li>
+        <li><b>4. Prototype</b>: Build quick, low-cost mockups.</li>
+        <li><b>5. Test</b>: Gather user feedback &amp; iterate.</li>
+      </ul>
+    </div>
+    <div class="img-frame step">
+      <img src="../../assets/dt_5_stages.png" alt="Design Thinking 5 Stages Diagram" />
+    </div>
+  </div>
+</section>
+
+<!-- SLIDE 45: VISUAL 2 - GE PEDIATRIC MRI SCANNER -->
+<section class="slide">
+  <div class="glow-bg"></div>
+  <div class="badge blue"><i data-lucide="heart-pulse"></i> CASE STUDY · GE PEDIATRIC MRI</div>
+  <h2>Doug Dietz <span class="grad-cool">Empathy Transformation</span></h2>
+  <div class="split" style="margin-top:1.0rem; grid-template-columns: 1.1fr 0.9fr; align-items:center;">
+    <div class="build step">
+      <div class="bl"><i data-lucide="heart"></i> Pirate Ship Adventure Series</div>
+      <ul>
+        <li><b>Friction</b>: 80% of pediatric patients required heavy sedation due to terror inside dark MRI machines.</li>
+        <li><b>Empathy Insight</b>: Children don't fear medical technology; they fear the dark, scary machine.</li>
+        <li><b>Result</b>: Redesigned as Pirate Ship → Sedation rates dropped under 1%!</li>
+      </ul>
+    </div>
+    <div class="img-frame step">
+      <img src="../../assets/ge_mri_adventure.png" alt="GE Pediatric Adventure MRI Scanner" />
+    </div>
+  </div>
+</section>
+
+<!-- SLIDE 46: VISUAL 3 - ROADSIDE TEA STALL UPI SOUNDBOX -->
+<section class="slide">
+  <div class="glow-bg"></div>
+  <div class="badge accent"><i data-lucide="qr-code"></i> CASE STUDY · INDIAN TEA STALL UPI</div>
+  <h2>Paytm / PhonePe <span class="grad">UPI Soundbox</span></h2>
+  <div class="split" style="margin-top:1.0rem; grid-template-columns: 1.1fr 0.9fr; align-items:center;">
+    <div class="build step">
+      <div class="bl"><i data-lucide="dollar-sign"></i> Micro-Merchant Empathy</div>
+      <ul>
+        <li><b>Friction</b>: Cash change shortage (`"No cash change"`) for ₹10 tea causing customer drop-offs.</li>
+        <li><b>Empathy Insight</b>: Vendor needed instant payment voice alerts without stopping tea brewing or touching phone screen with wet hands.</li>
+        <li><b>Result</b>: Audio Soundbox speaker digitized millions of Indian street vendors!</li>
+      </ul>
+    </div>
+    <div class="img-frame step">
+      <img src="../../assets/upi_soundbox.png" alt="UPI Soundbox Tea Stall" />
+    </div>
+  </div>
+</section>
+
+<!-- SLIDE 47: MASTER SUMMARY MATRIX & CAT 1 STRATEGY -->
+<section class="slide center">
+  <div class="glow-bg"></div>
+  <div class="badge accent"><i data-lucide="check-circle"></i> MASTER SUMMARY · CAT 1 EXAM PREP</div>
+  <h2>CAT 1 Exam Strategy &amp; <span class="grad">Master Checklist</span></h2>
+  <div class="step" style="background:rgba(255,255,255,0.04); border:1px solid rgba(255,255,255,0.14); padding:1.4rem 1.8rem; border-radius:20px; margin-top:1.0rem; text-align:left; max-width:920px;">
+    <div style="display:grid; grid-template-columns:1fr 1fr; gap:1.6rem;">
+      <div>
+        <p style="font-weight:800; color:var(--accent); font-size:1.1rem; text-transform:uppercase;">Module I Review (Classes 1 - 6)</p>
+        <p style="font-size:1.0rem; color:#ffffff; margin-top:0.4rem; line-height:1.5;">• Engineering Design vs Usability Fit<br>• 4 Drivers of Product Evolution<br>• Product vs Process vs System vs Software<br>• 5 Stages (Empathize → Define → Ideate → Prototype → Test)<br>• Persona Blueprint (5 Fields)</p>
+      </div>
+      <div>
+        <p style="font-weight:800; color:var(--blue); font-size:1.1rem; text-transform:uppercase;">Module II Review (Classes 7 - 12)</p>
+        <p style="font-size:1.0rem; color:#ffffff; margin-top:0.4rem; line-height:1.5;">• 4 Empathy Tools (Observe, Shadow, Immerse, Interview)<br>• Empathy Map (Says, Thinks, Does, Feels)<br>• Customer Journey Map &amp; Emotion Curve<br>• 5-Why Root Cause &amp; Fishbone Diagram<br>• POV Statement Blueprint</p>
+      </div>
+    </div>
+  </div>
+  <div class="hero-quote-card step" style="max-width:920px; margin-top:1.0rem; padding:1.2rem 1.6rem;">
+    <div class="hero-quote-title">FINAL ADVICE FROM PROFESSOR KABIR</div>
+    <div style="font-size:1.3rem; font-weight:700; color:#fff;">"Focus on core definitions, the 5 stages diagram, 5-Why tree, and POV statement format. Best of luck on CAT 1!"</div>
+  </div>
+</section>
+
+</div>
+
+<!-- REDESIGNED LIGHT LEAN CHROME NAVBAR FOOTER -->
+<div class="chrome">
+  <div class="brand">
+    <span style="color:var(--accent); font-size:1.1em;">🎓</span>
+    <span>GEE 1102 — Design Thinking · <b>Kabir</b>, Professor of Practice, Dept. of CS, Crescent Institute</span>
+  </div>
+  <div class="right">
+    <button class="notesbtn" id="notesbtn">S · Speaker Notes</button>
+    <div class="counter"><span id="cur">01</span> / <span id="tot">47</span></div>
+  </div>
+</div>
+
+<!-- SPEAKER NOTES DRAWER -->
+<div class="notes" id="notes">
+  <div class="notes-head">
+    <div class="lbl"><i data-lucide="book-open"></i> Speaker Track &amp; Teaching Guidance</div>
+    <div class="x" id="notesx">&times;</div>
+  </div>
+  <div class="notes-body" id="notesbody"></div>
+</div>
+
+<script>
+const NOTES = [
+  "<b>Slide 1 Speaker Notes:</b> Welcome everyone! Today we kick off our intensive CAT 1 prep for GEE 1102 Design Thinking, covering Module I and Module II per our Crescent Lesson Plan.",
+  "<b>Slide 2 Speaker Notes:</b> Walk through CAT 1 weightage: 60% written test + 40% Project Assignment 1. Remind students that CO1 and CO2 are tested here.",
+  "<b>Slide 3 Speaker Notes:</b> Ask students: 'I am designing a chair. Will everyone use the exact same chair?' Prompt for Grandma, Baby, Office employee, Gamer. Show chair graphic on screen.",
+  "<b>Slide 4 Speaker Notes:</b> Reveal the realization: Design is not just making things look pretty. It's creating the right solution for the right person with the right problem.",
+  "<b>Slide 5 Speaker Notes:</b> Ask students: 'Suppose you build a bridge. Strong, beautiful, affordable. But nobody can reach it because there is no road. Is it useful?' Show unreachable bridge image.",
+  "<b>Slide 6 Speaker Notes:</b> Reveal: Engineering success is not just finishing construction. Can people actually use it to improve their lives? That's success.",
+  "<b>Slide 7 Speaker Notes:</b> Case Study 1: Humane AI Pin failure ($699 wearable). Overheating, laser display unreadable in sun, high voice latency. Misread user behavior!",
+  "<b>Slide 8 Speaker Notes:</b> Ask: 'A friend says I have a severe headache. Do you hand them medicine immediately or first ask What happened?'",
+  "<b>Slide 9 Speaker Notes:</b> Reveal: Design Thinking is understanding the problem deeply BEFORE jumping to solutions.",
+  "<b>Slide 10 Speaker Notes:</b> Case Study 2: Airbnb 2009 Photography turnaround ($200/wk to $400/wk in 7 days). Joe Gebbia & Brian Chesky flew to NYC with a camera. Do things that don't scale!",
+  "<b>Slide 11 Speaker Notes:</b> Ask: 'When buying a gift for a friend, do you buy what YOU like or what YOUR FRIEND likes?'",
+  "<b>Slide 12 Speaker Notes:</b> Reveal: You are not the hero. The Customer is the hero!",
+  "<b>Slide 13 Speaker Notes:</b> Ask: 'Designing a motorcycle for a college student — Age? Budget? Daily travel distance? Family? Height? Weight? Can you design effectively without knowing?'",
+  "<b>Slide 14 Speaker Notes:</b> Reveal: Persona is the user's data-driven biography. You cannot design for an unknown user.",
+  "<b>Slide 15 Speaker Notes:</b> Case Study 3: Nike FlyEase hands-free shoes designed for 16-year-old Matthew Walzer (Cerebral Palsy). Solve for the extreme, benefit the mainstream!",
+  "<b>Slide 16 Speaker Notes:</b> Ask: 'A friend fails an exam. Is saying It's okay enough or do you need to feel what they are going through?'",
+  "<b>Slide 17 Speaker Notes:</b> Reveal: Empathy is walking in their shoes, not feeling pity (sympathy).",
+  "<b>Slide 18 Speaker Notes:</b> Ask: 'Students arrive late to class. Is the problem: Students? Bus? Traffic congestion? Alarm clock?'",
+  "<b>Slide 19 Speaker Notes:</b> Reveal: Solving the wrong problem makes even a perfect solution useless.",
+  "<b>Slide 20 Speaker Notes:</b> Ask: 'Everyone complains about a 30-minute canteen queue. Is it a problem or a business opportunity?'",
+  "<b>Slide 21 Speaker Notes:</b> Reveal: Others see problems; a designer sees possibilities.",
+  "<b>Slide 22 Speaker Notes:</b> Ask: 'Rs 10,000 budget vs Rs 100 budget?'",
+  "<b>Slide 23 Speaker Notes:</b> Reveal: Low capital = High creativity. That's Frugal Innovation / Jugaad.",
+  "<b>Slide 24 Speaker Notes:</b> Case Study 4: Embrace Infant Warmer ($25 wax-sleeping bag baby incubator replacing $20,000 hospital incubators in rural India).",
+  "<b>Slide 25 Speaker Notes:</b> Ask: 'What is a Smartphone or Filter Coffee Maker?' Show filter coffee product image.",
+  "<b>Slide 26 Speaker Notes:</b> Reveal: Tangible physical object = Product.",
+  "<b>Slide 27 Speaker Notes:</b> Ask: 'Biryani ingredients available, but no cooking order. Will it turn out delicious?' Show recipe process image.",
+  "<b>Slide 28 Speaker Notes:</b> Reveal: Order matters. Sequence matters. That is a Process.",
+  "<b>Slide 29 Speaker Notes:</b> Ask: 'In a hospital, is it just the Doctor?'",
+  "<b>Slide 30 Speaker Notes:</b> Reveal: System is the teamwork of multiple processes working together.",
+  "<b>Slide 31 Speaker Notes:</b> Ask: 'ATM machine with software removed. Dispense cash?'",
+  "<b>Slide 32 Speaker Notes:</b> Reveal: Software is the intelligence and brain of the machine body.",
+  "<b>Slide 33 Speaker Notes:</b> Ask: 'A friend is smiling. Genuinely happy or upset inside?'",
+  "<b>Slide 34 Speaker Notes:</b> Reveal: People speak one thing, think another, feel another. Empathy map decodes Says/Thinks/Does/Feels.",
+  "<b>Slide 35 Speaker Notes:</b> Ask: 'Movie theater — is movie the ONLY experience?'",
+  "<b>Slide 36 Speaker Notes:</b> Reveal: Journey is the entire movie! Using the product is just one scene.",
+  "<b>Slide 37 Speaker Notes:</b> Ask: 'Motorcycle won't start — immediate answer?'",
+  "<b>Slide 38 Speaker Notes:</b> Reveal: The first answer is rarely the true cause. Truth emerges after 5 Whys.",
+  "<b>Slide 39 Speaker Notes:</b> Case Study 5: CrowdStrike July 2024 Global Outage 5-Why root cause analysis (8.5M Windows machines BSOD). Missing array bounds check & no staged rollout.",
+  "<b>Slide 40 Speaker Notes:</b> Ask: 'Failing an exam — reason?'",
+  "<b>Slide 41 Speaker Notes:</b> Reveal: One problem stems from multiple categorized causes. Fishbone organizes them.",
+  "<b>Slide 42 Speaker Notes:</b> Ask: 'Improve transportation vs Reduce morning college bus arrival delays for Crescent students?'",
+  "<b>Slide 43 Speaker Notes:</b> Reveal: When the problem is crystal clear, the solution is half ready.",
+  "<b>Slide 44 Speaker Notes:</b> Walk through the 5 Stages diagram visual.",
+  "<b>Slide 45 Speaker Notes:</b> Walk through GE Healthcare Pediatric Adventure MRI Scanner case study visual.",
+  "<b>Slide 46 Speaker Notes:</b> Walk through Indian Tea Stall UPI Soundbox case study visual.",
+  "<b>Slide 47 Speaker Notes:</b> Master summary checklist for CAT 1 exam strategy."
+];
+
+const slides = [...document.querySelectorAll('.slide')];
+const progress = document.getElementById('progress');
+const cur = document.getElementById('cur');
+const tot = document.getElementById('tot');
+const notesEl = document.getElementById('notes');
+const notesBody = document.getElementById('notesbody');
+let i = 0;
+
+tot.textContent = String(slides.length).padStart(2, '0');
+
+function renderNotes() {
+  notesBody.innerHTML = NOTES[i] || '<i>No notes available for this slide.</i>';
+  notesBody.scrollTop = 0;
+}
+
+function go(n) {
+  if (n < 0 || n >= slides.length) return;
+  slides[i].classList.remove('active');
+  slides[i].classList.add('prev');
+  i = n;
+  slides.forEach(s => s.classList.remove('prev'));
+  slides[i].classList.add('active');
+  
+  // Reset steps on slide transition
+  slides[i].querySelectorAll('.step').forEach(step => step.classList.remove('revealed'));
+  
+  progress.style.width = ((i + 1) / slides.length * 100) + '%';
+  cur.textContent = String(i + 1).padStart(2, '0');
+  if (notesEl.classList.contains('open')) renderNotes();
+}
+
+function next() {
+  const currentSlide = slides[i];
+  const unrevealedSteps = currentSlide.querySelectorAll('.step:not(.revealed)');
+  if (unrevealedSteps.length > 0) {
+    unrevealedSteps[0].classList.add('revealed');
+  } else {
+    go(i + 1);
+  }
+}
+
+function prev() {
+  const currentSlide = slides[i];
+  const revealedSteps = currentSlide.querySelectorAll('.step.revealed');
+  if (revealedSteps.length > 0) {
+    revealedSteps[revealedSteps.length - 1].classList.remove('revealed');
+  } else {
+    go(i - 1);
+  }
+}
+
+go(0);
+
+function toggleNotes() {
+  notesEl.classList.toggle('open');
+  if (notesEl.classList.contains('open')) renderNotes();
+}
+
+document.getElementById('notesbtn').addEventListener('click', toggleNotes);
+document.getElementById('notesx').addEventListener('click', () => notesEl.classList.remove('open'));
+
+document.addEventListener('keydown', e => {
+  if (e.key === 'ArrowRight' || e.key === 'ArrowDown' || e.key === ' ') { e.preventDefault(); next(); }
+  else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') { e.preventDefault(); prev(); }
+  else if (e.key === 'Home') { go(0); }
+  else if (e.key === 'End') { go(slides.length - 1); }
+  else if (e.key === 's' || e.key === 'S') { toggleNotes(); }
+  else if (e.key === 'f' || e.key === 'F') {
+    if (!document.fullscreenElement) document.documentElement.requestFullscreen();
+    else document.exitFullscreen();
+  }
+  else if (e.key === 'Escape') { notesEl.classList.remove('open'); }
+});
+
+let x0 = null;
+document.addEventListener('touchstart', e => x0 = e.touches[0].clientX, { passive: true });
+document.addEventListener('touchend', e => {
+  if (x0 === null) return;
+  const dx = e.changedTouches[0].clientX - x0;
+  if (Math.abs(dx) > 50) { dx < 0 ? next() : prev(); }
+  x0 = null;
+}, { passive: true });
+
+document.getElementById('deck').addEventListener('click', e => {
+  if (e.target.closest('.notes') || e.target.closest('.notesbtn') || e.target.closest('a')) return;
+  e.clientX > innerWidth / 2 ? next() : prev();
+});
+
+lucide.createIcons();
+</script>
+</body>
+</html>
+"""
+
+with open(os.path.join(PROJECT_ROOT, "HTML", "Design Thinking", "GEE 1102 - Design Thinking CAT 1.html"), "w", encoding="utf-8") as f:
+    f.write(html_content)
+
+print("Successfully regenerated GEE 1102 - Design Thinking CAT 1.html with light lean footer & cohesive clean color system!")

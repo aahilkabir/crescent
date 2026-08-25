@@ -1,0 +1,41 @@
+{
+  "course": "Programming for Problem Solving (PPS)",
+  "syllabus": [
+    {
+      "unit": 1,
+      "title": "Introduction to Programming & Algorithms",
+      "topics": [
+        "Hardware, software, compilers, and interpreters.",
+        "Designing algorithms, flowcharts, and pseudocode.",
+        "Basic searching and sorting (Bubble, Insertion, Selection)."
+      ]
+    },
+    {
+      "unit": 2,
+      "title": "C Language Fundamentals",
+      "topics": [
+        "Data types, variables, constants, and storage classes.",
+        "Operators, expressions, type conversion, and precedence.",
+        "Basic input and output functions (printf, scanf)."
+      ]
+    },
+    {
+      "unit": 3,
+      "title": "Control Structures & Arrays",
+      "topics": [
+        "Decision-making statements (if, switch) and loops (for, while, do-while).",
+        "One-dimensional and two-dimensional arrays.",
+        "Character arrays and built-in string manipulation."
+      ]
+    },
+    {
+      "unit": 4,
+      "title": "Functions, Pointers, & File Handling",
+      "topics": [
+        "User-defined functions, parameter passing (call by value/reference), and recursion.",
+        "Pointers, address arithmetic, and pointer arrays.",
+        "Structures, unions, and basic text/binary file operations (fopen, fclose, fprintf, fscanf)."
+      ]
+    }
+  ]
+}

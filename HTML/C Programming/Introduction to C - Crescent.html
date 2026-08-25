@@ -1,0 +1,1482 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Introduction to C — Crescent Institute</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,700;1,400&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --black:#000000;
+  --surface:#0e0f11;
+  --surface2:#181a1f;
+  --surface3:#22252c;
+  --border:rgba(255,255,255,.08);
+  --border-hi:rgba(255,255,255,.16);
+  --hi:#ffffff;
+  --mid:#cbd5e1;
+  --low:#64748b;
+  --accent:#fbbf24; /* Gold */
+  --accent-soft:rgba(251, 191, 36, 0.15);
+  --blue:#38b6ff; /* Sky blue */
+  --blue-soft:rgba(56, 182, 255, 0.15);
+  --green:#10b981;
+  --green-soft:rgba(16, 185, 129, 0.15);
+  --rose:#f43f5e;
+  --serif:'Cormorant Garamond',serif;
+  --sans:'Inter',sans-serif;
+  --mono:'JetBrains Mono',monospace;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html,body{background:#000;height:100%;overflow:hidden;}
+body{
+  font-family:var(--sans);
+  color:var(--hi);
+  -webkit-font-smoothing:antialiased;
+  text-rendering:optimizeLegibility;
+}
+#deck{position:relative;width:100vw;height:100vh;}
+.slide{
+  position:absolute;inset:0;
+  display:flex;flex-direction:column;
+  justify-content:center;
+  padding:6vh 8vw;
+  background:var(--black);
+  opacity:0;visibility:hidden;
+  transform:translateY(16px);
+  transition:opacity .5s cubic-bezier(.22,.61,.36,1), transform .5s cubic-bezier(.22,.61,.36,1);
+  overflow:hidden;
+}
+.slide.active{opacity:1;visibility:visible;transform:translateY(0);}
+
+.slide > *{position:relative;z-index:1;}
+
+/* Step-by-Step Reveal Animation */
+.step {
+  opacity: 0;
+  transform: translateY(20px) scale(0.98);
+  transition: opacity 0.5s cubic-bezier(0.16, 1, 0.3, 1), transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+  pointer-events: none;
+}
+.step.revealed {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+  pointer-events: auto;
+}
+
+/* Cinematic Blended Image Layouts */
+.cinematic-bg {
+  position: absolute;
+  right: 0; top: 0; bottom: 0;
+  width: 50%;
+  background-size: cover;
+  background-position: center;
+  mask-image: linear-gradient(to left, rgba(0,0,0,1) 50%, rgba(0,0,0,0) 100%);
+  -webkit-mask-image: linear-gradient(to left, rgba(0,0,0,1) 50%, rgba(0,0,0,0) 100%);
+  z-index: 0;
+  pointer-events: none;
+  opacity: 0;
+  transform: scale(1.06) translateX(12px);
+  transition: transform 1.6s cubic-bezier(0.16, 1, 0.3, 1), opacity 1.2s ease;
+}
+.cinematic-bg.revealed {
+  opacity: 0.75;
+  transform: scale(1.01) translateX(0);
+}
+
+.eyebrow{
+  font-family:var(--mono);
+  font-size:clamp(0.85rem, 1.2vw, 1.1rem);
+  letter-spacing:.25em;
+  text-transform:uppercase;
+  color:var(--accent);
+  margin-bottom:1.6rem;
+  display:flex;align-items:center;gap:.6em;
+  font-weight:700;
+}
+.eyebrow::before{content:'';width:25px;height:2px;background:var(--accent-soft);display:inline-block;}
+
+.title{
+  font-family:var(--serif);
+  font-weight:700;
+  font-size:clamp(3.0rem, 6.0vw, 5.0rem);
+  line-height:1.08;
+  letter-spacing:-.02em;
+  background:linear-gradient(120deg,#ffffff,#fef3c7 60%,var(--accent));
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+  filter:drop-shadow(0 1px 1px rgba(0,0,0,.7));
+  max-width:24ch;
+}
+.title.cool{
+  background:linear-gradient(120deg,#ffffff,#e0f2fe 60%,var(--blue));
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+}
+
+.lede{
+  font-family:var(--sans);
+  font-size:clamp(1.4rem, 2.3vw, 2.0rem);
+  color:var(--mid);
+  line-height:1.6;
+  max-width:55ch;
+  font-weight:300;
+}
+
+.body-copy{
+  font-size:clamp(1.3rem, 2.1vw, 1.8rem);
+  line-height:1.7;
+  color:var(--mid);
+  max-width:65ch;
+  font-weight:300;
+}
+.body-copy b, .body-copy strong{color:var(--hi);font-weight:600;}
+
+.content-row{display:flex;gap:4vw;align-items:flex-start;margin-top:2rem;}
+
+/* grids of small facts */
+.fact-grid{display:grid;gap:1.2rem;margin-top:2rem;}
+.fact-grid.cols-2{grid-template-columns:1fr 1fr;}
+.fact-grid.cols-3{grid-template-columns:repeat(3,1fr);}
+.fact{background:var(--surface);border:1px solid var(--border);padding:1.8rem 2rem;border-radius:12px;}
+.fact .num{font-family:var(--mono);color:var(--accent);font-size:0.9rem;letter-spacing:.12em;font-weight:700;}
+.fact .txt{margin-top:.8rem;font-size:clamp(1.1rem, 1.8vw, 1.5rem);color:var(--mid);line-height:1.6;font-weight:300;}
+.fact .txt b{color:var(--hi);font-weight:600;}
+
+/* timeline */
+.timeline{margin-top:2rem;display:flex;flex-direction:column;gap:0;}
+.tl-row{display:grid;grid-template-columns:120px 25px 1fr;column-gap:1.5rem;align-items:flex-start;padding:0.8rem 0;}
+.tl-row .yr{font-family:var(--mono);color:var(--accent);font-size:1.1rem;text-align:right;padding-top:.15rem;font-weight:700;}
+.tl-row .dot-col{display:flex;flex-direction:column;align-items:center;height:100%;}
+.tl-row .dot{width:11px;height:11px;border-radius:50%;background:var(--accent);box-shadow:0 0 0 4px var(--accent-soft);margin-top:.45rem;}
+.tl-row .line{flex:1;width:2px;background:var(--border-hi);margin-top:.3rem;min-height:50px;}
+.tl-row:last-child .line{display:none;}
+.tl-row .lbl{font-family:var(--serif);font-size:1.5rem;color:var(--hi);font-weight:600;}
+.tl-row .sub{font-size:1.05rem;color:var(--mid);margin-top:.2rem;font-weight:300;}
+
+/* code block */
+.code{
+  background:var(--surface);
+  border:1px solid var(--border);
+  border-radius:12px;
+  padding:1.6rem 2.2rem;
+  font-family:var(--mono);
+  font-size:clamp(1.1rem, 1.7vw, 1.45rem);
+  line-height:1.8;
+  color:#e2e8f0;
+  white-space:pre;
+  overflow:auto;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.02);
+}
+.code .kw{color:var(--accent);font-weight:700;}
+.code .cm{color:var(--low);font-style:italic;}
+.code .str{color:#a7f3d0;}
+.code .fn{color:var(--blue);}
+.code-cap{font-family:var(--mono);font-size:.85rem;letter-spacing:.14em;text-transform:uppercase;color:var(--low);margin-bottom:.8rem;}
+
+/* table */
+.ptable{width:100%;border-collapse:collapse;margin-top:1.8rem;}
+.ptable th{
+  text-align:left;font-family:var(--mono);font-size:.85rem;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--accent);padding:1rem 1.4rem;border-bottom:2px solid var(--border-hi);font-weight:700;
+}
+.ptable td{padding:1.1rem 1.4rem;border-bottom:1px solid var(--border);font-size:clamp(1.1rem, 1.8vw, 1.5rem);color:var(--mid);font-weight:300;}
+.ptable td:first-child, .ptable th:first-child{font-family:var(--mono);color:var(--hi);font-weight:600;}
+.ptable tr:last-child td{border-bottom:none;}
+
+/* pill / tag grid for keywords */
+.pillgrid{display:flex;flex-wrap:wrap;gap:.8rem;margin-top:2rem;max-width:60ch;}
+.pill{
+  font-family:var(--mono);font-size:1.05rem;color:var(--mid);
+  background:var(--surface);border:1px solid var(--border);
+  padding:.5rem 1.1rem;border-radius:6px;
+}
+
+/* two-col layout */
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:3rem;margin-top:2rem;align-items:start;}
+.card-block{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:2rem 2.2rem;}
+.card-block h4{
+  font-family:var(--serif);font-size:1.7rem;font-weight:700;color:var(--hi);margin-bottom:1rem;
+}
+.card-block ul{list-style:none;}
+.card-block li{
+  font-size:clamp(1.1rem, 1.8vw, 1.5rem);color:var(--mid);line-height:1.7;padding-left:1.3rem;position:relative;font-weight:300;margin-bottom:.5rem;
+}
+.card-block li::before{content:'—';position:absolute;left:0;color:var(--low);}
+
+/* list simple */
+.simple-list{margin-top:1.6rem;}
+.simple-list li{
+  font-size:clamp(1.2rem, 2.0vw, 1.7rem);color:var(--mid);line-height:1.8;list-style:none;padding-left:1.8rem;position:relative;font-weight:300;margin-bottom:.8rem;
+}
+.simple-list li::before{content:'·';position:absolute;left:0;color:var(--accent);font-size:2rem;line-height:0.9;}
+.simple-list li b{color:var(--hi);font-weight:600;}
+
+.split{display:flex;gap:4vw;margin-top:2rem;}
+.split > div{flex:1;}
+
+/* section divider slides */
+.section-num{
+  font-family:var(--mono);color:var(--accent);font-size:1.2rem;letter-spacing:.25em;margin-bottom:1.6rem;font-weight:700;
+}
+.section-title{
+  font-family:var(--serif);font-weight:700;font-size:clamp(3.5rem,7vw,6.5rem);line-height:1.05;
+  background:linear-gradient(120deg,#ffffff,#fef3c7 60%,var(--accent));
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+  filter:drop-shadow(0 1px 1px rgba(0,0,0,.7));
+}
+.section-list{margin-top:2rem;display:flex;flex-direction:column;gap:.8rem;}
+.section-list .s-item{font-family:var(--sans);font-size:1.2rem;color:var(--low);font-weight:300;letter-spacing:.02em;}
+.section-list .s-item.done{color:var(--low);text-decoration:line-through;opacity:0.4;}
+.section-list .s-item.now{color:var(--hi);font-weight:500;}
+.section-list .s-item.now::before{content:'→ ';color:var(--accent);}
+
+/* Giant Typography watermark */
+.giant-stat {
+  position: absolute;
+  right: 8vw;
+  bottom: 12vh;
+  font-family: var(--serif);
+  font-weight: 700;
+  font-size: clamp(8rem, 20vw, 18rem);
+  color: transparent;
+  -webkit-text-stroke: 2px rgba(251, 191, 36, 0.16);
+  line-height: 0.9;
+  pointer-events: none;
+  user-select: none;
+  z-index: 0;
+}
+
+/* Anatomy program stack layout */
+.anatomy-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  width: clamp(280px, 32vw, 420px);
+  margin-left: auto;
+}
+.stack-box {
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  padding: 1.1rem;
+  text-align: center;
+  font-family: var(--mono);
+  font-size: 1.1rem;
+  color: var(--mid);
+  border-radius: 6px;
+  transition: border-color 0.4s ease, color 0.4s ease, background 0.4s ease;
+}
+.stack-box.active-box {
+  border-color: var(--accent);
+  color: var(--accent);
+  background: var(--surface3);
+}
+
+/* Flowchart block layout */
+.flowchart {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1.2rem;
+  margin-top: 3rem;
+  flex-wrap: wrap;
+}
+.fc-node {
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  padding: 1.4rem 1.8rem;
+  border-radius: 8px;
+  font-family: var(--mono);
+  font-size: 1.15rem;
+  color: var(--hi);
+  box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+}
+.fc-arrow {
+  font-size: 1.8rem;
+  color: var(--low);
+  font-family: var(--mono);
+}
+
+/* Interactive Terminal simulator styling */
+.terminal-sim {
+  background: #050505;
+  border: 2px solid #222;
+  border-radius: 8px;
+  width: clamp(300px, 35vw, 450px);
+  margin-left: auto;
+  box-shadow: 0 20px 50px rgba(0,0,0,0.8);
+  overflow: hidden;
+  font-family: var(--mono);
+}
+.term-header {
+  background: #111;
+  padding: 0.6rem 1rem;
+  font-size: 0.8rem;
+  color: var(--low);
+  border-bottom: 1px solid #222;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+.term-body {
+  padding: 1.2rem;
+  min-height: 120px;
+  font-size: 1.15rem;
+  color: #10b981; /* terminal green */
+}
+.term-line {
+  margin-bottom: 0.6rem;
+  line-height: 1.4;
+  min-height: 1.5rem;
+}
+.term-line::before {
+  content: '> ';
+  color: var(--low);
+}
+.term-memory {
+  background: #111;
+  padding: 1rem;
+  border-top: 1px solid #222;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.mem-label {
+  font-size: 0.85rem;
+  color: var(--low);
+}
+.mem-box {
+  background: var(--surface3);
+  border: 1px solid var(--border);
+  padding: 0.4rem 1rem;
+  border-radius: 4px;
+  font-size: 1.1rem;
+  color: var(--accent);
+  font-weight: 600;
+  transition: background 0.4s, border-color 0.4s;
+}
+.mem-box.updated {
+  border-color: var(--green);
+  background: var(--green-soft);
+  box-shadow: 0 0 10px rgba(16, 185, 129, 0.2);
+  color: var(--hi);
+}
+
+/* Quiz Option styling */
+.quiz-options {
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+  width: clamp(300px, 35vw, 450px);
+  margin-left: auto;
+}
+.quiz-opt {
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  padding: 1.2rem;
+  border-radius: 8px;
+  font-size: 1.15rem;
+  color: var(--mid);
+  cursor: pointer;
+  transition: background 0.3s, border-color 0.3s, color 0.3s;
+}
+.quiz-opt:hover {
+  background: var(--surface3);
+  border-color: var(--border-hi);
+  color: var(--hi);
+}
+.quiz-opt.correct {
+  border-color: var(--green);
+  background: var(--green-soft);
+  color: var(--hi);
+}
+.quiz-opt.incorrect {
+  border-color: var(--rose);
+  background: rgba(244, 63, 94, 0.15);
+  color: var(--hi);
+}
+
+/* nav ui */
+#progress{position:fixed;top:0;left:0;height:3px;background:var(--accent);z-index:50;transition:width .4s ease;box-shadow:0 0 10px var(--accent);}
+#hud{
+  position:fixed;bottom:0;left:0;right:0;
+  display:flex;justify-content:space-between;align-items:center;
+  padding:1.8rem 8vw;z-index:50;
+  pointer-events:none;
+  font-family:var(--mono);font-size:.8rem;letter-spacing:.14em;color:var(--low);
+}
+#hud .count{pointer-events:auto;}
+#hud .hint{opacity:.65;}
+.navzone{position:fixed;top:0;bottom:0;width:15%;z-index:40;cursor:pointer;}
+.navzone.left{left:0;}
+.navzone.right{right:0;}
+
+@media(max-width:820px){
+  .two-col,.split,.flowchart{grid-template-columns:1fr;display:flex;flex-direction:column;}
+  .slide{padding:4vh 5vw;}
+  .fact-grid.cols-3{grid-template-columns:1fr;}
+  .anatomy-stack,.terminal-sim,.quiz-options{width:100%; margin-top:2rem;}
+}
+</style>
+</head>
+<body>
+
+<div id="progress"></div>
+<div id="deck"></div>
+<div class="navzone left" onclick="go(-1)"></div>
+<div class="navzone right" onclick="go(1)"></div>
+<div id="hud">
+  <div class="count"><span id="cur">01</span> / <span id="tot">00</span></div>
+  <div class="hint">← → or Space to navigate · F fullscreen</div>
+</div>
+
+<script>
+const slidesData = [];
+function S(html, brace){ slidesData.push({html, brace: brace || (slidesData.length%2? '}':'{') }); }
+
+/* ---------- 00 TITLE ---------- */
+S(`
+<div class="eyebrow">Crescent Institute of Science &amp; Technology · CSE</div>
+<div class="title" style="font-size:clamp(4rem,12vw,9rem); font-weight:900;">C</div>
+<div class="title small" style="margin-top:.4rem; font-size:clamp(2rem,4vw,3.5rem);">The Language That Built <span class="accent">Modern Computing</span></div>
+<p class="lede" style="margin-top:1.8rem; max-width:65ch;">An introduction to structure, syntax, and the machine underneath — Dennis Ritchie's gift to the operating systems of the world.</p>
+`);
+
+/* ---------- 01 AGENDA ---------- */
+S(`
+<div class="eyebrow">Roadmap</div>
+<div class="title" style="font-size:3rem;">What we'll build today</div>
+<div class="fact-grid cols-3">
+  <div class="fact step"><div class="num">01</div><div class="txt"><b>Origins &amp; History</b><br>Dennis Ritchie's Bell Labs breakthrough.</div></div>
+  <div class="fact step"><div class="num">02</div><div class="txt"><b>Source → Machine</b><br>How code becomes binary electrical signals.</div></div>
+  <div class="fact step"><div class="num">03</div><div class="txt"><b>Program Structure</b><br>The six anatomical sections of C code.</div></div>
+  <div class="fact step"><div class="num">04</div><div class="txt"><b>Vocabulary &amp; Tokens</b><br>Reserved words, identifiers, and variables.</div></div>
+  <div class="fact step"><div class="num">05</div><div class="txt"><b>Operators</b><br>Arithmetic, relational, logical, and bitwise logic.</div></div>
+  <div class="fact step"><div class="num">06</div><div class="txt"><b>Terminal I/O</b><br>Talking to users with printf and scanf.</div></div>
+</div>
+`);
+
+/* ---------- 02 SECTION DIVIDER: PART 1 ---------- */
+S(`
+<div class="section-num">Part 01</div>
+<div class="section-title">Origins &amp;<br>Nature of C</div>
+<div class="section-list">
+  <div class="s-item now">Origins &amp; Dennis Ritchie's Legacy</div>
+  <div class="s-item">Source → Machine compilation</div>
+  <div class="s-item">Structure &amp; Anatomy of a Program</div>
+  <div class="s-item">Variables &amp; Constants</div>
+  <div class="s-item">Operators</div>
+  <div class="s-item">Terminal Input / Output</div>
+</div>
+`, '{');
+
+/* ---------- 03 WHAT IS C ---------- */
+S(`
+<div class="eyebrow">Part 01 · Origins &amp; Nature</div>
+<div class="title">What is C?</div>
+<div class="lede" style="margin-top:1.8rem;">A structured, third-generation programming language. It is a unique bridge: high-level enough to be human-readable, yet low-level enough to control raw hardware directly.</div>
+<div class="content-row">
+  <ul class="simple-list">
+    <li class="step"><b>System Language:</b> Used to build OS cores like Unix, Linux, Windows, and MacOS.</li>
+    <li class="step"><b>Embedded Powerhouse:</b> Controls everything from refrigerator chips to space rockets.</li>
+    <li class="step"><b>Foundation:</b> C++ , Java, Python, and JavaScript compilers are all written in C.</li>
+  </ul>
+</div>
+`);
+
+/* ---------- 04 HISTORY ---------- */
+S(`
+<div class="eyebrow">Part 01 · Origins &amp; Nature</div>
+<div class="title">The 12-Year Ancestry</div>
+<div class="split">
+  <div class="timeline">
+    <div class="tl-row step"><div class="yr">1960</div><div class="dot-col"><div class="dot"></div><div class="line"></div></div><div><div class="lbl">ALGOL 60</div><div class="sub">The mathematical grand-ancestor of structured code.</div></div></div>
+    <div class="tl-row step"><div class="yr">1963</div><div class="dot-col"><div class="dot"></div><div class="line"></div></div><div><div class="lbl">CPL</div><div class="sub">Cambridge's high-level but complex system experiment.</div></div></div>
+    <div class="tl-row step"><div class="yr">1967</div><div class="dot-col"><div class="dot"></div><div class="line"></div></div><div><div class="lbl">BCPL</div><div class="sub">Basic CPL — stripped down to make compiler building possible.</div></div></div>
+    <div class="tl-row step"><div class="yr">1970</div><div class="dot-col"><div class="dot"></div><div class="line"></div></div><div><div class="lbl">B</div><div class="sub">Ken Thompson writes a typing-less, byte-oriented version for Unix.</div></div></div>
+    <div class="tl-row step"><div class="yr">1972</div><div class="dot-col"><div class="dot"></div></div><div><div class="lbl">C</div><div class="sub">Dennis Ritchie introduces data types and rewrites Unix completely in C.</div></div></div>
+  </div>
+  <div>
+    <div class="giant-stat step">1972</div>
+  </div>
+</div>
+`);
+
+/* ---------- 05 DEFINING TRAITS ---------- */
+S(`
+<div class="eyebrow">Part 01 · Origins &amp; Nature</div>
+<div class="title">Core Traits of C</div>
+<div class="two-col">
+  <div class="card-block step">
+    <h4>System Strengths</h4>
+    <ul>
+      <li>Direct memory management via <b>Pointers</b></li>
+      <li>Highly structured — blocks grouped by functions</li>
+      <li>Low overhead = blazing fast execution</li>
+      <li>Extremely portable across architectures</li>
+    </ul>
+  </div>
+  <div class="card-block step">
+    <h4>Key Rules</h4>
+    <ul>
+      <li>Whitespace-free format (indentation is visual, not logical)</li>
+      <li><b>Case-Sensitive</b> (<span class="mono" style="color:var(--accent)">Total</span> != <span class="mono" style="color:var(--accent)">total</span>)</li>
+      <li>Relies on a rich set of built-in standard libraries</li>
+    </ul>
+  </div>
+</div>
+`);
+
+/* ---------- 06 SECTION DIVIDER: PART 2 ---------- */
+S(`
+<div class="section-num">Part 02</div>
+<div class="section-title">Source →<br>Machine Code</div>
+<div class="section-list">
+  <div class="s-item done">Origins &amp; Dennis Ritchie's Legacy</div>
+  <div class="s-item now">Source → Machine compilation</div>
+  <div class="s-item">Structure &amp; Anatomy of a Program</div>
+  <div class="s-item">Variables &amp; Constants</div>
+  <div class="s-item">Operators</div>
+  <div class="s-item">Terminal Input / Output</div>
+</div>
+`, '}');
+
+/* ---------- 07 WHAT IS PROGRAMMING ---------- */
+S(`
+<div class="eyebrow">Part 02 · Source → Machine</div>
+<div class="title">What is programming?</div>
+<div class="lede" style="margin-top:1.8rem;">Computers don't speak English. They only understand electricity. High voltage (1) and Low voltage (0).</div>
+<div class="body-copy step" style="margin-top:1.6rem;">A programming language is a <b>translator</b>. It lets you write logic using English-like words, and converts it into pure, machine-readable binary code.</div>
+`);
+
+/* ---------- 08 MACHINE LANGUAGE ---------- */
+S(`
+<div class="eyebrow">Part 02 · Source → Machine</div>
+<div class="title">Machine Language (Binary)</div>
+<div class="split">
+  <div>
+    <div class="body-copy">The raw language of the processor. Sequences of bits like:</div>
+    <div class="code step" style="margin-top:1.2rem; font-size:1.3rem;">10110000 01100001</div>
+    <div class="body-copy step" style="margin-top:1.2rem;">This is direct instruction, but impossible to write, debug, or maintain.</div>
+  </div>
+  <div class="card-block step">
+    <h4>The Bottlenecks</h4>
+    <ul>
+      <li>Completely unreadable to humans</li>
+      <li>One tiny mistake (0 instead of 1) takes days to locate</li>
+      <li><b>Not portable:</b> Code written for Intel CPU won't run on ARM CPU</li>
+    </ul>
+  </div>
+</div>
+`);
+
+/* ---------- 09 COMPILER ANALOGY (CINEMATIC) ---------- */
+S(`
+<div class="eyebrow">Part 02 · Source → Machine</div>
+<div class="title">The Catering Analogy (Compilers)</div>
+<div class="split" style="position:relative; min-height:60vh;">
+  <div style="flex:1.2; z-index:2; position:relative;">
+    <p class="lede">A <b>Compiler</b> translates the entire code at once before running it.</p>
+    <ul class="simple-list">
+      <li class="step"><b>Catering Service:</b> You give the full menu beforehand. They cook the entire meal in giant vessels, and deliver it. You eat immediately.</li>
+      <li class="step"><b>Fast Execution:</b> Since it is pre-cooked, eating (running the app) is super fast.</li>
+      <li class="step"><b>Compilation:</b> The compiler reads the entire <b>.c</b> file and builds a standalone <b>.exe</b> file.</li>
+    </ul>
+  </div>
+  <div class="cinematic-bg step" style="background-image: url('../../assets/samayal_chef.jpg');"></div>
+</div>
+`);
+
+/* ---------- 10 INTERPRETER ANALOGY (CINEMATIC) ---------- */
+S(`
+<div class="eyebrow">Part 02 · Source → Machine</div>
+<div class="title">The Dosa Master Analogy (Interpreters)</div>
+<div class="split" style="position:relative; min-height:60vh;">
+  <div style="flex:1.2; z-index:2; position:relative;">
+    <p class="lede">An <b>Interpreter</b> reads and executes code line-by-line on the fly.</p>
+    <ul class="simple-list">
+      <li class="step"><b>Live Dosa Master:</b> He pours batter on the tawa, makes one dosa, serves it, then moves to the next.</li>
+      <li class="step"><b>Instant Error Halt:</b> If the gas cylinder runs out (error at line 5), he stops immediately. No more dosas can be served.</li>
+      <li class="step">Languages like Python and JavaScript use interpreters. C uses a compiler!</li>
+    </ul>
+  </div>
+  <div class="cinematic-bg step" style="background-image: url('../../assets/dosa_master.jpg');"></div>
+</div>
+`);
+
+/* ---------- 11 COMPILER VS INTERPRETER TABLE ---------- */
+S(`
+<div class="eyebrow">Part 02 · Source → Machine</div>
+<div class="title">Catering vs. Dosa Master</div>
+<table class="ptable">
+  <tr><th>Metric</th><th>Compiler (C)</th><th>Interpreter (Python)</th></tr>
+  <tr class="step"><td>Process</td><td>Translates all code at once</td><td>Translates line-by-line</td></tr>
+  <tr class="step"><td>Output File</td><td>Generates executable (.exe)</td><td>No executable created</td></tr>
+  <tr class="step"><td>Speed</td><td>Blazing Fast (Pre-cooked)</td><td>Slower (Cook-on-demand)</td></tr>
+  <tr class="step"><td>Errors</td><td>Shows all errors at the end</td><td>Stops at the first error line</td></tr>
+</table>
+`);
+
+/* ---------- 12 SECTION DIVIDER: PART 3 ---------- */
+S(`
+<div class="section-num">Part 03</div>
+<div class="section-title">Anatomy of a<br>C Program</div>
+<div class="section-list">
+  <div class="s-item done">Origins &amp; Dennis Ritchie's Legacy</div>
+  <div class="s-item done">Source → Machine compilation</div>
+  <div class="s-item now">Structure &amp; Anatomy of a Program</div>
+  <div class="s-item">Variables &amp; Constants</div>
+  <div class="s-item">Operators</div>
+  <div class="s-item">Terminal Input / Output</div>
+</div>
+`, '{');
+
+/* ---------- 13 STRUCTURE OVERVIEW ---------- */
+S(`
+<div class="eyebrow">Part 03 · Anatomy</div>
+<div class="title">The 6 Core Sections</div>
+<div class="split" style="align-items: center;">
+  <div class="code step" style="font-size:1.15rem; flex:1.2;">
+<span class="cm">/* 1. Documentation Section */</span>
+<span class="kw">#include</span> &lt;stdio.h&gt;    <span class="cm">/* 2. Link / Preprocessor */</span>
+<span class="kw">#define</span> TAX 5        <span class="cm">/* 3. Definition Section */</span>
+<span class="kw">int</span> globalScore;     <span class="cm">/* 4. Global Declaration */</span>
+
+<span class="kw">int</span> main()           <span class="cm">/* 5. Main Function Entry */</span>
+{
+    <span class="kw">int</span> localVal = 5;
+    <span class="fn">printf</span>(<span class="str">"Value: %d"</span>, localVal);
+    <span class="kw">return</span> 0;
+}
+<span class="kw">void</span> subProgram()    <span class="cm">/* 6. Subprogram Section */</span>
+{ }
+  </div>
+  <div class="anatomy-stack">
+    <div class="stack-box step" id="st-doc">Documentation</div>
+    <div class="stack-box step" id="st-link">Preprocessor Link</div>
+    <div class="stack-box step" id="st-def">Definitions</div>
+    <div class="stack-box step" id="st-glob">Global Decl.</div>
+    <div class="stack-box step" id="st-main">main() Function</div>
+    <div class="stack-box step" id="st-sub">Subprograms</div>
+  </div>
+</div>
+`);
+
+/* ---------- 14 HEADER ANALOGY ---------- */
+S(`
+<div class="eyebrow">Part 03 · Anatomy</div>
+<div class="title">Preprocessor: Importing Helpers</div>
+<div class="split">
+  <div>
+    <div class="body-copy">Writing standard functions from scratch (like drawing pixels or reading keyboard inputs) is too hard. We need standard helpers.</div>
+    <ul class="simple-list" style="margin-top:1.4rem;">
+      <li class="step"><b>Importing side-dishes:</b> Instead of making Sambar or Chutney in your home kitchen, you just order a parcel from a nearby mess.</li>
+      <li class="step"><b>Header Files:</b> <span class="mono" style="color:var(--accent)">#include &lt;stdio.h&gt;</span> imports ready-made commands like <span class="mono" style="color:var(--blue)">printf()</span> and <span class="mono" style="color:var(--blue)">scanf()</span>.</li>
+    </ul>
+  </div>
+  <div class="card-block step">
+    <h4>Linking</h4>
+    <p style="line-height:1.6; color:var(--mid);">The <b>Linker</b> binds the pre-built stdio library to your code to make a complete executable program.</p>
+  </div>
+</div>
+`);
+
+/* ---------- 15 MAIN FUNCTION ENTRY ---------- */
+S(`
+<div class="eyebrow">Part 03 · Anatomy</div>
+<div class="title">main() : The Starting Point</div>
+<div class="split">
+  <div class="body-copy">
+    Every movie has characters, crew, and dialogues. But the crowd starts shouting only when the <b>Hero enters the screen</b>.
+    <ul class="simple-list" style="margin-top:1.6rem;">
+      <li class="step"><b>Entry Point:</b> A C program might have 1,000 helper lines. But execution ALWAYS starts from the opening brace <span class="mono" style="color:var(--accent)">{</span> of <span class="mono" style="color:var(--accent)">main()</span>.</li>
+      <li class="step">No main(), No run. It is the absolute anchor of your code.</li>
+    </ul>
+  </div>
+  <div class="card-block step" style="background:linear-gradient(135deg, #1e1b4b, #000); border-color:#312e81;">
+    <h4 style="color:var(--accent);">Starting Point 🎬</h4>
+    <code class="mono" style="font-size:1.4rem; display:block; margin-top:1rem; color:#fff;">
+    int main()<br>
+    {<br>
+    &nbsp;&nbsp;// Execution starts here!<br>
+    &nbsp;&nbsp;printf("Program Begins");<br>
+    &nbsp;&nbsp;return 0;<br>
+    }
+    </code>
+  </div>
+</div>
+`);
+
+/* ---------- 16 WORKED EXAMPLE ---------- */
+S(`
+<div class="eyebrow">Part 03 · Anatomy</div>
+<div class="title">Let's Read a C Program</div>
+<div class="code step" style="font-size:1.2rem;">
+<span class="cm">/* Program to add two numbers */</span>
+<span class="kw">#include</span> &lt;stdio.h&gt;    <span class="cm">/* Preprocessor link */</span>
+<span class="kw">#define</span> TAX 5        <span class="cm">/* Definition */</span>
+
+<span class="kw">int</span> main()
+{
+    <span class="kw">int</span> price = 100; <span class="cm">/* Local variable */</span>
+    <span class="kw">int</span> total;
+    
+    total = price + TAX;
+    <span class="fn">printf</span>(<span class="str">"Total Bill: %d\n"</span>, total);
+    <span class="kw">return</span> 0;
+}
+</div>
+`);
+
+/* ---------- 17 PIPELINE (FLOWCHART) ---------- */
+S(`
+<div class="eyebrow">Part 03 · Anatomy</div>
+<div class="title">From Code to Running Process</div>
+<div class="flowchart">
+  <div class="fc-node step">Source Code (.c)</div>
+  <div class="fc-arrow step">→</div>
+  <div class="fc-node step">Compiler (.obj)</div>
+  <div class="fc-arrow step">→</div>
+  <div class="fc-node step">Linker</div>
+  <div class="fc-arrow step">→</div>
+  <div class="fc-node step">Executable (.exe)</div>
+</div>
+<div class="body-copy step" style="margin-top:3.5rem; text-align: center; margin-left: auto; margin-right: auto; max-width: 80ch;">
+  A <b>Syntax error</b> is a grammar mistake (e.g. missing semicolon) caught by the compiler. A <b>Logical error</b> is a logic mistake (e.g. adding numbers instead of subtracting) discovered only after executing.
+</div>
+`);
+
+/* ---------- 18 SECTION DIVIDER: PART 4 ---------- */
+S(`
+<div class="section-num">Part 04</div>
+<div class="section-title">The Vocabulary<br>of C</div>
+<div class="section-list">
+  <div class="s-item done">Origins &amp; Dennis Ritchie's Legacy</div>
+  <div class="s-item done">Source → Machine compilation</div>
+  <div class="s-item done">Structure &amp; Anatomy of a Program</div>
+  <div class="s-item now">Variables &amp; Constants</div>
+  <div class="s-item">Operators</div>
+  <div class="s-item">Terminal Input / Output</div>
+</div>
+`, '}');
+
+/* ---------- 19 CHARACTER SET ---------- */
+S(`
+<div class="eyebrow">Part 04 · Vocabulary</div>
+<div class="title">C Character Set</div>
+<div class="kicker">The valid characters you can write inside C instructions:</div>
+<div class="fact-grid cols-3" style="margin-top:1.6rem;">
+  <div class="fact step"><div class="num">ALPHABETS</div><div class="txt">Upper A-Z &amp; Lower a-z</div></div>
+  <div class="fact step"><div class="num">DIGITS</div><div class="txt">Numbers 0-9</div></div>
+  <div class="fact step" style="grid-column: span 1;"><div class="num">SPECIALS</div><div class="txt" style="font-family:var(--mono);">+ - * / % = ; { } [ ] _</div></div>
+</div>
+`);
+
+/* ---------- 20 COMMENTS ---------- */
+S(`
+<div class="eyebrow">Part 04 · Vocabulary</div>
+<div class="title">Comments: Code notes</div>
+<div class="body-copy">Comments are messages for humans. The compiler completely ignores them.</div>
+<div class="code step" style="margin-top:1.8rem; font-size:1.25rem;">
+<span class="cm">/* 
+   This is a Multi-line comment.
+   You can write paragraphs here.
+*/</span>
+
+<span class="kw">int</span> price = 100; <span class="cm">// Single-line comment: stores cost</span>
+</div>
+`);
+
+/* ---------- 21 TOKENS OVERVIEW ---------- */
+S(`
+<div class="eyebrow">Part 04 · Vocabulary</div>
+<div class="title">C Tokens</div>
+<div class="kicker">The smallest individual elements of a C program. When compiling, C splits your lines into these tokens.</div>
+<div class="fact-grid cols-3" style="margin-top:1.6rem;">
+  <div class="fact step"><div class="num">KEYWORDS</div><div class="txt" style="font-family:var(--mono); color:var(--accent);">int, float, return</div></div>
+  <div class="fact step"><div class="num">IDENTIFIERS</div><div class="txt" style="font-family:var(--mono); color:var(--accent);">main, total, price</div></div>
+  <div class="fact step"><div class="num">CONSTANTS</div><div class="txt" style="font-family:var(--mono); color:var(--accent);">100, 3.14, 'A'</div></div>
+  <div class="fact step"><div class="num">OPERATORS</div><div class="txt" style="font-family:var(--mono); color:var(--accent);">+ , - , * , / , %</div></div>
+  <div class="fact step"><div class="num">STRINGS</div><div class="txt" style="font-family:var(--mono); color:var(--accent);">"Hello", "Result: %d"</div></div>
+  <div class="fact step"><div class="num">SPECIAL SYMBOLS</div><div class="txt" style="font-family:var(--mono); color:var(--accent);">; , { , } , [ , ]</div></div>
+</div>
+`);
+
+/* ---------- 22 TOKENS EXAMPLE ---------- */
+S(`
+<div class="eyebrow">Part 04 · Vocabulary</div>
+<div class="title">Breaking Down a Line</div>
+<div class="code" style="font-size:1.5rem; text-align:center;">if ( salary &gt;= 50000 )</div>
+<div class="fact-grid cols-3" style="margin-top:2rem;">
+  <div class="fact step"><div class="num">if</div><div class="txt">Keyword</div></div>
+  <div class="fact step"><div class="num">( )</div><div class="txt">Special symbols</div></div>
+  <div class="fact step"><div class="num">salary</div><div class="txt">Identifier (Variable)</div></div>
+  <div class="fact step"><div class="num">&gt;=</div><div class="txt">Comparison Operator</div></div>
+  <div class="fact step"><div class="num">50000</div><div class="txt">Numeric Constant</div></div>
+</div>
+`);
+
+/* ---------- 23 KEYWORDS ---------- */
+S(`
+<div class="eyebrow">Part 04 · Vocabulary</div>
+<div class="title">32 Reserved Keywords</div>
+<div class="split">
+  <div class="pillgrid">
+    ${['auto','break','case','char','const','continue','default','do','double','else','enum','extern','float','for','goto','if','int','long','register','return','short','signed','sizeof','static','struct','switch','typedef','union','unsigned','void','volatile','while'].map(k=>`<div class="pill step">${k}</div>`).join('')}
+  </div>
+  <div>
+    <div class="giant-stat step">32</div>
+  </div>
+</div>
+`);
+
+/* ---------- 24 VARIABLES & ANALOGY (CINEMATIC) ---------- */
+S(`
+<div class="eyebrow">Part 04 · Vocabulary</div>
+<div class="title">The Spice Box Analogy (Variables)</div>
+<div class="split" style="position:relative; min-height:60vh;">
+  <div style="flex:1.2; z-index:2; position:relative;">
+    <p class="lede">A <b>Variable</b> is a named storage container in memory.</p>
+    <ul class="simple-list">
+      <li class="step"><b>The Spice Box:</b> Traditional box with distinct cups. One cup for mustard, one for cumin, one for fenugreek.</li>
+      <li class="step"><b>Strict Data Types:</b> You don't dump mustard in the cumin cup. In C, you don't store characters in integer containers.</li>
+      <li class="step"><b>C Containers:</b> <span class="mono" style="color:var(--accent)">int</span> for whole numbers, <span class="mono" style="color:var(--accent)">float</span> for decimals, <span class="mono" style="color:var(--accent)">char</span> for single letters.</li>
+    </ul>
+  </div>
+  <div class="cinematic-bg step" style="background-image: url('../../assets/anjarai_petti.jpg');"></div>
+</div>
+`);
+
+/* ---------- INTERACTIVE QUIZ SLIDE (NEW) ---------- */
+S(`
+<div class="eyebrow">Part 04 · Interactive Quiz</div>
+<div class="title">Spot the Semicolon Bug</div>
+<div class="split" style="margin-top: 2rem;">
+  <div class="code" id="quiz-code-block" style="font-size:1.2rem; flex: 1.2;">
+#include &lt;stdio.h&gt;
+int main() 
+{
+    int salary = 50000
+    printf("Salary is %d", salary);
+    return 0;
+}
+  </div>
+  <div class="quiz-options">
+    <div class="quiz-opt step" onclick="checkQuiz(this, false)">A) Missing header (#include)</div>
+    <div class="quiz-opt step" onclick="checkQuiz(this, true)">B) Missing semicolon on line 4</div>
+    <div class="quiz-opt step" onclick="checkQuiz(this, false)">C) Salary cannot be initialized</div>
+    <div class="quiz-opt step" onclick="checkQuiz(this, false)">D) Incorrect format specifier (%d)</div>
+  </div>
+</div>
+<div id="quiz-explanation" style="margin-top:2rem; font-size:1.25rem; color:var(--green); font-family:var(--mono); opacity:0; transition:opacity 0.4s ease;">
+  ✔ Correct! C statements must end with a semicolon (;).
+</div>
+`);
+
+/* ---------- 25 NAMING RULES ---------- */
+S(`
+<div class="eyebrow">Part 04 · Vocabulary</div>
+<div class="title">Variable Naming Rules</div>
+<div class="two-col">
+  <ul class="simple-list">
+    <li class="step">Must start with a letter (a-z, A-Z) or underscore ( _ )</li>
+    <li class="step">No spaces or special symbols allowed (except _ )</li>
+    <li class="step">Cannot be a reserved C keyword</li>
+    <li class="step">C is Case-Sensitive: <span class="mono" style="color:var(--accent)">age</span> != <span class="mono" style="color:var(--accent)">AGE</span></li>
+  </ul>
+  <div class="card-block step">
+    <h4 style="color:var(--green);">Valid vs. Invalid</h4>
+    <code class="mono" style="font-size:1.15rem; display:block; line-height:1.8;">
+    <span style="color:var(--green);">✔ roll_number</span><br>
+    <span style="color:var(--green);">✔ totalAmount</span><br>
+    <span style="color:var(--green);">✔ _tempVal</span><br>
+    <span style="color:var(--rose);">❌ roll number (has space)</span><br>
+    <span style="color:var(--rose);">❌ 2var (starts with digit)</span><br>
+    <span style="color:var(--rose);">❌ float (is a keyword)</span>
+    </code>
+  </div>
+</div>
+`);
+
+/* ---------- 26 CONSTANTS ---------- */
+S(`
+<div class="eyebrow">Part 04 · Vocabulary</div>
+<div class="title">Constants: Unchangeable values</div>
+<div class="kicker">Values that remain fixed throughout execution.</div>
+<div class="two-col">
+  <div class="card-block step">
+    <h4>Numeric Constants</h4>
+    <ul>
+      <li><b>Integer Constants:</b> Whole numbers: <span class="mono" style="color:var(--accent);">10 , -250 , 0</span></li>
+      <li><b>Real / Float Constants:</b> Decimal values: <span class="mono" style="color:var(--accent);">3.1415 , -9.81</span></li>
+    </ul>
+  </div>
+  <div class="card-block step">
+    <h4>Character Constants</h4>
+    <ul>
+      <li><b>Single Character:</b> Written in single quotes: <span class="mono" style="color:var(--accent);">'A' , '9' , '$'</span></li>
+      <li><b>String Constants:</b> Written in double quotes: <span class="mono" style="color:var(--accent);">"Hello Crescent"</span></li>
+    </ul>
+  </div>
+</div>
+`);
+
+/* ---------- 27 SECTION DIVIDER: PART 5 ---------- */
+S(`
+<div class="section-num">Part 05</div>
+<div class="section-title">Operators<br>in C</div>
+<div class="section-list">
+  <div class="s-item done">Origins &amp; Dennis Ritchie's Legacy</div>
+  <div class="s-item done">Source → Machine compilation</div>
+  <div class="s-item done">Structure &amp; Anatomy of a Program</div>
+  <div class="s-item done">Variables &amp; Constants</div>
+  <div class="s-item now">Operators (Arithmetic, Logical, Bitwise)</div>
+  <div class="s-item">Terminal Input / Output</div>
+</div>
+`, '{');
+
+/* ---------- 28 OPERATORS OVERVIEW ---------- */
+S(`
+<div class="eyebrow">Part 05 · Operators</div>
+<div class="title">Eight Operator Families</div>
+<div class="kicker">Operators are symbols that trigger mathematical or logical transformations.</div>
+<div class="fact-grid cols-2">
+  <div class="fact step"><div class="num">01</div><div class="txt"><b>Arithmetic:</b> + , - , * , / , %</div></div>
+  <div class="fact step"><div class="num">02</div><div class="txt"><b>Relational:</b> &lt; , &gt; , == , !=</div></div>
+  <div class="fact step"><div class="num">03</div><div class="txt"><b>Logical:</b> &amp;&amp; , || , !</div></div>
+  <div class="fact step"><div class="num">04</div><div class="txt"><b>Assignment:</b> = , += , -=</div></div>
+  <div class="fact step"><div class="num">05</div><div class="txt"><b>Increment / Decrement:</b> ++ , --</div></div>
+  <div class="fact step"><div class="num">06</div><div class="txt"><b>Ternary / Conditional:</b> ? :</div></div>
+  <div class="fact step" style="grid-column: span 2;"><div class="num">07 &amp; 08</div><div class="txt"><b>Bitwise &amp; Special Operators:</b> &amp; , | , &lt;&lt; , &gt;&gt; , sizeof</div></div>
+</div>
+`);
+
+/* ---------- 29 ARITHMETIC ---------- */
+S(`
+<div class="eyebrow">Part 05 · Operators</div>
+<div class="title">Arithmetic Operators</div>
+<table class="ptable">
+  <tr><th>Symbol</th><th>Operation</th><th>C Example</th><th>Result</th></tr>
+  <tr class="step"><td>+</td><td>Addition</td><td>10 + 5</td><td>15</td></tr>
+  <tr class="step"><td>-</td><td>Subtraction</td><td>10 - 5</td><td>5</td></tr>
+  <tr class="step"><td>*</td><td>Multiplication</td><td>10 * 5</td><td>50</td></tr>
+  <tr class="step"><td>/</td><td>Division</td><td>10 / 4</td><td>2 (Integer Division!)</td></tr>
+  <tr class="step"><td>%</td><td>Modulo (Remainder)</td><td>10 % 4</td><td>2</td></tr>
+</table>
+`);
+
+/* ---------- 30 MODULO ANALOGY (CINEMATIC) ---------- */
+S(`
+<div class="eyebrow">Part 05 · Operators</div>
+<div class="title">The Change Analogy (Modulo)</div>
+<div class="split" style="position:relative; min-height:60vh;">
+  <div style="flex:1.2; z-index:2; position:relative;">
+    <p class="lede">The <b>Modulo operator (%)</b> returns the remainder of division.</p>
+    <ul class="simple-list">
+      <li class="step"><b>Buying Tea:</b> You buy tea for Rs. 15. You hand over a Rs. 50 note.</li>
+      <li class="step"><b>Division:</b> How many teas can you buy? 50 / 15 = 3 teas.</li>
+      <li class="step"><b>Modulo:</b> How much change do you get back? 50 % 15 = <b>Rs. 5</b>.</li>
+      <li class="step"><b>C Code:</b> <span class="mono" style="color:var(--accent);">int change = 50 % 15;</span> (change stores 5).</li>
+    </ul>
+  </div>
+  <div class="cinematic-bg step" style="background-image: url('../../assets/tea_shop_change.jpg');"></div>
+</div>
+`);
+
+/* ---------- 31 RELATIONAL ---------- */
+S(`
+<div class="eyebrow">Part 05 · Operators</div>
+<div class="title">Relational Operators</div>
+<div class="kicker">Compare two numbers. Returns true (1) or false (0).</div>
+<table class="ptable">
+  <tr><th>Symbol</th><th>Relation</th><th>Example</th><th>Value</th></tr>
+  <tr class="step"><td>&lt;</td><td>Less Than</td><td>5 &lt; 3</td><td>0 (False)</td></tr>
+  <tr class="step"><td>&gt;</td><td>Greater Than</td><td>5 &gt; 3</td><td>1 (True)</td></tr>
+  <tr class="step"><td>==</td><td>Equal To</td><td>5 == 5</td><td>1 (True)</td></tr>
+  <tr class="step"><td>!=</td><td>Not Equal To</td><td>5 != 5</td><td>0 (False)</td></tr>
+  <tr class="step"><td>&gt;=</td><td>Greater Than or Equal</td><td>5 &gt;= 5</td><td>1 (True)</td></tr>
+</table>
+`);
+
+/* ---------- 32 LOGICAL ---------- */
+S(`
+<div class="eyebrow">Part 05 · Operators</div>
+<div class="title">Logical Operators</div>
+<div class="kicker">Combine multiple decisions.</div>
+<div class="two-col">
+  <div class="card-block step">
+    <h4>Logical Operators</h4>
+    <ul class="simple-list" style="margin-top:.8rem;">
+      <li><b>&amp;&amp; (AND):</b> True only if BOTH conditions are true.</li>
+      <li><b>|| (OR):</b> True if ANY one condition is true.</li>
+      <li><b>! (NOT):</b> Inverts truth: !True = False.</li>
+    </ul>
+  </div>
+  <div class="card-block step">
+    <h4>Example</h4>
+    <code class="mono" style="font-size:1.1rem; line-height:1.8; color:var(--accent);">
+    int age = 20;<br>
+    int citizen = 1;<br><br>
+    if (age &gt;= 18 &amp;&amp; citizen == 1)<br>
+    &nbsp;&nbsp;printf("Can Vote");
+    </code>
+  </div>
+</div>
+`);
+
+/* ---------- 33 INCREMENT ---------- */
+S(`
+<div class="eyebrow">Part 05 · Operators</div>
+<div class="title">Increment &amp; Decrement</div>
+<div class="kicker">++ adds 1 to a variable. -- subtracts 1. Position changes when the math happens.</div>
+<div class="two-col">
+  <div class="card-block step">
+    <h4>Prefix (++x)</h4>
+    <div class="code" style="font-size:1.2rem;">
+int x = 5;
+int y = ++x;
+<span class="cm">// x becomes 6 first,
+// then y stores 6.</span>
+    </div>
+  </div>
+  <div class="card-block step">
+    <h4>Postfix (x++)</h4>
+    <div class="code" style="font-size:1.2rem;">
+int x = 5;
+int y = x++;
+<span class="cm">// y stores 5 first,
+// then x becomes 6.</span>
+    </div>
+  </div>
+</div>
+`);
+
+/* ---------- 34 CONDITIONAL ---------- */
+S(`
+<div class="eyebrow">Part 05 · Operators</div>
+<div class="title">Conditional Operator ( ? : )</div>
+<div class="lede" style="margin-top:1.6rem;">A shorthand way to write simple if-else blocks. Also called the ternary operator.</div>
+<div class="code step" style="margin-top:1.6rem; font-size:1.35rem;">
+int max = (a &gt; b) ? a : b;
+</div>
+<div class="split step" style="margin-top:1.4rem;">
+  <div class="card-block">
+    <h4>Condition True</h4>
+    <p style="color:var(--mid); line-height:1.6;">If <span class="mono" style="color:var(--accent);">a &gt; b</span>, variable <span class="mono">max</span> gets assigned the value of <span class="mono" style="color:var(--blue)">a</span>.</p>
+  </div>
+  <div class="card-block">
+    <h4>Condition False</h4>
+    <p style="color:var(--mid);">If <span class="mono" style="color:var(--accent);">a &lt;= b</span>, variable <span class="mono">max</span> gets assigned the value of <span class="mono" style="color:var(--blue)">b</span>.</p>
+  </div>
+</div>
+`);
+
+/* ---------- 35 BITWISE ---------- */
+S(`
+<div class="eyebrow">Part 05 · Operators</div>
+<div class="title">Bitwise Operations</div>
+<div class="kicker">Allows you to manipulate individual binary bits of a number directly inside the CPU.</div>
+<table class="ptable">
+  <tr><th>Operator</th><th>Meaning</th><th>Example (a=5, b=3)</th><th>Result</th></tr>
+  <tr class="step"><td>&amp;</td><td>Bitwise AND</td><td>5 &amp; 3 (0101 &amp; 0011)</td><td>0001 (1)</td></tr>
+  <tr class="step"><td>|</td><td>Bitwise OR</td><td>5 | 3 (0101 | 0011)</td><td>0111 (7)</td></tr>
+  <tr class="step"><td>^</td><td>Bitwise XOR</td><td>5 ^ 3 (0101 ^ 0011)</td><td>0110 (6)</td></tr>
+  <tr class="step"><td>&lt;&lt;</td><td>Left Shift</td><td>5 &lt;&lt; 1 (0101 &lt;&lt; 1)</td><td>1010 (10)</td></tr>
+  <tr class="step"><td>&gt;&gt;</td><td>Right Shift</td><td>5 &gt;&gt; 1 (0101 &gt;&gt; 1)</td><td>0010 (2)</td></tr>
+</table>
+`);
+
+/* ---------- 36 SECTION DIVIDER: PART 6 ---------- */
+S(`
+<div class="section-num">Part 06</div>
+<div class="section-title">Talking to<br>the User</div>
+<div class="section-list">
+  <div class="s-item done">Origins &amp; Dennis Ritchie's Legacy</div>
+  <div class="s-item done">Source → Machine compilation</div>
+  <div class="s-item done">Structure &amp; Anatomy of a Program</div>
+  <div class="s-item done">Variables &amp; Constants</div>
+  <div class="s-item done">Operators</div>
+  <div class="s-item now">Terminal Input / Output</div>
+</div>
+`, '}');
+
+/* ---------- 37 IO OVERVIEW ---------- */
+S(`
+<div class="eyebrow">Part 06 · Input &amp; Output</div>
+<div class="title">Formatted vs. Unformatted I/O</div>
+<div class="two-col">
+  <div class="card-block step">
+    <h4>Formatted (Custom types)</h4>
+    <p style="color:var(--mid); line-height:1.6; margin-bottom:1rem;">Can parse and output numbers, decimals, and words in formatted arrangements.</p>
+    <ul>
+      <li><span class="mono" style="color:var(--accent);">printf()</span> - Formatted Write</li>
+      <li><span class="mono" style="color:var(--accent);">scanf()</span> - Formatted Read</li>
+    </ul>
+  </div>
+  <div class="card-block step">
+    <h4>Unformatted (Raw characters)</h4>
+    <p style="color:var(--mid); line-height:1.6; margin-bottom:1rem;">Fast, direct reading and writing of characters and raw lines of text.</p>
+    <ul>
+      <li><span class="mono" style="color:var(--accent);">getchar() / putchar()</span></li>
+      <li><span class="mono" style="color:var(--accent);">gets() / puts()</span></li>
+      <li><span class="mono" style="color:var(--accent);">getch() / getche()</span></li>
+    </ul>
+  </div>
+</div>
+`);
+
+/* ---------- 38 PRINTF ---------- */
+S(`
+<div class="eyebrow">Part 06 · Input &amp; Output</div>
+<div class="title">printf() : Formatted Output</div>
+<div class="lede" style="margin-top:1.6rem;">Prints text and variable values to the monitor screen.</div>
+<div class="code step" style="margin-top:1.6rem; font-size:1.35rem;">
+printf("Control String", var1, var2...);
+</div>
+<div class="fact-grid cols-3" style="margin-top:1.6rem;">
+  <div class="fact step"><div class="num">%d</div><div class="txt">Format specifier for whole integers.</div></div>
+  <div class="fact step"><div class="num">%f</div><div class="txt">Format specifier for decimal floating-point.</div></div>
+  <div class="fact step"><div class="num">\n</div><div class="txt">Escape sequence to move cursor to next line.</div></div>
+</div>
+`);
+
+/* ---------- 39 PRINTF EXAMPLES ---------- */
+S(`
+<div class="eyebrow">Part 06 · Input &amp; Output</div>
+<div class="title">printf() in Action</div>
+<div class="code step" style="font-size:1.2rem;">
+int age = 19;
+float gpa = 8.5;
+
+printf("Hello World!\n"); 
+<span class="cm">// Output: Hello World!</span>
+
+printf("Age is %d and GPA is %f\n", age, gpa);
+<span class="cm">// Output: Age is 19 and GPA is 8.500000</span>
+</div>
+`);
+
+/* ---------- 40 SCANF ---------- */
+S(`
+<div class="eyebrow">Part 06 · Input &amp; Output</div>
+<div class="title">scanf() : Formatted Input</div>
+<div class="lede" style="margin-top:1.6rem;">Pauses execution and reads data entered by the user via the keyboard.</div>
+<div class="code step" style="margin-top:1.6rem; font-size:1.35rem;">
+scanf("Control String", &amp;var1, &amp;var2...);
+</div>
+<div class="fact-grid cols-2" style="margin-top:1.6rem;">
+  <div class="fact step"><div class="num">CONTROL CODES</div><div class="txt">Specifies what type of data to expect (e.g. <span class="mono">%d</span> for integers).</div></div>
+  <div class="fact step"><div class="num">&amp; OPERATOR (Ampersand)</div><div class="txt">Tells scanf the exact memory address box to store the input value in.</div></div>
+</div>
+`);
+
+/* ---------- INTERACTIVE TERMINAL SIMULATION SLIDE (NEW) ---------- */
+S(`
+<div class="eyebrow">Part 06 · Terminal Simulator</div>
+<div class="title">scanf() Execution Tracing</div>
+<div class="split" style="margin-top: 2rem; align-items: center;">
+  <div class="code" style="font-size:1.15rem; flex: 1.2;">
+#include &lt;stdio.h&gt;
+int main() {
+    int score;
+    printf("Enter score: ");
+    scanf("%d", &amp;score);
+    printf("You passed!\n");
+    return 0;
+}
+  </div>
+  <div class="terminal-sim step">
+    <div class="term-header">Terminal Console</div>
+    <div class="term-body">
+      <div class="term-line" id="term-l1"></div>
+      <div class="term-line" id="term-l2"></div>
+    </div>
+    <div class="term-memory">
+      <div class="mem-label">RAM Address: 0x7ffe (score)</div>
+      <div class="mem-box" id="term-mem-val">?</div>
+    </div>
+  </div>
+</div>
+<div class="step"></div> <!-- step placeholder to trigger term line 2 -->
+<div class="step"></div> <!-- step placeholder to trigger term line 3 -->
+`);
+
+/* ---------- 41 SCANF EXAMPLE ---------- */
+S(`
+<div class="eyebrow">Part 06 · Input &amp; Output</div>
+<div class="title">Reading User Values</div>
+<div class="code step" style="font-size:1.25rem;">
+#include &lt;stdio.h&gt;
+
+int main()
+{
+    int score;
+    printf("Enter score: ");
+    scanf("%d", &amp;score); <span class="cm">/* reads keyboard into score */</span>
+    
+    printf("Your score: %d", score);
+    return 0;
+}
+</div>
+`);
+
+/* ---------- 42 GETCHAR / PUTCHAR ---------- */
+S(`
+<div class="eyebrow">Part 06 · Input &amp; Output</div>
+<div class="title">getchar() &amp; putchar()</div>
+<div class="kicker">Read and write a single character without configuration strings.</div>
+<div class="two-col">
+  <div class="card-block step">
+    <h4>getchar() (Input)</h4>
+    <p style="color:var(--mid); line-height:1.6;">Reads a single key press. Buffered (waits for Enter key).</p>
+    <div class="code" style="margin-top:.8rem; font-size:1.1rem;">
+char ch;
+ch = getchar();
+    </div>
+  </div>
+  <div class="card-block step">
+    <h4>putchar() (Output)</h4>
+    <p style="color:var(--mid); line-height:1.6;">Outputs a single character directly to the terminal screen.</p>
+    <div class="code" style="margin-top:.8rem; font-size:1.1rem;">
+char ch = 'A';
+putchar(ch);
+    </div>
+  </div>
+</div>
+`);
+
+/* ---------- 43 GETS / PUTS ---------- */
+S(`
+<div class="eyebrow">Part 06 · Input &amp; Output</div>
+<div class="title">gets() &amp; puts() : String Helpers</div>
+<div class="kicker">Specialized functions to read and write whole sentences of text.</div>
+<div class="two-col">
+  <div class="card-block step">
+    <h4>gets() (Sentence Input)</h4>
+    <p style="color:var(--mid); line-height:1.6;">Reads text including spaces (unlike scanf, which stops at first space).</p>
+    <div class="code" style="margin-top:.8rem; font-size:1.1rem;">
+char name[50];
+gets(name);
+    </div>
+  </div>
+  <div class="card-block step">
+    <h4>puts() (Sentence Output)</h4>
+    <p style="color:var(--mid); line-height:1.6;">Prints a string to the screen and automatically appends a newline at the end.</p>
+    <div class="code" style="margin-top:.8rem; font-size:1.1rem;">
+char msg[] = "Welcome to C";
+puts(msg);
+    </div>
+  </div>
+</div>
+`);
+
+/* ---------- 44 GETCH VS GETCHE ---------- */
+S(`
+<div class="eyebrow">Part 06 · Input &amp; Output</div>
+<div class="title">getch() vs getche()</div>
+<div class="kicker">Non-buffered character reading. Action happens immediately without hitting Enter.</div>
+<div class="two-col">
+  <div class="card-block step">
+    <h4>getch() (Silent)</h4>
+    <p style="color:var(--mid); line-height:1.6;">Reads a key press silently. The typed character is NOT printed on the screen.</p>
+    <div class="code" style="margin-top:.8rem; font-size:1.1rem;">
+char ch;
+ch = getch();
+    </div>
+  </div>
+  <div class="card-block step">
+    <h4>getche() (Echoed)</h4>
+    <p style="color:var(--mid); line-height:1.6;">Reads a key press and immediately echoes (prints) the character on the screen.</p>
+    <div class="code" style="margin-top:.8rem; font-size:1.1rem;">
+char ch;
+ch = getche();
+    </div>
+  </div>
+</div>
+`);
+
+/* ---------- 45 RECAP ---------- */
+S(`
+<div class="eyebrow">Recap</div>
+<div class="title">Key Takeaways Today</div>
+<div class="fact-grid cols-3">
+  <div class="fact step"><div class="num">01. COMPILE</div><div class="txt">C code is compiled all at once (Catering) to build fast binaries, not interpreted line-by-line (Dosa Stall).</div></div>
+  <div class="fact step"><div class="num">02. ANATOMY</div><div class="txt">Runs always start in <b>main()</b> (Thalaivar Entry) and use library helpers via <b>#include</b>.</div></div>
+  <div class="fact step"><div class="num">03. STORAGE</div><div class="txt">Variables are named cups inside the memory box (Anjarai Petti) storing strict types of data.</div></div>
+</div>
+`);
+
+/* ---------- 46 CLOSING ---------- */
+S(`
+<div class="eyebrow">Crescent Institute of Science &amp; Technology</div>
+<div class="title" style="font-size:clamp(3.5rem,8vw,7.5rem);">Questions?</div>
+<div class="lede" style="margin-top:2rem;">Start writing your first compiled programs tonight!</div>
+<div class="deck-meta" style="position:static; margin-top:2.5rem; color:var(--low);">DEPARTMENT OF COMPUTER SCIENCE &amp; ENGINEERING</div>
+`);
+
+/* ================= RENDER + CONTROLLER ================= */
+const deck = document.getElementById('deck');
+slidesData.forEach((s,i)=>{
+  const el = document.createElement('section');
+  el.className = 'slide';
+  el.setAttribute('data-brace', s.brace);
+  el.innerHTML = s.html;
+  deck.appendChild(el);
+});
+const slideEls = Array.from(document.querySelectorAll('.slide'));
+document.getElementById('tot').textContent = String(slideEls.length).padStart(2,'0');
+
+let idx = 0;
+function render(){
+  slideEls.forEach((el,i)=> {
+    el.classList.toggle('active', i===idx);
+  });
+  document.getElementById('cur').textContent = String(idx+1).padStart(2,'0');
+  document.getElementById('progress').style.width = ((idx+1)/slideEls.length*100)+'%';
+  
+  // Highlight active stack boxes on Anatomy slide
+  const activeSlide = slideEls[idx];
+  const revealedStepsCount = activeSlide.querySelectorAll('.step.revealed').length;
+  
+  const stackBoxes = activeSlide.querySelectorAll('.stack-box');
+  if(stackBoxes.length > 0) {
+    stackBoxes.forEach((box, i) => {
+      box.classList.toggle('active-box', i === (revealedStepsCount - 2)); 
+    });
+  }
+  
+  // Run Terminal Simulator Animation hooks
+  const terminalBlock = activeSlide.querySelector('.terminal-sim');
+  if(terminalBlock) {
+    const l1 = document.getElementById('term-l1');
+    const l2 = document.getElementById('term-l2');
+    const memVal = document.getElementById('term-mem-val');
+    
+    if(revealedStepsCount === 1) {
+      l1.textContent = "Enter score: ";
+      l2.textContent = "";
+      memVal.textContent = "?";
+      memVal.classList.remove('updated');
+    } else if(revealedStepsCount === 2) {
+      l1.textContent = "Enter score: 85";
+      l2.textContent = "";
+      memVal.textContent = "85";
+      memVal.classList.add('updated');
+    } else if(revealedStepsCount === 3) {
+      l1.textContent = "Enter score: 85";
+      l2.textContent = "You passed!";
+      memVal.textContent = "85";
+      memVal.classList.add('updated');
+    } else {
+      l1.textContent = "";
+      l2.textContent = "";
+      memVal.textContent = "?";
+      memVal.classList.remove('updated');
+    }
+  }
+}
+
+function checkQuiz(opt, isCorrect) {
+  const opts = opt.parentNode.querySelectorAll('.quiz-opt');
+  opts.forEach(o => {
+    o.classList.remove('correct', 'incorrect');
+    o.style.pointerEvents = 'none';
+  });
+  if (isCorrect) {
+    opt.classList.add('correct');
+    document.getElementById('quiz-explanation').style.opacity = '1';
+    const codeBlock = document.getElementById('quiz-code-block');
+    codeBlock.innerHTML = codeBlock.innerHTML.replace('int salary = 50000', '<span style="color:var(--green); font-weight:700;">int salary = 50000; // Fixed!</span>');
+  } else {
+    opt.classList.add('incorrect');
+    opts.forEach(o => {
+      if (o.textContent.includes('B)')) o.classList.add('correct');
+    });
+    document.getElementById('quiz-explanation').style.opacity = '1';
+    document.getElementById('quiz-explanation').style.color = 'var(--rose)';
+    document.getElementById('quiz-explanation').textContent = '❌ Incorrect. B is correct: line 4 is missing a semicolon.';
+  }
+}
+
+function next() {
+  const currentSlide = slideEls[idx];
+  const nextStep = currentSlide.querySelector('.step:not(.revealed)');
+  if (nextStep) {
+    nextStep.classList.add('revealed');
+    render();
+  } else {
+    if (idx < slideEls.length - 1) {
+      idx++;
+      const newSlide = slideEls[idx];
+      newSlide.querySelectorAll('.step.revealed').forEach(s => s.classList.remove('revealed'));
+      // Reset quiz options and explanation when leaving or returning to quiz slide
+      const quizExplanation = newSlide.querySelector('#quiz-explanation');
+      if (quizExplanation) {
+        quizExplanation.style.opacity = '0';
+        const quizOpts = newSlide.querySelectorAll('.quiz-opt');
+        quizOpts.forEach(o => {
+          o.classList.remove('correct', 'incorrect');
+          o.style.pointerEvents = 'auto';
+        });
+        const codeBlock = newSlide.querySelector('#quiz-code-block');
+        if (codeBlock) {
+          codeBlock.innerHTML = `#include &lt;stdio.h&gt;\nint main() \n{\n    int salary = 50000\n    printf("Salary is %d", salary);\n    return 0;\n}`;
+        }
+      }
+      render();
+    }
+  }
+}
+
+function prev() {
+  const currentSlide = slideEls[idx];
+  const revealedSteps = currentSlide.querySelectorAll('.step.revealed');
+  if (revealedSteps.length > 0) {
+    revealedSteps[revealedSteps.length - 1].classList.remove('revealed');
+    render();
+  } else {
+    if (idx > 0) {
+      idx--;
+      const newSlide = slideEls[idx];
+      newSlide.querySelectorAll('.step').forEach(s => s.classList.add('revealed'));
+      render();
+    }
+  }
+}
+
+function go(delta) {
+  if (delta > 0) next();
+  else prev();
+}
+
+document.addEventListener('keydown', e=>{
+  if(['ArrowRight','ArrowDown','PageDown',' '].includes(e.key)){ e.preventDefault(); next(); }
+  else if(['ArrowLeft','ArrowUp','PageUp'].includes(e.key)){ e.preventDefault(); prev(); }
+  else if(e.key==='Home'){ 
+    idx=0; 
+    slideEls.forEach(el => el.querySelectorAll('.step.revealed').forEach(s => s.classList.remove('revealed')));
+    render(); 
+  }
+  else if(e.key==='End'){ 
+    idx=slideEls.length-1; 
+    slideEls.forEach(el => el.querySelectorAll('.step').forEach(s => s.classList.add('revealed')));
+    render(); 
+  }
+  else if(e.key.toLowerCase()==='f'){
+    if(!document.fullscreenElement) document.documentElement.requestFullscreen();
+    else document.exitFullscreen();
+  }
+});
+
+let touchX=null;
+document.addEventListener('touchstart', e=> touchX = e.touches[0].clientX, { passive: true });
+document.addEventListener('touchend', e=>{
+  if(touchX===null) return;
+  const dx = e.changedTouches[0].clientX - touchX;
+  if(Math.abs(dx)>50) go(dx<0?1:-1);
+  touchX=null;
+}, { passive: true });
+
+render();
+</script>
+</body>
+</html>

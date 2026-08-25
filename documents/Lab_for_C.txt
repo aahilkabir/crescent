@@ -1,0 +1,1069 @@
+GEE 1104 - PROGRAMMING FOR PROBLEM SOLVING 
+LABORATORY MANUAL
+COURSE OBJECTIVES:
+COB 1: To introduce the basic concepts of computing systems, software, hardware, and programming language evolution.
+COB 2:  To equip students with problem-solving skills using algorithms, flowcharts, and design strategies.
+COB 3:  To enable students to write structured C programs using variables, operators, control structures, and modular programming with functions.
+COB 4:  To gain skills to work with arrays, strings, structures, and unions for solving data manipulation problems.
+COB 5:  To provide an understanding of pointers, memory access, file operations, and advanced C programming constructs.
+PRACTICALS: 
+SOFTWARE REQUIRED:  C and C++ Compiler
+I/O statements and operators  
+Decision Making statements
+Looping statements
+Single- and Two-dimensional Arrays
+String Operations
+Functions: call, return, passing parameters by (value, reference), passing 
+arrays to function
+Recursion
+Structures and Unions
+Pointers
+File operations in C using standard I/O functions.
+TEXTBOOKS:
+1. E. Balagurusamy, *Programming ANSI C*, 9th edition. New Delhi, India: McGraw Hill Education India, ISBN-13: 978-9355326720, 2024.  
+2. Y. Kanetkar, Let Us C: Authenticate guide to C Programming Language”, 20th edition. New Delhi, India: BPB Publications, ISBN 3. 13 978-9355515513, 2024 
+3. Thomas H. Cormen, Charles E. Leiserson, Ronald L. Rivest, Clifford Stein, “Introduction to Algorithms”, 4th edition, ISBN-13: 9780262046305, 2022.
+4. Nell Dale and John Lewis, “Computer Science Illuminated”, 7th Edition, Jones and Bartlett Learning, ISBN-13:9781284155617, 2020. 
+REFERENCES:
+Kernighan, B.W and Ritchie,D.M, “The C Programming language”, 2nd Edition, Pearson Education, ISBN:9789332549449, 2015.
+2. Ashok. N. kamthane, “Computer Programming”, 1st Edition, Pearson Education, 
+ISBN: 978-8131704486, 2007.
+COURSE OUTCOMES: The students who complete this course will be able to
+CO1: Describe the fundamental components of a computing system, evolution of  
+programming languages, and program execution process.
+CO2: Develop algorithms and flowcharts using standard problem-solving strategies such as divide and conquer, greedy, brute force, and dynamic Programming
+CO3: Write programs in C using basic syntax, data types, operators, control structures, and functions including recursion. 
+CO4: Implement arrays, strings, structures, and unions to solve real-world programming problems.
+CO5: Apply the concepts of pointers, file handling, command-line arguments, and preprocessor directives for efficient C programming.
+CONTENTS
+S.No.
+List of Programs
+1.
+Write a C program to display “This is my first C Program”.
+2.
+Write a C program to find sum and average of three numbers.
+3.
+Write a C program to calculate area and circumference of a circle.
+4.
+Write a C program to input three numbers and display the maximum number.
+5.
+Write a C program to swap values of two variables with and without using third variable.
+6.
+Write a C program to display the size of every data type using “sizeof” operator.
+7.
+Write a C program to checks whether a user can vote or not using ternary operator.
+8. 
+Write a C program to illustrate the use of unary prefix and postfix increment and decrement operators.
+9.
+Write a C program to check whether a given number is prime or not.
+10.
+Write a C program to check whether the entered year is leap year or not.
+11.
+Write a C program to find the factorial of a number.
+12.
+Write a C program to check number is Armstrong or not.
+(Hint: A number is Armstrong if the sum of cubes of individual digits of a number is equal to the number itself).
+13.
+Write a C program to check whether a number is positive, negative or zero using switch case.
+14.
+Write a C program to calculate the sum of all elements in a matrix (2D array).
+15.
+Write a C program to add, subtract, multiply and divide two integers using user defined type function with return type.
+16.
+Write a C program to find sum of digits of the number using Recursive Function.
+17.
+Write a C Program to Calculate Total and Percentage marks of a student using structure.
+18.
+Write a C program to declare and initialize a union.
+19.
+Write a C program to input and print array elements using pointer.
+20.
+Write a program to create a file called emp.rec and store information about a person, in terms of his name, age and salary.
+INSTRUCTIONS TO STUDENTS
+Before entering the lab, the student should carry the following things: (MANDATORY) 
+1. Identity card issued by the college. 
+2. Class notes 
+3. Lab observation book 
+Come to the laboratory in time. Students, who are late more than 15 min., will not be allowed to attend the lab. 
+Students need to maintain 100% attendance in lab if not a strict action will be taken. 
+All students must follow a Dress Code.
+Foods, drinks are NOT allowed inside the lab. 
+All bags must be left at the indicated place. 
+Refer to the lab staff if you need any help in using the lab. 
+Lab records/ Observation need to be submitted on or before the date of submission.
+4. 200 pages unruled note for observation. (No Record for this semester, so maintain the observation neatly till your semester end examination).
+5. Aim, Algorithm, Program and Results should be in right side of the page; Flowchart and output should be on left side of the page.
+6. Leave 2-3 pages for index. (will give the soft copy of the index later, u can take print and paste it in the front page of the observation note).
+Ex.No: 1
+Date: 
+To display “ This is my first C Program”
+Aim:
+To write a C program that displays the message “This is my first C program” on the screen.
+Algorithm:
+Start the program.
+Include the header file <stdio.h>.
+Define the main() function.
+Use printf() to display the message.
+End the program.
+Flowchart:
+Program:
+#include<stdio.h>
+#include<conio.h>
+int main() 
+{
+    printf("This is my first C program");
+    getch();
+    return 0;
+}
+Output:
+This is my first C program
+Result:
+The program runs successfully and displays the message “This is my first C program” on the screen.
+==================================================
+Ex.No: 2
+Date: 
+To find sum and average of three numbers
+Aim:
+To write a C program that calculates and displays the sum and average of three numbers.
+Algorithm:
+Start the program.
+Include the header file <stdio.h>.
+Declare variables to store three numbers, their sum, and average.
+Input three numbers from the user.
+Calculate the sum of the three numbers.
+Calculate the average by dividing the sum by 3.
+Display the sum and average.
+End the program.
+Flowchart:
+ Program:
+#include<stdio.h>
+#include<conio.h>
+int main()
+{
+   int a,b,c, sum;           
+   float avg;
+   printf("Enter Three Numbers : \n");    
+   scanf("%d %d %d",&a, &b, &c);     
+   sum = a + b +c;
+   printf("Sum of Three Numebers is : %d", sum);    
+   avg=sum/3;                  
+   printf("\n Average of Three Numebers is : %f", avg);   
+   getch();
+   return 0;
+}
+Output:
+Enter Three Numbers :
+10 2 38
+Sum of Three Numebers is : 50
+Average of Three Numebers is : 16.000000
+Result:
+The program executes successfully and displays the sum and average of the three numbers entered by the user.
+==================================================
+Ex.No: 3
+Date: 
+To calculate area and circumference of a circle
+Aim:
+To write a C program that calculates and displays the area and circumference of a circle based on the radius entered by the user.
+Algorithm:
+Start the program.
+Include the header file <stdio.h>.
+Declare variables for radius, area, and circumference.
+Input the radius of the circle from the user.
+Calculate the area using the formula: area = PI * radius * radius.
+Calculate the circumference using the formula: circumference = 2 * PI * radius.
+Display the calculated area and circumference.
+End the program.
+Flowchart:
+Program:
+#include <stdio.h>
+#include<conio.h>
+#define PI 3.14159
+int main()
+ {
+    int radius;
+    float area, circumference;
+    clrscr();
+    printf("Enter the radius of the circle: ");
+    scanf("%d", &radius);
+    area = PI * radius * radius;
+    circumference = 2 * PI * radius;
+    printf("Area of Circle = %.2f\n", area);
+    printf("Circumference of Circle = %.2f\n", circumference);
+    getch();
+    return 0;
+}
+Output:
+Enter the radius of the circle: 5.25
+Area of the circle: 86.59
+Circumference of the circle: 32.99
+Result:
+The program executes successfully and displays the area and circumference of the circle for the radius entered by the user.
+=================================================
+Ex.No: 4
+Date: 
+To find the greatest of three numbers using nested if –else
+Aim:
+To write a C program that finds and displays the greatest of three numbers using nested if-else statements.
+Algorithm:
+Start the program.
+Include the header file <stdio.h>.
+Declare three variables to store the numbers.
+Input three numbers from the user.
+Compare the numbers using nested if-else statements
+If the first number is greater than the second and third, it is the greatest.
+Else if the second number is greater than the first and third, it is the greatest.
+Else the third number is the greatest.
+Display the greatest number.
+End the program.
+Flowchart:
+Program:
+#include <stdio.h>
+void main()
+{
+    int num1, num2, num3;
+    printf("Enter three numbers:\n");
+    scanf("%d %d %d", &num1, &num2, &num3);
+    if (num1 >= num2 && num1 >= num3)
+    {
+        printf("num1: %d is largest\n", num1);
+    }
+    else if (num2 >= num1 && num2 >= num3)
+    {
+        printf("num2: %d is largest\n", num2);
+    }
+    else
+    {
+        printf("num3: %d is largest\n", num3);
+    }
+}
+Output:
+Enter three numbers:
+23 45 56 
+num3: 56 is largest
+Result:
+The program executes successfully and displays the greatest of the three numbers entered by the user.
+==================================================
+Ex No: 5 (a)
+Date:
+To Swap Two Values Using Temporary Variable
+Aim:
+To write a C program that swaps the values of two variables using a temporary variable and displays the result.
+Algorithm:
+Start the program.
+Include the header file <stdio.h>.
+Declare two variables, say x and y, and a temporary variable temp.
+Input values of x and y from the user.
+Assign the value of x to temp.
+Assign the value of y to x.
+Assign the value of temp to y.
+Display the swapped values of x and y.
+End the program.
+Flowchart:
+Program:
+#include <stdio.h>
+ int main()
+{
+    int x, y;
+    printf("Enter Value of x ");
+    scanf("%d", &x);
+    printf("\nEnter Value of y ");
+    scanf("%d", &y);
+    int temp = x;
+    x = y;
+    y = temp;
+    printf("\nAfter Swapping: x = %d, y = %d", x, y);
+    return 0; }
+Output:
+Values before swapping -
+ a = 11, b = 99                                         
+Values after swapping -
+ a = 99, b = 11
+Result:
+The program executes successfully and swaps the values of the two variables, displaying the updated values on the screen.
+==================================================
+Ex No: 5(b)
+Date:
+Swapping of Two Values Without Using Temporary Variable
+Aim:
+To write a C program that swaps the values of two variables without using a temporary variable and displays the result.
+Algorithm:
+Start the program.
+Include the header file <stdio.h>.
+Declare two variables, say x and y.
+Input values of x and y from the user.
+Swap the values using arithmetic operations:
+x = x + y
+y = x - y
+x = x - y
+Display the swapped values of x and y.
+End the program.
+Flowchart:
+Program:
+#include <stdio.h>
+ int main()
+{
+    int x, y;
+    printf("Enter Value of x ");
+    scanf("%d", &x);
+    printf("\nEnter Value of y ");
+    scanf("%d", &y);
+    x = x+y;
+    y = x-y;
+    x = x-y;
+    printf("\nAfter Swapping: x = %d, y = %d", x, y);
+    return 0;
+}
+Output:
+Values before swapping -
+ a = 11, b = 99                                         
+ Values after swapping -
+ a = 99, b = 11
+Result:
+The program executes successfully and swaps the values of the two variables without using a temporary variable, displaying the updated values on the screen.
+==================================================
+Ex.No: 6
+Date: 
+To display the size of every data type using the “sizeof” operator
+Aim:
+To write a C program that displays the memory size of various data types using the sizeof operator.
+Algorithm:
+Start the program.
+Include the header file <stdio.h>.
+Declare variables of different data types (int, float, char, double, pointer(void *),etc.).
+Use the sizeof operator to find the size of each data type.
+Display the size of each data type on the screen.
+End the program.
+Flowchart:
+ Program: 
+#include<stdio.h>
+#include<conio.h>
+int main(){
+clrscr();
+    printf("Size of char: %lu bytes\n", sizeof(char));
+    printf("Size of int: %lu bytes\n", sizeof(int));
+    printf("Size of float: %lu bytes\n", sizeof(float));
+    printf("Size of double: %lu bytes\n", sizeof(double));
+    printf("Size of pointer: %lu bytes\n", sizeof(void *));
+getch();
+    return 0;
+}
+Output:
+Size of char: 1 bytes
+Size of int: 4 bytes
+Size of float: 4 bytes
+Size of double: 8 bytes
+Size of pointer: 8 bytes
+Result:
+The program executes successfully and displays the memory size (in bytes) of all standard C data types, such as int, float, char, double, and pointer.
+==================================================
+Ex.No: 7
+Date: 
+To check whether a user can vote or not using a ternary operator
+Aim:
+To write a C program that determines whether a user is eligible to vote based on age using a ternary operator.
+Algorithm:
+Start the program.
+Include the header file <stdio.h>.
+Declare a variable to store the user's age.
+Input the age from the user.
+Use the ternary operator to check:
+If age ≥ 18 → print " You are Eligible"
+Else → print " You are Not Eligible"
+End the program.
+Flowchart:
+Program:
+#include <stdio.h>
+#include<conio.h>
+int main() {
+    int age;
+    printf("Enter your age: ");
+    scanf("%d", &age);
+(age >= 18) ? printf("You are Eligible.\n"): printf("You are Not Eligible.\n");
+getch();
+return 0;
+}
+Output:
+Enter your age: 20
+You are Eligible.
+Result:
+The program executes successfully and displays whether the user is eligible to vote based on the age entered.
+==================================================
+Ex.No: 8
+Date: 
+The use of unary prefix and postfix increment and decrement operators
+Aim:
+To write a C program that demonstrates the use of unary prefix and postfix increment (++) and decrement (--) operators on integer variables.
+Algorithm:
+Start the program.
+Include the header file <stdio.h>.
+Declare integer variables a, b, c, and d and initialize them with 5.
+Apply the unary operators:
+a++ → postfix increment
+++b → prefix increment
+c-- → postfix decrement
+--d → prefix decrement
+Use printf() to display the updated values of a, b, c, and d.
+End the program.
+Flowchart
+:
+Program:
+#include <stdio.h>
+int main() {
+  int a = 5, b = 5, c = 5, d = 5;
+  a++; // postfix increment
+  ++b; // prefix increment
+  c--; // postfix decrement
+  --d; // prefix decrement
+  printf("a = %d\n", a);
+  printf("b = %d\n", b);
+  printf("c = %d\n", c);
+  printf("d = %d\n", d);
+  return 0;
+}
+Output:
+a = 6
+b = 6
+c = 4
+d = 4
+Result:
+The program executes successfully and displays the updated values of the variables as a = 6, b = 6, c = 4, and d = 4.
+==================================================
+Ex.No: 9
+Date: 
+To check whether a given number is prime or not
+Aim:
+To write a C program that checks whether a given number is prime or not.
+Algorithm:
+Start the program.
+Include the header file <stdio.h>.
+Declare integer variables n, i, and flag (initialize flag = 0).
+Input the number n from the user.
+For loop from i = 2 to n/2:
+If n % i == 0, set flag = 1 and exit the loop.
+After the loop, check the flag:
+If flag == 0, the number is prime.
+Else, the number is not prime.
+Display the result.
+End the program.
+Flowchart:
+Program: 
+ #include<stdio.h>   
+int main()  
+{ 
+int n,i,flag=0;  
+printf("\nEnter a number:”);  
+scanf("%d",&n);  
+for(i=2;i<=n/2;i++) 
+{  
+if(n%i==0) 
+{flag=1; break; 
+}  
+}  
+if(flag==0)  
+printf(“%d is a prime number”,n);  
+else 
+printf(“%d is not a prime number”,n);  
+return(0);  
+} 
+Output: 
+Enter a number: 29 
+ 29 is a prime number
+Result:
+The program executes successfully and displays whether the entered number is prime or not.
+==================================================
+Ex.No: 10
+Date: 
+To check whether the entered year is a leap year or not
+Aim:
+To write a C program that checks whether the entered year is a leap year or not.
+Algorithm:
+Start the program.
+Include the header files <stdio.h> and <conio.h>.
+Declare an integer variable yr to store the year.
+Input the year from the user.
+Check the leap year condition:
+If (yr % 400 == 0) or (yr % 4 == 0 && yr % 100 != 0), the year is a leap year.
+Else, it is not a leap year.
+Display the result.
+End the program.
+Flowchart:
+Program:
+#include <stdio.h>
+#include<conio.h>
+int main()
+{
+  int yr;
+ printf("\n Please Enter any number you wish \n ");
+  scanf("%d", &yr);
+ if (( yr%400 == 0)|| (( yr%4 == 0 ) &&( yr%100 != 0)))
+      printf("\n %d is a Leap. \n", yr);
+  else
+      printf("\n %d is not. \n", yr);
+  return 0;
+}
+Output:
+Please Enter any number you wish 
+1300
+ 1300 is not.
+Result:
+The program executes successfully and displays whether the entered year is a leap year or not.
+==================================================
+Ex.No: 11
+Date: 
+To find the factorial of a number
+Aim:
+To write a C program that calculates and displays the factorial of a non-negative integer.
+Algorithm:
+Start the program.
+Include the header file <stdio.h>.
+Declare integer variables n and i, and fact as unsigned long long initialized to 1.
+Input an integer n from the user.
+Check if n is negative:
+If yes, display an error message that factorial does not exist for negative numbers.
+Else, proceed to calculate factorial.
+Use a for loop from i = 1 to n:
+Multiply fact by i in each iteration.
+Display the factorial value.
+End the program.
+Flowchart:
+Program:
+#include <stdio.h>
+int main() {
+    int n, i;
+    unsigned long long fact = 1;
+    printf("Enter an integer: ");
+    scanf("%d", &n);
+    // shows error if the user enters a negative integer
+    if (n < 0)
+        printf("Error! Factorial of a negative number doesn't exist.");
+    else {
+        for (i = 1; i <= n; ++i) {
+            fact *= i;
+        }
+        printf("Factorial of %d = %llu", n, fact);
+    }
+    return 0;
+}
+Output:
+Enter an integer: 10
+Factorial of 10 = 3628800
+Result:
+The program executes successfully and displays the factorial of the entered non-negative integer or an error message if the number is negative.
+Ex.No: 12
+Date: 
+To check if the given number is Armstrong or not
+Aim:
+To write a C program that checks whether a given three-digit number is an Armstrong number or not.
+Algorithm:
+Start the program.
+Include the header file <stdio.h>.
+Declare integer variables: num, originalNum, remainder, and result (initialize result = 0).
+Input a three-digit integer num from the user.
+Store num in originalNum.
+Use a while loop to extract digits of originalNum:
+Get the last digit using remainder = originalNum % 10.
+Add the cube of remainder to result.
+Remove the last digit from originalNum using originalNum /= 10.
+After the loop, check:
+If result == num, the number is an Armstrong number.
+Else, it is not an Armstrong number.
+Display the result.
+End the program.
+Flowchart:
+Program:
+#include <stdio.h>
+int main() {
+    int num, originalNum, remainder, result = 0;
+    printf("Enter a three-digit integer: ");
+    scanf("%d", &num);
+    originalNum = num;
+    while (originalNum != 0) {
+       // remainder contains the last digit
+        remainder = originalNum % 10;
+       result += remainder * remainder * remainder;
+       // removing last digit from the orignal number
+       originalNum /= 10;
+    }
+    if (result == num)
+        printf("%d is an Armstrong number.", num);
+    else
+        printf("%d is not an Armstrong number.", num);
+    return 0;
+}
+Output:
+Enter a three-digit integer: 371
+371 is an Armstrong number.
+Result:
+The program executes successfully and displays whether the entered number is an Armstrong number or not.
+==================================================
+Ex.No: 13
+Date: 
+To check whether a number is positive, negative or zero using a switch case
+Aim:
+To check whether a given number is positive, negative, or zero using a switch-case statement in C.
+Algorithm:
+Start the program.
+Read an integer input num from the user.
+Check if num is greater than 0 using switch(num > 0).
+If true (1), print "num is positive".
+If false (0), check if num is less than 0 using a nested switch.
+If true (1), print "num is negative".
+If false (0), print "num is zero".
+End the program.
+Flowchart:
+Program:
+#include <stdio.h>
+int main()
+{
+    int num;
+    printf("Enter any number: ");
+    scanf("%d", &num);
+    switch (num > 0)
+    {
+        // Num is positive
+        case 1:
+            printf("%d is positive.", num);
+        break;
+        // Num is either negative or zero
+        case 0:
+            switch (num < 0)
+            {
+                case 1: 
+                    printf("%d is negative.", num);
+                    break;
+                case 0:
+                    printf("%d is zero.", num);
+                    break;
+            }
+        break;
+    }
+    return 0;
+}
+Output:
+Enter any number: 23
+23 is positive.
+Enter any number: -22
+-22 is negative.
+Enter any number: 0
+0 is zero.
+Result:
+The program successfully classifies the entered number as positive, negative, or zero via switch-case statements.
+==================================================
+Ex.No: 14
+Date: 
+To calculate the sum of all elements in a matrix (2D array)
+Aim:
+To calculate the sum of all elements of two matrices (2D arrays) of the same size and display the resulting matrix.
+Algorithm:
+Start the program.
+Read the number of rows r and columns c.
+Input elements of the first matrix a.
+Input elements of the second matrix b.
+Initialize a sum matrix sum.
+For each element (i, j), calculate:
+sum[i][j] = a[i][j] + b[i][j]
+Print the sum matrix.
+End the program.
+Flowchart:
+Program:
+#include <stdio.h>
+int main() {
+  int r, c, a[100][100], b[100][100], sum[100][100], i, j;
+  printf("Enter the number of rows (between 1 and 100): ");
+  scanf("%d", &r);
+  printf("Enter the number of columns (between 1 and 100): ");
+  scanf("%d", &c);
+  printf("\nEnter elements of 1st matrix:\n");
+  for (i = 0; i < r; ++i)
+    for (j = 0; j < c; ++j) {
+      printf("Enter element a%d%d: ", i + 1, j + 1);
+      scanf("%d", &a[i][j]);
+    }
+  printf("Enter elements of 2nd matrix:\n");
+  for (i = 0; i < r; ++i)
+    for (j = 0; j < c; ++j) {
+      printf("Enter element b%d%d: ", i + 1, j + 1);
+      scanf("%d", &b[i][j]);
+    }
+  // adding two matrices
+  for (i = 0; i < r; ++i)
+    for (j = 0; j < c; ++j) {
+      sum[i][j] = a[i][j] + b[i][j];
+    }
+  // printing the result
+  printf("\nSum of two matrices: \n");
+  for (i = 0; i < r; ++i)
+    for (j = 0; j < c; ++j) {
+      printf("%d   ", sum[i][j]);
+      if (j == c - 1) {
+        printf("\n\n");
+      }
+    }
+  return 0;
+}
+Output:
+Enter the number of rows (between 1 and 100): 2
+Enter the number of columns (between 1 and 100): 2
+Enter elements of 1st matrix:
+Enter element a11: 1
+Enter element a12: 2
+Enter element a21: 3
+Enter element a22: 4
+Enter elements of 2nd matrix:
+Enter element b11: 5
+Enter element b12: 6
+Enter element b21: 7
+Enter element b22: 8
+Sum of two matrices: 
+6   8   
+10   12  
+Result:
+The program successfully adds two matrices element-wise to produce the sum matrix.
+==================================================
+Ex.No: 15
+Date: 
+To add, subtract, multiply and divide two integers using user defined type function with return type
+Aim:
+To perform addition, subtraction, multiplication, division, and modulus of two integers using user-defined functions with return type in C.
+Algorithm:
+Start the program.
+Read two integers num1 and num2 from the user.
+Define user-defined functions for each operation:
+addition(a, b) returns the sum of a and b.
+subtract(a, b) returns the difference of a and b.
+multiply(a, b) returns the product of a and b.
+division(a, b) returns the quotient of a divided by b.
+mod(a, b) returns the remainder of a divided by b.
+Call each function with num1 and num2 and display the result.
+End the program.
+Flowchart:
+Program:
+// C Program to Perform Arithmetic Operations Using Functions
+#include <stdio.h>
+// Declaring addition function
+int addition(int a, int b){
+    int sum = a + b;
+    return sum;
+}
+// Declaring subtraction function
+int subtract(int a, int b){
+    int difference = a - b;
+    return difference;
+}
+// Declaring multiplication function
+int multiply(int a, int b){
+    int multiply = a * b;
+    return multiply;
+}
+// Declaring division function
+float division(float a, float b){
+    float divide = a / b;
+    return divide;
+}
+// Declaring modulus function
+float mod(int a, int b){
+    int rem = a % b;
+    return rem;
+}
+int main(){
+    int num1, num2;
+        // Asking for input
+    printf("Enter the first number: ");
+    scanf("%d", &num1);
+    printf("Enter the second number: ");
+    scanf("%d", &num2);
+        // Displaying output
+    printf("Arithmetic operations on %d and %d: \n", num1, num2);
+    printf("Addition: %d\n", addition(num1, num2));
+    printf("Subtraction: %d\n", subtract(num1, num2));
+    printf("Multiplication: %d\n", multiply(num1, num2));
+    printf("Division: %f\n", division(num1, num2));
+    printf("Modulus: %d\n", mod(num1, num2));
+    return 0;
+}
+Output
+Enter the first number: 8
+Enter the second number: 3
+Arithmetic operations on 8 and 3: 
+Addition: 11
+Subtraction: 5
+Multiplication: 24
+Division: 2.666667
+Modulus: 3
+Result:
+The program correctly performs addition, subtraction, multiplication, division, and modulus operations using user-defined functions with return type.
+==================================================
+Ex.No: 16
+Date: 
+To find the sum of digits of the number using Recursive Function
+Aim:
+To find the sum of digits of a given number using a recursive function in C.
+Algorithm:
+Start the program.
+Define a recursive function sum_of_digit(n) that:
+Returns 0 if n == 0.
+Otherwise, returns (n % 10 + sum_of_digit(n / 10)).
+In the main function:
+Initialize an integer num.
+Call sum_of_digit(num) and store the result.
+Print the result.
+End the program.
+Flowchart:
+Program:
+#include <stdio.h>
+// Function to check sum of digit using recursion
+int sum_of_digit(int n)
+{
+    if (n == 0)
+       return 0;
+    return (n % 10 + sum_of_digit(n / 10));
+}
+// Driven Program to check above
+int main()
+{
+    int num = 12345;
+    int result = sum_of_digit(num);
+    printf("%d", result);
+    return 0;
+}
+Output:
+15
+Result:
+Thus the program successfully calculates the sum of digits of the given number using recursion.
+==================================================
+Ex.No: 17
+Date: 
+To Calculate Total and Percentage marks of a student using structure
+Aim:
+To create a program in C using structures to store student details (name, roll number, marks), and calculate their total marks and percentage using user-defined functions.
+Algorithm:
+Start the program.
+Define a structure Student with members: name, rollNo, and marks[3].
+Create a function inputStudentData() to:
+Input name, roll number, and marks for 3 subjects.
+Return the student structure.
+Create a function calculateTotal(Student s) to:
+Add all 3 marks.
+Return the total.
+Create a function calculatePercentage(total) to:
+Compute percentage as total / 3.
+In main:
+Call inputStudentData() to read student details.
+Call calculateTotal() and calculatePercentage().
+Display name, roll number, total marks, and percentage.
+End the program.
+Flowchart:
+Program:
+#include<stdio.h>
+// Defining the Student structure
+struct Student {
+    char name[50];
+    int rollNo;
+    int marks[3];
+};
+// Function to input student data
+struct Student inputStudentData() {
+    struct Student s;
+    printf("Enter student's name: ");
+    scanf("%s", s.name);
+    printf("Enter roll number: ");
+    scanf("%d", &s.rollNo);
+    for(int i = 0; i < 3; i++) {
+        printf("Enter marks for subject %d: ", i + 1);
+        scanf("%d", &s.marks[i]);
+    }
+    return s;
+}
+// Function to calculate total marks
+int calculateTotal(struct Student s) {
+    int total = 0;
+    for(int i = 0; i < 3; i++) {
+        total += s.marks[i];
+    }
+    return total;
+}
+// Function to calculate percentage
+float calculatePercentage(int total) {
+    return (float)total / 3;
+}
+// Main function
+int main() {
+    struct Student student = inputStudentData();
+    int total = calculateTotal(student);
+    float percentage = calculatePercentage(total);
+    printf("\nStudent Name: %s\n", student.name);
+    printf("Roll Number: %d\n", student.rollNo);
+    printf("Total Marks: %d\n", total);
+    printf("Percentage: %.2f%%\n", percentage);
+    return 0;
+}
+Output:
+Enter student's name: John
+Enter roll number: 101
+Enter marks for subject 1: 85
+Enter marks for subject 2: 90
+Enter marks for subject 3: 95
+Student Name: John
+Roll Number: 101
+Total Marks: 270
+Percentage: 90.00%
+Result:
+The program successfully uses a structure and functions to manage student details, compute total marks, and calculate percentage.
+==================================================
+Ex.No: 18
+Date: 
+To declare and initialize a union
+Aim:
+To demonstrate the use of a union in C and observe how a single memory location is shared by different data members.
+Algorithm:
+Start the program.
+Define a union Data with members:
+int i
+float f
+char str[20]
+In main:
+Assign a value to data.i and print it.
+Assign a value to data.f and print it.
+Copy a string into data.str and print it.
+Observe that assigning a new value overwrites the previous one because all members share the same memory.
+End the program.
+Flowchart:
+Program:
+#include <stdio.h>
+#include <string.h>
+union Data{
+   int i;
+   float f;
+   char str[20];
+};
+int main(){
+union Data data;        
+   data.i = 10;
+   printf("data.i: %d \n", data.i);
+   data.f = 220.5;
+   printf("data.f: %f \n", data.f);
+   strcpy(data.str, "C Programming");
+   printf("data.str: %s \n", data.str);
+   return 0;
+}
+Output:
+data.i: 10 
+data.f: 220.500000 
+data.str: C Programming
+Result:
+The program shows that in a union, all members share the same memory location, so assigning a new value overwrites the previous one.
+==================================================
+Ex.No: 19
+Date: 
+To input and print array elements using a pointer
+Aim:
+To write a C program that inputs and prints array elements using pointers instead of array indexing.
+Algorithm:
+Start the program.
+Define an integer array arr[MAX_SIZE] and a pointer ptr.
+Input the array size N.
+Set ptr = arr (so it points to the first element).
+Loop i = 0 to N-1:
+Use scanf("%d", ptr) to input values at the pointer’s location.
+Increment the pointer to move to the next element.
+Reset pointer ptr = arr (back to first element).
+Loop i = 0 to N-1:
+Print the value using *ptr.
+Increment the pointer.
+End program.
+Flowchart:
+Program:
+#include <stdio.h>
+#define MAX_SIZE 100 // Maximum array size
+int main()
+{
+    int arr[MAX_SIZE];
+    int N, i;
+    int * ptr = arr;    // Pointer to arr[0] 
+    printf("Enter size of array: ");
+    scanf("%d", &N);
+    printf("Enter elements in array:\n");
+    for (i = 0; i < N; i++)
+    {
+        scanf("%d", ptr);
+        // Move pointer to next array element
+        ptr++;   
+    }
+    // Make sure that pointer again points back to first array element
+    ptr = arr;
+    printf("Array elements: ");
+    for (i = 0; i < N; i++)
+    {
+        // Print value pointed by the pointer
+        printf("%d  ", *ptr);
+        // Move pointer to next array element
+        ptr++;
+    }
+    return 0;
+}
+Output:
+Enter size of array: 5
+Enter elements in array:
+56
+89
+12
+6
+7
+Array elements: 56  89  12  6  7 
+Result:
+Thus the program successfully demonstrates accessing arrays using pointers.
+==================================================
+Ex.No: 20
+Date: 
+To create a file and store employee information
+Aim:
+To write a C program that demonstrates file handling by storing employee details (name, age, salary) into a file using fprintf().
+Algorithm:
+Start the program.
+Declare variables for name, age, and salary.
+Open a file emp.rec in write mode using fopen().
+If file opening fails, display an error message and terminate.
+Input employee details from the user:
+Name
+Age
+Salary
+Write the entered details into the file using fprintf().
+Close the file using fclose().
+End the program.
+Flowchart:
+Program:
+#include <stdio.h>
+ void main()
+{
+    FILE *fptr;
+    char name[20];
+    int age;
+    float salary;
+     /*  open for writing */
+    fptr = fopen("emp.rec", "w");
+     if (fptr == NULL)
+    {
+        printf("File does not exists \n");
+        return;
+    }
+    printf("Enter the name \n");
+    scanf("%s", name);
+    fprintf(fptr, "Name    = %s\n", name);
+    printf("Enter the age\n");
+    scanf("%d", &age);
+    fprintf(fptr, "Age     = %d\n", age);
+    printf("Enter the salary\n");
+    scanf("%f", &salary);
+    fprintf(fptr, "Salary = %.2f\n", salary);
+    fclose(fptr);
+}
+Output:
+Enter the name
+raj
+Enter the age
+40
+Enter the salary
+4000000
+Result:
+Thus, the program successfully demonstrates writing structured employee details into a file using C file handling functions.
+==================================================
