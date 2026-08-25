@@ -529,7 +529,7 @@ S(`
 <div class="eyebrow">Crescent Institute of Science &amp; Technology · CSE</div>
 <div class="title" style="font-size:clamp(4rem,12vw,9rem); font-weight:900;">C</div>
 <div class="title small" style="margin-top:.4rem; font-size:clamp(2rem,4vw,3.5rem);">The Language That Built <span class="accent">Modern Computing</span></div>
-<p class="lede" style="margin-top:1.8rem; max-width:65ch;">An introduction to structure, syntax, and the machine underneath — Dennis Ritchie's gift to the operating systems of the world.</p>
+<p class="lede" style="margin-top:1.8rem; max-width:65ch;">An introduction to structure, syntax, and the machine underneath — <span class="hl-gold">Dennis Ritchie</span>'s gift to the operating systems of the world.</p>
 `);
 
 /* ---------- 01 AGENDA ---------- */
@@ -537,12 +537,12 @@ S(`
 <div class="eyebrow">Roadmap</div>
 <div class="title" style="font-size:3rem;">What we'll build today</div>
 <div class="fact-grid cols-3">
-  <div class="fact step"><div class="num">01</div><div class="txt"><b>Origins &amp; History</b><br>Dennis Ritchie's Bell Labs breakthrough.</div></div>
+  <div class="fact step"><div class="num">01</div><div class="txt"><b>Origins &amp; History</b><br><span class="hl-gold">Dennis Ritchie</span>'s <span class="hl-gold">Bell Labs</span> breakthrough.</div></div>
   <div class="fact step"><div class="num">02</div><div class="txt"><b>Source → Machine</b><br>How code becomes binary electrical signals.</div></div>
-  <div class="fact step"><div class="num">03</div><div class="txt"><b>Program Structure</b><br>The six anatomical sections of C code.</div></div>
+  <div class="fact step"><div class="num">03</div><div class="txt"><b>Program <span class="hl-gold">Structure</span></b><br>The six anatomical sections of C code.</div></div>
   <div class="fact step"><div class="num">04</div><div class="txt"><b>Vocabulary &amp; Tokens</b><br>Reserved words, identifiers, and variables.</div></div>
   <div class="fact step"><div class="num">05</div><div class="txt"><b>Operators</b><br>Arithmetic, relational, logical, and bitwise logic.</div></div>
-  <div class="fact step"><div class="num">06</div><div class="txt"><b>Terminal I/O</b><br>Talking to users with printf and scanf.</div></div>
+  <div class="fact step"><div class="num">06</div><div class="txt"><b>Terminal I/O</b><br>Talking to users with <span class="hl-blue">printf</span> and <span class="hl-blue">scanf</span>.</div></div>
 </div>
 `);
 
@@ -566,7 +566,7 @@ S(`
 <div class="title">Dennis Ritchie &amp; Unix</div>
 <div class="split" style="align-items: center; gap: 4vw;">
   <div style="flex: 1.1;">
-    <div class="body-copy">In 1972, at AT&amp;T Bell Labs, <b>Dennis Ritchie</b> designed the C programming language to rewrite the Unix operating system kernel.</div>
+    <div class="body-copy">In 1972, at AT&amp;T <span class="hl-gold">Bell Labs</span>, <b><span class="hl-gold">Dennis Ritchie</span></b> designed the C programming language to rewrite the <span class="hl-gold">Unix</span> operating system kernel.</div>
     <div class="body-copy step" style="margin-top:1.2rem;">By choosing to build C, he created a language that was high-level enough to be easily readable, yet low-level enough to talk directly to memory chips.</div>
     <div style="margin-top:1.8rem; padding:1.2rem; background:var(--accent-soft); border-left:4px solid var(--accent); border-radius:0 8px 8px 0;" class="step">
       <span style="color:var(--hi); font-style:italic;">"C is quirky, flawed, and an enormous success."</span> — Dennis Ritchie
@@ -698,7 +698,7 @@ S(`
 <div class="title">The Catering Analogy</div>
 <div class="split" style="align-items: center; gap: 4vw;">
   <div style="flex: 1.1;">
-    <p class="lede" style="font-size: 1.45rem; line-height: 1.6; margin-bottom: 2rem;">A <b>Compiler</b> translates the entire code at once before running it.</p>
+    <p class="lede" style="font-size: 1.45rem; line-height: 1.6; margin-bottom: 2rem;">A <b><span class="hl-violet">Compiler</span></b> translates the entire code at once before running it.</p>
     <div style="padding: 1.8rem; background: var(--accent-soft); border-left: 4px solid var(--accent); border-radius: 0 8px 8px 0; font-size: 1.25rem; color: var(--hi); line-height: 1.6; font-weight: 300;">
       Like hiring a Catering Service: You order the full menu beforehand. They cook the entire feast and deliver it all at once.
     </div>
@@ -716,7 +716,7 @@ S(`
     <ul class="simple-list">
       <li class="step">Reads the entire C source code (<b>.c</b>) in one pass.</li>
       <li class="step">Generates an independent machine binary executable (<b>.exe</b> / <b>.out</b>).</li>
-      <li class="step"><b>Execution Speed:</b> Pre-compiled code runs blazing fast on the CPU.</li>
+      <li class="step"><b><span class="hl-green">Execution</span> <span class="hl-green">Speed</span>:</b> Pre-compiled code runs blazing fast on the <span class="hl-violet">CPU</span>.</li>
       <li class="step"><b>Error handling:</b> Reports all compilation errors at once at the very end.</li>
     </ul>
   </div>
@@ -750,7 +750,7 @@ S(`
     <ul class="simple-list">
       <li class="step">Reads and runs C / scripting code one line at a time.</li>
       <li class="step">Does NOT output an executable binary file.</li>
-      <li class="step"><b>Execution Speed:</b> Slower because conversion happens on-demand during runtime.</li>
+      <li class="step"><b><span class="hl-green">Execution</span> <span class="hl-green">Speed</span>:</b> Slower because conversion happens on-demand during runtime.</li>
       <li class="step"><b>Error handling:</b> Stops executing instantly the moment it hits any line with a bug.</li>
     </ul>
   </div>
@@ -1361,7 +1361,7 @@ S(`
     <div class="body-copy">Writing standard functions from scratch (like drawing pixels or reading keyboard inputs) is too hard. We need standard helpers.</div>
     <ul class="simple-list" style="margin-top:1.4rem;">
       <li class="step"><b>Importing side-dishes:</b> Instead of making Sambar or Chutney in your home kitchen, you just order a parcel from a nearby mess.</li>
-      <li class="step"><b>Header Files:</b> <span class="mono" style="color:var(--accent)">#include &lt;stdio.h&gt;</span> imports ready-made commands like <span class="mono" style="color:var(--blue)">printf()</span> and <span class="mono" style="color:var(--blue)">scanf()</span>.</li>
+      <li class="step"><b><span class="hl-violet">Header Files</span>:</b> <span class="mono" style="color:var(--accent)">#include &lt;<span class="hl-violet">stdio.h</span>&gt;</span> imports ready-made commands like <span class="mono" style="color:var(--blue)"><span class="hl-blue">printf</span>()</span> and <span class="mono" style="color:var(--blue)"><span class="hl-blue">scanf</span>()</span>.</li>
     </ul>
   </div>
   <div class="card-block step">
@@ -1379,8 +1379,8 @@ S(`
   <div class="body-copy">
     Every movie has characters, crew, and dialogues. But the crowd starts shouting only when the <b>Hero enters the screen</b>.
     <ul class="simple-list" style="margin-top:1.6rem;">
-      <li class="step"><b>Entry Point:</b> A C program might have 1,000 helper lines. But execution ALWAYS starts from the opening brace <span class="mono" style="color:var(--accent)">{</span> of <span class="mono" style="color:var(--accent)">main()</span>.</li>
-      <li class="step">No main(), No run. It is the absolute anchor of your code.</li>
+      <li class="step"><b><span class="hl-gold">Entry Point</span>:</b> A C program might have 1,000 helper lines. But execution ALWAYS starts from the opening brace <span class="mono" style="color:var(--accent)">{</span> of <span class="mono" style="color:var(--accent)"><span class="hl-blue">main</span>()</span>.</li>
+      <li class="step">No <span class="hl-blue">main</span>(), No run. It is the absolute anchor of your code.</li>
     </ul>
   </div>
   <div class="card-block step" style="background:linear-gradient(135deg, #1e1b4b, #000); border-color:#312e81;">
@@ -1510,7 +1510,7 @@ S(`
 S(`
 <div class="eyebrow">Deep Dive · Operating System Handshake</div>
 <div class="title">Why return 0; in main()? 🤝</div>
-<div class="lede">When your program finishes, who receives the return value? <b>The Operating System!</b></div>
+<div class="lede">When your program finishes, who receives the <span class="hl-green">return value</span>? <b>The <span class="hl-gold">Operating System</span>!</b></div>
 
 <div class="two-col">
   <div class="card-block step">
@@ -1543,7 +1543,7 @@ S(`
 
 <table class="dissect-table">
   <tr><th>Syntax Pattern</th><th>Type &amp; Purpose</th><th>Real Code Example</th></tr>
-  <tr class="step"><td class="dl">return 0;</td><td class="de"><b>Process Success.</b> Tells the OS that <span class="ic">main()</span> completed with zero errors.</td><td><span class="ic">int main() { ... return 0; }</span></td></tr>
+  <tr class="step"><td class="dl">return 0;</td><td class="de"><b>Process <span class="hl-green">Success</span>.</b> Tells the OS that <span class="ic"><span class="hl-blue">main</span>()</span> completed with zero errors.</td><td><span class="ic">int main() { ... return 0; }</span></td></tr>
   <tr class="step"><td class="dl">return 1; / return -1;</td><td class="de"><b>Error Signal.</b> Informs OS or caller that an operation failed (e.g. file open failure).</td><td><span class="ic">if (!file) return 1;</span></td></tr>
   <tr class="step"><td class="dl">return result;</td><td class="de"><b>Passing Data.</b> Hands the computed arithmetic/boolean value back to the caller.</td><td><span class="ic">return (a + b);</span></td></tr>
   <tr class="step"><td class="dl">return;</td><td class="de"><b>Early Exit in void.</b> Immediately stops a <span class="ic">void</span> function without sending back any value.</td><td><span class="ic">if (invalid) return;</span></td></tr>
@@ -1555,7 +1555,7 @@ S(`
 S(`
 <div class="eyebrow">Deep Dive · Standards &amp; Myths</div>
 <div class="title">int main() vs void main() ⚖️</div>
-<div class="lede">Why older 1990s college textbooks wrote <span class="ic">void main()</span> and why modern compilers reject it.</div>
+<div class="lede">Why older 1990s college textbooks wrote <span class="ic">void <span class="hl-blue">main</span>()</span> and why modern compilers reject it.</div>
 
 <div class="two-col">
   <div class="card-block step" style="border-color:rgba(251,113,133,0.3);">
@@ -1592,9 +1592,9 @@ S(`
       If you see these 3 keywords in old lab manuals, here is the secret history behind them:
     </div>
     <ul class="simple-list">
-      <li class="step"><b>Why getch()?</b> In MS-DOS Turbo C, the black output window flashed for 1 millisecond and vanished! Teachers put <span class="ic">getch()</span> (Get Character) as a <b>door stopper</b> to freeze the screen until a key was pressed.</li>
+      <li class="step"><b>Why <span class="hl-blue">getch</span>()?</b> In MS-DOS Turbo C, the black output window flashed for 1 millisecond and vanished! Teachers put <span class="ic"><span class="hl-blue">getch</span>()</span> (Get Character) as a <b>door stopper</b> to freeze the screen until a key was pressed.</li>
       <li class="step"><b>Why clrscr()?</b> In DOS, old outputs remained on screen. <span class="ic">clrscr()</span> (Clear Screen) wiped the screen like a blackboard before printing new output.</li>
-      <li class="step"><b>Why &lt;conio.h&gt;?</b> "Console Input/Output" was a proprietary Borland DOS header.</li>
+      <li class="step"><b>Why &lt;<span class="hl-violet">conio.h</span>&gt;?</b> "Console Input/Output" was a proprietary Borland DOS header.</li>
     </ul>
   </div>
   <div class="card-block step">
@@ -1708,7 +1708,7 @@ S(`
 <div class="kicker">The smallest individual elements of a C program. When compiling, C splits your lines into these tokens.</div>
 <div class="fact-grid cols-3" style="margin-top:1.6rem;">
   <div class="fact step"><div class="num">KEYWORDS</div><div class="txt" style="font-family:var(--mono); color:var(--accent);">int, float, return</div></div>
-  <div class="fact step"><div class="num">IDENTIFIERS</div><div class="txt" style="font-family:var(--mono); color:var(--accent);">main, total, price</div></div>
+  <div class="fact step"><div class="num">IDENTIFIERS</div><div class="txt" style="font-family:var(--mono); color:var(--accent);"><span class="hl-blue">main</span>, total, price</div></div>
   <div class="fact step"><div class="num">CONSTANTS</div><div class="txt" style="font-family:var(--mono); color:var(--accent);">100, 3.14, 'A'</div></div>
   <div class="fact step"><div class="num">OPERATORS</div><div class="txt" style="font-family:var(--mono); color:var(--accent);">+ , - , * , / , %</div></div>
   <div class="fact step"><div class="num">STRINGS</div><div class="txt" style="font-family:var(--mono); color:var(--accent);">"Hello", "Result: %d"</div></div>
@@ -1723,9 +1723,9 @@ S(`
 <div class="fact-grid cols-3" style="margin-top:2rem;">
   <div class="fact step"><div class="num">if</div><div class="txt">Keyword</div></div>
   <div class="fact step"><div class="num">( )</div><div class="txt">Special symbols</div></div>
-  <div class="fact step"><div class="num">salary</div><div class="txt">Identifier (Variable)</div></div>
+  <div class="fact step"><div class="num">salary</div><div class="txt"><span class="hl-blue">Identifier</span> (<span class="hl-blue">Variable</span>)</div></div>
   <div class="fact step"><div class="num">&gt;=</div><div class="txt">Comparison Operator</div></div>
-  <div class="fact step"><div class="num">50000</div><div class="txt">Numeric Constant</div></div>
+  <div class="fact step"><div class="num">50000</div><div class="txt">Numeric <span class="hl-blue">Constant</span></div></div>
 </div>
 `);
 
@@ -1749,7 +1749,7 @@ S(`
 <div class="title">The Spice Box Analogy</div>
 <div class="split" style="align-items: center; gap: 4vw;">
   <div style="flex: 1.1;">
-    <p class="lede" style="font-size: 1.45rem; line-height: 1.6; margin-bottom: 2rem;">A <b>Variable</b> is a named storage container in memory.</p>
+    <p class="lede" style="font-size: 1.45rem; line-height: 1.6; margin-bottom: 2rem;">A <b><span class="hl-blue">Variable</span></b> is a named storage container in memory.</p>
     <div style="padding: 1.8rem; background: var(--accent-soft); border-left: 4px solid var(--accent); border-radius: 0 8px 8px 0; font-size: 1.25rem; color: var(--hi); line-height: 1.6; font-weight: 300;">
       Like an Anjarai Petti (South Indian spice box): Dedicated cups for mustard, cumin, and cardamom. You store specific things in specific cups.
     </div>
@@ -1877,7 +1877,7 @@ S(`
   <div class="fact step"><div class="num">04</div><div class="txt"><b>Assignment:</b> = , += , -=</div></div>
   <div class="fact step"><div class="num">05</div><div class="txt"><b>Increment / Decrement:</b> ++ , --</div></div>
   <div class="fact step"><div class="num">06</div><div class="txt"><b>Ternary / Conditional:</b> ? :</div></div>
-  <div class="fact step" style="grid-column: span 2;"><div class="num">07 &amp; 08</div><div class="txt"><b>Bitwise &amp; Special Operators:</b> &amp; , | , &lt;&lt; , &gt;&gt; , sizeof</div></div>
+  <div class="fact step" style="grid-column: span 2;"><div class="num">07 &amp; 08</div><div class="txt"><b>Bitwise &amp; Special Operators:</b> &amp; , | , &lt;&lt; , &gt;&gt; , <span class="hl-blue">sizeof</span></div></div>
 </div>
 `);
 
@@ -2128,7 +2128,7 @@ scanf("Control String", &amp;var1, &amp;var2...);
 </div>
 <div class="fact-grid cols-2" style="margin-top:1.6rem;">
   <div class="fact step"><div class="num">CONTROL CODES</div><div class="txt">Specifies what type of data to expect (e.g. <span class="mono">%d</span> for integers).</div></div>
-  <div class="fact step"><div class="num">&amp; OPERATOR (Ampersand)</div><div class="txt">Tells scanf the exact memory address box to store the input value in.</div></div>
+  <div class="fact step"><div class="num">&amp; OPERATOR (Ampersand)</div><div class="txt">Tells <span class="hl-blue">scanf</span> the exact memory address box to store the input value in.</div></div>
 </div>
 `);
 
@@ -2268,7 +2268,7 @@ S(`
 <div class="title">Key Takeaways Today</div>
 <div class="fact-grid cols-3">
   <div class="fact step"><div class="num">01. COMPILE</div><div class="txt">C code is compiled all at once (Catering) to build fast binaries, not interpreted line-by-line (Dosa Stall).</div></div>
-  <div class="fact step"><div class="num">02. ANATOMY</div><div class="txt">Runs always start in <b>main()</b> (Thalaivar Entry) and use library helpers via <b>#include</b>.</div></div>
+  <div class="fact step"><div class="num">02. ANATOMY</div><div class="txt">Runs always start in <b><span class="hl-blue">main</span>()</b> (Thalaivar Entry) and use library helpers via <b>#include</b>.</div></div>
   <div class="fact step"><div class="num">03. STORAGE</div><div class="txt">Variables are named cups inside the memory box (Anjarai Petti) storing strict types of data.</div></div>
 </div>
 `);
@@ -2448,6 +2448,7 @@ document.addEventListener('touchend', e=>{
 
 render();
 </script>
+
 
 
 

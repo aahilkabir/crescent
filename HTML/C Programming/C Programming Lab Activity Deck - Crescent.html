@@ -538,9 +538,9 @@ S(`
 <div class="eyebrow">Roadmap</div>
 <div class="title" style="font-size:2.8rem;">What's Inside</div>
 <div class="fact-grid cols-3" style="margin-top:1.8rem;">
-  <div class="fact step"><div class="num">Ex 01–05</div><div class="txt"><b>I/O & Math</b><br>printf, scanf, arithmetic, constants, if-else</div></div>
-  <div class="fact step"><div class="num">Ex 06–10</div><div class="txt"><b>Operators</b><br>sizeof, ternary, prefix/postfix, prime, leap year</div></div>
-  <div class="fact step"><div class="num">Ex 11–15</div><div class="txt"><b>Loops & Functions</b><br>factorial, Armstrong, switch, matrices, functions</div></div>
+  <div class="fact step"><div class="num">Ex 01–05</div><div class="txt"><b>I/O & Math</b><br><span class="hl-blue">printf</span>, <span class="hl-blue">scanf</span>, arithmetic, constants, if-else</div></div>
+  <div class="fact step"><div class="num">Ex 06–10</div><div class="txt"><b>Operators</b><br><span class="hl-blue">sizeof</span>, ternary, prefix/postfix, prime, leap year</div></div>
+  <div class="fact step"><div class="num">Ex 11–15</div><div class="txt"><b>Loops & Functions</b><br>factorial, <span class="hl-green">Armstrong</span>, switch, matrices, functions</div></div>
   <div class="fact step"><div class="num">Ex 16–20</div><div class="txt"><b>Advanced</b><br>recursion, structures, unions, pointers, files</div></div>
   <div class="fact step"><div class="num">Quizzes</div><div class="txt"><b>Interactive</b><br>True/False cards and code-blank exercises</div></div>
   <div class="fact step"><div class="num">Challenges</div><div class="txt"><b>Practice Tasks</b><br>Your turn — write it from scratch</div></div>
@@ -569,10 +569,10 @@ S(`
 <div class="title" style="font-size:2.6rem;">Line by Line Breakdown</div>
 <table class="dissect-table">
   <tr><th>Line</th><th>Plain English Explanation</th></tr>
-  <tr class="step"><td class="dl">#include &lt;stdio.h&gt;</td><td class="de">📦 <b>Import Statement.</b> Loads the Standard Input/Output library. Without this, the compiler has no idea what <span class="ic">printf()</span> means — like calling a mess hotel for sambar before having their number.</td></tr>
-  <tr class="step"><td class="dl">int main()</td><td class="de">🚪 <b>Entry Gate.</b> Every C program must have a <span class="ic">main()</span> function. The CPU jumps here first when your program starts. The <span class="ic">int</span> means it will return a whole number to the OS when done.</td></tr>
-  <tr class="step"><td class="dl">{ ... }</td><td class="de">📦 <b>Function Body Block.</b> The opening brace <span class="ic">{</span> starts the code block, closing brace <span class="ic">}</span> ends it. All instructions inside belong to <span class="ic">main()</span>.</td></tr>
-  <tr class="step"><td class="dl">printf("...");</td><td class="de">📢 <b>Print to Screen.</b> <span class="ic">printf</span> is a standard library function that sends text inside the <span class="ic">" "</span> quotes to the terminal screen. The semicolon <span class="ic">;</span> terminates every statement.</td></tr>
+  <tr class="step"><td class="dl">#include &lt;stdio.h&gt;</td><td class="de">📦 <b>Import Statement.</b> Loads the <span class="hl-green">Standard</span> Input/Output library. Without this, the compiler has no idea what <span class="ic"><span class="hl-blue">printf</span>()</span> means — like calling a mess hotel for sambar before having their number.</td></tr>
+  <tr class="step"><td class="dl">int main()</td><td class="de">🚪 <b>Entry Gate.</b> Every C program must have a <span class="ic"><span class="hl-blue">main</span>()</span> function. The <span class="hl-violet">CPU</span> jumps here first when your program starts. The <span class="ic">int</span> means it will return a whole number to the OS when done.</td></tr>
+  <tr class="step"><td class="dl">{ ... }</td><td class="de">📦 <b><span class="hl-gold">Function</span> Body Block.</b> The opening brace <span class="ic">{</span> starts the code block, closing brace <span class="ic">}</span> ends it. All instructions inside belong to <span class="ic"><span class="hl-blue">main</span>()</span>.</td></tr>
+  <tr class="step"><td class="dl">printf("...");</td><td class="de">📢 <b>Print to Screen.</b> <span class="ic"><span class="hl-blue">printf</span></span> is a standard library function that sends text inside the <span class="ic">" "</span> quotes to the terminal screen. The semicolon <span class="ic">;</span> terminates every statement.</td></tr>
   <tr class="step"><td class="dl">return 0;</td><td class="de">✅ <b>Exit Code.</b> Returns the value <span class="ic">0</span> to the operating system. By convention, <span class="ic">0</span> = success, any other value = error. Think of it as signing off the attendance register.</td></tr>
 </table>
 
@@ -615,11 +615,11 @@ S(`
 <div class="title" style="font-size:2.6rem;">Line by Line Breakdown</div>
 <table class="dissect-table">
   <tr><th>Line / Concept</th><th>Plain English Explanation</th></tr>
-  <tr class="step"><td class="dl">int a, b, c, sum;</td><td class="de">🗃️ <b>Declare 4 integer variables.</b> This reserves 4 separate boxes in RAM memory to hold whole numbers. You can declare multiple variables of the same type in one line using commas.</td></tr>
+  <tr class="step"><td class="dl">int a, b, c, sum;</td><td class="de">🗃️ <b>Declare 4 integer variables.</b> This reserves 4 separate boxes in <span class="hl-violet">RAM</span> memory to hold whole numbers. You can declare multiple variables of the same type in one line using commas.</td></tr>
   <tr class="step"><td class="dl">float avg;</td><td class="de">🗃️ <b>Declare a float variable.</b> A <span class="ic">float</span> can hold decimal values (e.g. 15.33). We need this because the average of integers might not be a whole number.</td></tr>
-  <tr class="step"><td class="dl">scanf("%d %d %d", &amp;a, &amp;b, &amp;c);</td><td class="de">⌨️ <b>Read 3 numbers from keyboard.</b> <span class="ic">%d</span> is the format specifier for integers. The <b>&amp; (ampersand)</b> is critical — it gives scanf the exact RAM address where to store the typed value. Without &amp;, it crashes!</td></tr>
+  <tr class="step"><td class="dl">scanf("%d %d %d", &amp;a, &amp;b, &amp;c);</td><td class="de">⌨️ <b>Read 3 numbers from keyboard.</b> <span class="ic">%d</span> is the format specifier for integers. The <b>&amp; (ampersand)</b> is critical — it gives <span class="hl-blue">scanf</span> the exact <span class="hl-violet">RAM</span> address where to store the typed value. Without &amp;, it crashes!</td></tr>
   <tr class="step"><td class="dl">sum = a + b + c;</td><td class="de">➕ <b>Arithmetic addition.</b> Adds all three variables and stores the result in <span class="ic">sum</span>. This executes right-to-left: evaluate the right side, then assign to the left.</td></tr>
-  <tr class="step"><td class="dl">avg = sum / 3.0;</td><td class="de">⚠️ <b>Float Division Trick.</b> Writing <span class="ic">3.0</span> (not <span class="ic">3</span>) forces the CPU to perform decimal division. If you wrote <span class="ic">sum/3</span>, integer division would truncate the decimal and give the wrong answer!</td></tr>
+  <tr class="step"><td class="dl">avg = sum / 3.0;</td><td class="de">⚠️ <b>Float Division Trick.</b> Writing <span class="ic">3.0</span> (not <span class="ic">3</span>) forces the <span class="hl-violet">CPU</span> to perform decimal division. If you wrote <span class="ic">sum/3</span>, integer division would truncate the decimal and give the wrong answer!</td></tr>
   <tr class="step"><td class="dl">printf("...%.2f...", avg);</td><td class="de">🖥️ <b>%.2f specifier.</b> Prints the float value with exactly 2 decimal places. The <span class="ic">\\n</span> inside strings is an escape sequence that creates a new line.</td></tr>
 </table>
 
@@ -654,7 +654,7 @@ S(`
 <div class="title" style="font-size:2.6rem;">Line by Line Breakdown</div>
 <table class="dissect-table">
   <tr><th>Line / Concept</th><th>Plain English Explanation</th></tr>
-  <tr class="step"><td class="dl">#define PI 3.14159</td><td class="de">🔒 <b>Preprocessor Constant Macro.</b> Before compilation even starts, the preprocessor replaces every occurrence of <span class="ic">PI</span> in your code with <span class="ic">3.14159</span>. It's faster than a variable and cannot be accidentally modified.</td></tr>
+  <tr class="step"><td class="dl">#define PI 3.14159</td><td class="de">🔒 <b><span class="hl-violet">Preprocessor</span> <span class="hl-blue">Constant</span> Macro.</b> Before compilation even starts, the preprocessor replaces every occurrence of <span class="ic">PI</span> in your code with <span class="ic">3.14159</span>. It's faster than a variable and cannot be accidentally modified.</td></tr>
   <tr class="step"><td class="dl">float area, circumference;</td><td class="de">📐 <b>Float variables for results.</b> Geometric formulas produce decimal results, so we need <span class="ic">float</span> not <span class="ic">int</span>. Both variables are declared in a single statement separated by commas.</td></tr>
   <tr class="step"><td class="dl">scanf("%d", &amp;radius);</td><td class="de">⌨️ <b>Read single integer.</b> Only one value this time, so just one <span class="ic">%d</span> and one address <span class="ic">&amp;radius</span>. This stores the user's typed number directly into the <span class="ic">radius</span> memory box.</td></tr>
   <tr class="step"><td class="dl">area = PI * radius * radius;</td><td class="de">🔢 <b>Area formula (π r²).</b> The preprocessor has already replaced <span class="ic">PI</span> with the number. C evaluates left-to-right: <span class="ic">3.14159 × radius × radius</span>. Since PI is float, the result is automatically promoted to float.</td></tr>
@@ -694,7 +694,7 @@ S(`
   <tr class="step"><td class="dl">if (num1 &gt;= num2 &amp;&amp; num1 &gt;= num3)</td><td class="de">❓ <b>First check — is num1 the greatest?</b> The <span class="ic">&amp;&amp;</span> (logical AND) means BOTH conditions must be true. If num1 is ≥ num2 AND simultaneously ≥ num3, then num1 wins. Either condition failing skips to else-if.</td></tr>
   <tr class="step"><td class="dl">} else if (num2 &gt;= ...)</td><td class="de">🔀 <b>Chain check — is num2 the greatest?</b> Only runs if the first <span class="ic">if</span> was false. We already know num1 is NOT the greatest, so now we compare num2 against both others.</td></tr>
   <tr class="step"><td class="dl">} else { printf(num3) }</td><td class="de">✅ <b>Default fallback — num3 wins.</b> If neither num1 nor num2 was the largest, then by elimination, num3 must be. The <span class="ic">else</span> block has no condition — it runs when everything above fails.</td></tr>
-  <tr class="step"><td class="dl">printf("%d is largest", num1);</td><td class="de">🖥️ <b>%d is the integer placeholder.</b> The value of <span class="ic">num1</span> replaces <span class="ic">%d</span> at runtime. C's printf uses format specifiers to embed variable values directly into the output string.</td></tr>
+  <tr class="step"><td class="dl">printf("%d is largest", num1);</td><td class="de">🖥️ <b>%d is the integer placeholder.</b> The value of <span class="ic">num1</span> replaces <span class="ic">%d</span> at runtime. C's <span class="hl-blue">printf</span> uses format specifiers to embed variable values directly into the output string.</td></tr>
 </table>
 <div class="insight step">⚠️ <b>Common mistake:</b> Using <span class="ic">if ... if ... if</span> (three separate ifs) instead of <span class="ic">if ... else if ... else</span> causes all three blocks to evaluate independently, printing multiple "largest" lines!</div>
 
@@ -733,7 +733,7 @@ S(`
   <tr class="step"><td class="dl">int temp;</td><td class="de">📦 <b>Temporary placeholder.</b> Without a third box, you can't swap two cups directly — you'd overwrite a value before saving it. <span class="ic">temp</span> is the temporary holding container (the empty cup).</td></tr>
   <tr class="step"><td class="dl">temp = x;</td><td class="de">💾 <b>Save x into temp first.</b> This is the most critical step. If you first write <span class="ic">x = y;</span>, you lose the original value of x forever. ALWAYS save first!</td></tr>
   <tr class="step"><td class="dl">x = y;</td><td class="de">🔁 <b>Overwrite x with y's value.</b> Now x = 20. The original x value (10) is safely saved in temp, so we can do this overwrite without data loss.</td></tr>
-  <tr class="step"><td class="dl">y = temp;</td><td class="de">✅ <b>Complete the swap.</b> Now y gets temp's value (10). The swap is complete: x=20, y=10. <b>Key insight:</b> the order of these 3 lines is fixed — changing it breaks the swap.</td></tr>
+  <tr class="step"><td class="dl">y = temp;</td><td class="de">✅ <b>Complete the swap.</b> Now y <span class="hl-blue">gets</span> temp's value (10). The swap is complete: x=20, y=10. <b>Key insight:</b> the order of these 3 lines is fixed — changing it breaks the swap.</td></tr>
 </table>
 
 `);
@@ -771,11 +771,11 @@ S(`
 <div class="title" style="font-size:2.6rem;">Line by Line Breakdown</div>
 <table class="dissect-table">
   <tr><th>Line / Concept</th><th>Plain English Explanation</th></tr>
-  <tr class="step"><td class="dl">sizeof(char)</td><td class="de">📏 <b>sizeof is a compile-time operator</b> (not a function!) that returns the number of bytes a type occupies in memory. For <span class="ic">char</span> it always returns <b>1 byte</b> = 8 bits = can store 256 values.</td></tr>
+  <tr class="step"><td class="dl">sizeof(char)</td><td class="de">📏 <b><span class="hl-blue">sizeof</span> is a compile-time operator</b> (not a function!) that returns the number of bytes a type occupies in memory. For <span class="ic">char</span> it always returns <b>1 byte</b> = 8 bits = can store 256 values.</td></tr>
   <tr class="step"><td class="dl">sizeof(int)</td><td class="de">📏 Returns <b>4 bytes</b> on most modern 32/64-bit systems. An int stores whole numbers from -2,147,483,648 to +2,147,483,647.</td></tr>
   <tr class="step"><td class="dl">sizeof(float)</td><td class="de">📏 Returns <b>4 bytes</b>. Stores decimal numbers with ~7 digits of precision using IEEE 754 floating-point format.</td></tr>
   <tr class="step"><td class="dl">sizeof(double)</td><td class="de">📏 Returns <b>8 bytes</b>. The "double precision" float — double the storage of float, giving ~15 decimal digits of precision.</td></tr>
-  <tr class="step"><td class="dl">%lu format specifier</td><td class="de">🔢 <b>%lu = unsigned long integer.</b> The <span class="ic">sizeof</span> operator returns a <span class="ic">size_t</span> type which is always unsigned and large. Using <span class="ic">%d</span> here can cause warnings on 64-bit systems.</td></tr>
+  <tr class="step"><td class="dl">%lu format specifier</td><td class="de">🔢 <b>%lu = unsigned long integer.</b> The <span class="ic"><span class="hl-blue">sizeof</span></span> operator returns a <span class="ic">size_t</span> type which is always unsigned and large. Using <span class="ic">%d</span> here can cause warnings on 64-bit systems.</td></tr>
 </table>
 
 `);
@@ -829,9 +829,9 @@ S(`
   <tr><th>Part</th><th>Plain English Explanation</th></tr>
   <tr class="step"><td class="dl">condition ? A : B</td><td class="de">❓ <b>Ternary = three-part operator.</b> It evaluates a <b>condition</b>, if TRUE it returns value A, if FALSE it returns value B. It's a compact one-line alternative to an if-else block.</td></tr>
   <tr class="step"><td class="dl">(age &gt;= 18)</td><td class="de">🔍 <b>The condition part.</b> Evaluates whether age is 18 or older. This returns 1 (true) or 0 (false). The outer parentheses are optional but improve readability.</td></tr>
-  <tr class="step"><td class="dl">? "Eligible"</td><td class="de">✅ <b>True branch.</b> If the condition is true (age ≥ 18), the expression evaluates to the string "Eligible".</td></tr>
-  <tr class="step"><td class="dl">: "Not Eligible"</td><td class="de">❌ <b>False branch.</b> If the condition is false (age &lt; 18), the expression evaluates to "Not Eligible". The colon acts as the separator between true and false outcomes.</td></tr>
-  <tr class="step"><td class="dl">printf("%s\\n", ...);</td><td class="de">🖥️ <b>%s prints a string.</b> The ternary expression produces one of the two strings, and <span class="ic">%s</span> tells printf to display it as a character string.</td></tr>
+  <tr class="step"><td class="dl">? "Eligible"</td><td class="de">✅ <b>True branch.</b> If the condition is true (age ≥ 18), the expression evaluates to the string "<span class="hl-green">Eligible</span>".</td></tr>
+  <tr class="step"><td class="dl">: "Not Eligible"</td><td class="de">❌ <b>False branch.</b> If the condition is false (age &lt; 18), the expression evaluates to "Not <span class="hl-green">Eligible</span>". The colon acts as the separator between true and false outcomes.</td></tr>
+  <tr class="step"><td class="dl">printf("%s\\n", ...);</td><td class="de">🖥️ <b>%s prints a string.</b> The ternary expression produces one of the two strings, and <span class="ic">%s</span> tells <span class="hl-blue">printf</span> to display it as a character string.</td></tr>
 </table>
 
 `);
@@ -932,7 +932,7 @@ S(`
   <tr class="step"><td class="dl">int flag = 0;</td><td class="de">🚩 <b>Flag variable pattern.</b> A flag is a boolean sentinel — we start it at 0 meaning "prime so far". If we find any divisor, we flip it to 1 meaning "not prime". Checking the flag at the end gives the verdict.</td></tr>
   <tr class="step"><td class="dl">for (int i = 2; i &lt;= n/2; i++)</td><td class="de">🔄 <b>Efficient loop bounds.</b> We start from 2 (since 1 divides everything). We only need to check up to <span class="ic">n/2</span> — no factor of n can be larger than its half. This cuts the work in half compared to looping to n.</td></tr>
   <tr class="step"><td class="dl">if (n % i == 0)</td><td class="de">🔢 <b>Divisibility test using modulo.</b> <span class="ic">n % i</span> gives the remainder of n ÷ i. If the remainder is 0, then i divides n evenly — meaning n has a factor, so it's NOT prime.</td></tr>
-  <tr class="step"><td class="dl">flag = 1; break;</td><td class="de">⚡ <b>Early exit optimization.</b> Once we find ONE divisor, we know it's not prime — no point checking more numbers. The <span class="ic">break</span> statement immediately exits the for loop, saving unnecessary CPU work.</td></tr>
+  <tr class="step"><td class="dl">flag = 1; break;</td><td class="de">⚡ <b>Early exit optimization.</b> Once we find ONE divisor, we know it's not prime — no point checking more numbers. The <span class="ic">break</span> statement immediately exits the for loop, saving unnecessary <span class="hl-violet">CPU</span> work.</td></tr>
   <tr class="step"><td class="dl">if (flag == 0)</td><td class="de">✅ <b>Final verdict check.</b> After the loop, if flag is still 0, no divisor was found → it's prime. If flag is 1, a divisor was found → not prime.</td></tr>
 </table>
 
@@ -1053,9 +1053,9 @@ S(`
   <tr><th>Line / Concept</th><th>Plain English Explanation</th></tr>
   <tr class="step"><td class="dl">originalNum = num;</td><td class="de">💾 <b>Save a copy before modifying.</b> The while loop will destroy <span class="ic">originalNum</span> by dividing it down to 0. We need the original value at the end to compare. Always save a copy before a destructive loop.</td></tr>
   <tr class="step"><td class="dl">remainder = originalNum % 10;</td><td class="de">🔢 <b>Digit extraction trick.</b> Any number modulo 10 gives the rightmost digit. For 153: <span class="ic">153 % 10 = 3</span>. Then for 15: <span class="ic">15 % 10 = 5</span>. Then for 1: <span class="ic">1 % 10 = 1</span>. We peel off one digit per iteration.</td></tr>
-  <tr class="step"><td class="dl">result += remainder * remainder * remainder;</td><td class="de">➕ <b>Cube and accumulate.</b> Armstrong condition: each digit cubed, summed = original number. For 153: 1³+5³+3³ = 1+125+27 = 153 ✓. The <span class="ic">+=</span> adds each cube to the running total.</td></tr>
+  <tr class="step"><td class="dl">result += remainder * remainder * remainder;</td><td class="de">➕ <b>Cube and accumulate.</b> <span class="hl-green">Armstrong</span> condition: each digit cubed, summed = original number. For 153: 1³+5³+3³ = 1+125+27 = 153 ✓. The <span class="ic">+=</span> adds each cube to the running total.</td></tr>
   <tr class="step"><td class="dl">originalNum /= 10;</td><td class="de">🔢 <b>Integer division removes last digit.</b> <span class="ic">153 / 10 = 15</span> (drops the 3). <span class="ic">15 / 10 = 1</span> (drops the 5). <span class="ic">1 / 10 = 0</span> → loop ends. This is the "shift right" digit extraction pattern.</td></tr>
-  <tr class="step"><td class="dl">if (result == num)</td><td class="de">✅ <b>Compare sum of cubes to original.</b> If they match, it's Armstrong. Note: we compare against <span class="ic">num</span> (not <span class="ic">originalNum</span> which is now 0 after the loop).</td></tr>
+  <tr class="step"><td class="dl">if (result == num)</td><td class="de">✅ <b>Compare sum of cubes to original.</b> If they match, it's <span class="hl-green">Armstrong</span>. Note: we compare against <span class="ic">num</span> (not <span class="ic">originalNum</span> which is now 0 after the loop).</td></tr>
 </table>
 
 `);
@@ -1131,7 +1131,7 @@ S(`
 <div class="title" style="font-size:2.6rem;">2D Array &amp; Matrix Breakdown</div>
 <table class="dissect-table">
   <tr><th>Line / Concept</th><th>Plain English Explanation</th></tr>
-  <tr class="step"><td class="dl">int a[2][2] = {{1,2},{3,4}};</td><td class="de">🗃️ <b>2D Array Declaration + Initialization.</b> Think of it as a grid (table): <span class="ic">a[0][0]=1, a[0][1]=2, a[1][0]=3, a[1][1]=4</span>. The first index is the <b>row</b>, second is the <b>column</b>. Outer braces = all rows, inner braces = one row.</td></tr>
+  <tr class="step"><td class="dl">int a[2][2] = {{1,2},{3,4}};</td><td class="de">🗃️ <b><span class="hl-blue">2D Array</span> Declaration + Initialization.</b> Think of it as a grid (table): <span class="ic">a[0][0]=1, a[0][1]=2, a[1][0]=3, a[1][1]=4</span>. The first index is the <b>row</b>, second is the <b>column</b>. Outer braces = all rows, inner braces = one row.</td></tr>
   <tr class="step"><td class="dl">for (i=0; i&lt;r; i++)</td><td class="de">🔄 <b>Outer loop iterates over rows.</b> For a 2×2 matrix, i goes 0,1 (two rows). Each iteration of the outer loop processes one complete row of the matrix.</td></tr>
   <tr class="step"><td class="dl">for (j=0; j&lt;c; j++)</td><td class="de">🔄 <b>Inner loop iterates over columns.</b> For each row position i, j goes through all column positions 0,1. The combination of (i,j) visits every single cell in the matrix.</td></tr>
   <tr class="step"><td class="dl">sum[i][j] = a[i][j] + b[i][j];</td><td class="de">➕ <b>Element-wise addition.</b> For each position (row i, column j), add the corresponding elements from both matrices. This is the fundamental rule of matrix addition: matching positions are summed.</td></tr>
@@ -1178,11 +1178,11 @@ S(`
 <div class="title" style="font-size:2.6rem;">Functions Breakdown</div>
 <table class="dissect-table">
   <tr><th>Line / Concept</th><th>Plain English Explanation</th></tr>
-  <tr class="step"><td class="dl">int addition(int a, int b)</td><td class="de">🧩 <b>Function definition anatomy.</b> <span class="ic">int</span> = return type (what it gives back). <span class="ic">addition</span> = function name. <span class="ic">(int a, int b)</span> = parameters (inputs it accepts). The curly braces contain the function's body.</td></tr>
-  <tr class="step"><td class="dl">{ return a + b; }</td><td class="de">↩️ <b>Return statement.</b> The <span class="ic">return</span> keyword sends a value back to whoever called this function. The returned value must match the declared return type (<span class="ic">int</span> here). Execution of the function ends at <span class="ic">return</span>.</td></tr>
+  <tr class="step"><td class="dl">int addition(int a, int b)</td><td class="de">🧩 <b><span class="hl-gold">Function</span> definition anatomy.</b> <span class="ic">int</span> = return type (what it gives back). <span class="ic">addition</span> = function name. <span class="ic">(int a, int b)</span> = parameters (inputs it accepts). The curly braces contain the function's body.</td></tr>
+  <tr class="step"><td class="dl">{ return a + b; }</td><td class="de">↩️ <b>Return statement.</b> The <span class="ic">return</span> keyword sends a value back to whoever called this function. The returned value must match the declared return type (<span class="ic">int</span> here). <span class="hl-green">Execution</span> of the function ends at <span class="ic">return</span>.</td></tr>
   <tr class="step"><td class="dl">float division(float a, float b)</td><td class="de">🔢 <b>Return type determines precision.</b> We use <span class="ic">float</span> parameters and return type for division because 8÷3 = 2.666... which needs decimal precision. If we used <span class="ic">int</span> parameters, 8/3 would return just 2.</td></tr>
-  <tr class="step"><td class="dl">printf("Add: %d", addition(x, y));</td><td class="de">🔗 <b>Calling a function inside printf.</b> C evaluates <span class="ic">addition(x, y)</span> first (getting 11), then passes that result to <span class="ic">printf</span> as the argument for <span class="ic">%d</span>. Functions can be used anywhere an expression is valid.</td></tr>
-  <tr class="step"><td class="dl">Functions defined before main()</td><td class="de">📋 <b>Declaration order.</b> Functions must be defined or declared BEFORE they're called. Placing helper functions above <span class="ic">main()</span> is the simple approach. Alternatively, use forward declarations (prototypes) at the top.</td></tr>
+  <tr class="step"><td class="dl">printf("Add: %d", addition(x, y));</td><td class="de">🔗 <b>Calling a function inside <span class="hl-blue">printf</span>.</b> C evaluates <span class="ic">addition(x, y)</span> first (getting 11), then passes that result to <span class="ic"><span class="hl-blue">printf</span></span> as the argument for <span class="ic">%d</span>. Functions can be used anywhere an expression is valid.</td></tr>
+  <tr class="step"><td class="dl">Functions defined before main()</td><td class="de">📋 <b>Declaration order.</b> Functions must be defined or declared BEFORE they're called. Placing helper functions above <span class="ic"><span class="hl-blue">main</span>()</span> is the simple approach. Alternatively, use forward declarations (prototypes) at the top.</td></tr>
 </table>
 
 `);
@@ -1236,7 +1236,7 @@ S(`
 <div class="title" style="font-size:2.6rem;">Recursion Breakdown</div>
 <table class="dissect-table">
   <tr><th>Part</th><th>Plain English Explanation</th></tr>
-  <tr class="step"><td class="dl">if (n == 0) return 0;</td><td class="de">🛑 <b>Base Case — The stop condition.</b> Every recursive function MUST have a base case, otherwise it would call itself forever (infinite recursion → stack overflow crash). When n reaches 0, no more digits to extract, so return 0.</td></tr>
+  <tr class="step"><td class="dl">if (n == 0) return 0;</td><td class="de">🛑 <b>Base Case — The stop condition.</b> Every recursive function MUST have a base case, otherwise it would call itself forever (infinite recursion → stack overflow crash). When n reaches 0, no more digits to extract, so <span class="hl-green">return 0</span>.</td></tr>
   <tr class="step"><td class="dl">n % 10</td><td class="de">🔢 <b>Extract the last digit.</b> For 123: <span class="ic">123 % 10 = 3</span> (the rightmost digit). This is the digit we add in this particular call.</td></tr>
   <tr class="step"><td class="dl">sumOfDigits(n / 10)</td><td class="de">🔁 <b>Recursive Call — Solve a smaller version.</b> <span class="ic">123 / 10 = 12</span>. We call the SAME function with a smaller number (dropped the last digit). This is the recursive step — calling yourself on a simpler version of the problem.</td></tr>
   <tr class="step"><td class="dl">Call Stack buildup</td><td class="de">📚 <b>How the call stack works.</b> Each function call is "stacked" in memory: sumOfDigits(123) calls sumOfDigits(12) which calls sumOfDigits(1) which calls sumOfDigits(0). Then they unwind from the bottom: 0 → 1+0=1 → 2+1=3 → 3+3=6.</td></tr>
@@ -1272,11 +1272,11 @@ S(`
 <div class="title" style="font-size:2.6rem;">Structures Breakdown</div>
 <table class="dissect-table">
   <tr><th>Line / Concept</th><th>Plain English Explanation</th></tr>
-  <tr class="step"><td class="dl">struct Student { ... };</td><td class="de">🏛️ <b>Structure definition — a custom data blueprint.</b> A struct groups multiple related variables of different types under one name. Think of it as a form template: a Student "form" has fields for name, score, and percentage. The semicolon after <span class="ic">}</span> is mandatory!</td></tr>
+  <tr class="step"><td class="dl">struct Student { ... };</td><td class="de">🏛️ <b><span class="hl-gold">Structure</span> definition — a custom data blueprint.</b> A struct groups multiple related variables of different types under one name. Think of it as a form template: a Student "form" has fields for name, score, and percentage. The semicolon after <span class="ic">}</span> is mandatory!</td></tr>
   <tr class="step"><td class="dl">char name[50];</td><td class="de">🔤 <b>Character array as a string.</b> C has no built-in string type. A string is an array of characters ending with a null terminator <span class="ic">\\0</span>. <span class="ic">char name[50]</span> reserves 50 bytes — enough for 49 characters + the terminator.</td></tr>
   <tr class="step"><td class="dl">struct Student s = {"Arun", 450, 90.0};</td><td class="de">📋 <b>Struct variable declaration + initialization.</b> <span class="ic">struct Student s</span> creates one Student record. The values in <span class="ic">{}</span> initialize each member in order: name="Arun", score=450, pct=90.0.</td></tr>
   <tr class="step"><td class="dl">s.name, s.score, s.pct</td><td class="de">🔑 <b>Dot operator for member access.</b> The <span class="ic">.</span> (dot/member access) operator accesses a specific field inside the struct. <span class="ic">s.score</span> reads the <span class="ic">score</span> field of the <span class="ic">s</span> variable. This is how you read/write struct data.</td></tr>
-  <tr class="step"><td class="dl">%%  in printf format</td><td class="de">🖥️ <b>Printing a literal % sign.</b> In printf, <span class="ic">%</span> starts a format specifier. To print an actual <span class="ic">%</span> character, you must escape it as <span class="ic">%%</span>.</td></tr>
+  <tr class="step"><td class="dl">%%  in printf format</td><td class="de">🖥️ <b>Printing a literal % sign.</b> In <span class="hl-blue">printf</span>, <span class="ic">%</span> starts a format specifier. To print an actual <span class="ic">%</span> character, you must escape it as <span class="ic">%%</span>.</td></tr>
 </table>
 
 `);
@@ -1309,7 +1309,7 @@ S(`
 <div class="title" style="font-size:2.6rem;">Union Memory Breakdown</div>
 <table class="dissect-table">
   <tr><th>Concept</th><th>Plain English Explanation</th></tr>
-  <tr class="step"><td class="dl">union vs struct</td><td class="de">🏛️ <b>The key difference:</b> A <span class="ic">struct</span> allocates separate memory for EACH member (total size = sum of all). A <span class="ic">union</span> allocates ONE shared memory block sized for only the LARGEST member. All members share the same physical RAM location.</td></tr>
+  <tr class="step"><td class="dl">union vs struct</td><td class="de">🏛️ <b>The key difference:</b> A <span class="ic">struct</span> allocates separate memory for EACH member (total size = sum of all). A <span class="ic">union</span> allocates ONE shared memory block sized for only the LARGEST member. All members share the same physical <span class="hl-violet">RAM</span> location.</td></tr>
   <tr class="step"><td class="dl">union Data { int i; float f; };</td><td class="de">📦 <b>Size of this union = 4 bytes</b> (max of int=4, float=4). If a double (8 bytes) was added, the union would be 8 bytes. Both <span class="ic">i</span> and <span class="ic">f</span> live at the exact same memory address.</td></tr>
   <tr class="step"><td class="dl">d.i = 10; then d.f = 220.5;</td><td class="de">⚠️ <b>Writing one member corrupts the other.</b> Since they share the same bytes, writing to <span class="ic">d.f</span> overwrites the exact bytes that <span class="ic">d.i</span> uses. The bit pattern of 220.5 (as IEEE 754 float) is NOT a valid integer representation.</td></tr>
   <tr class="step"><td class="dl">printf d.i after writing d.f</td><td class="de">🔢 <b>Reading a "wrong" member gives garbage.</b> After writing <span class="ic">d.f=220.5</span>, the bytes at that address now hold the float representation. Reading those same bytes as an <span class="ic">int</span> interprets the float bits as an integer — giving an unpredictable number.</td></tr>
@@ -1363,11 +1363,11 @@ S(`
 <div class="title" style="font-size:2.6rem;">Pointers &amp; Addresses Breakdown</div>
 <table class="dissect-table">
   <tr><th>Line / Concept</th><th>Plain English Explanation</th></tr>
-  <tr class="step"><td class="dl">int *ptr = arr;</td><td class="de">📍 <b>Pointer declaration and initialization.</b> The <span class="ic">*</span> in the declaration means "pointer to int". Arrays naturally decay to a pointer to their first element, so <span class="ic">ptr = arr</span> makes ptr point to <span class="ic">arr[0]</span>. No <span class="ic">&amp;</span> needed here!</td></tr>
-  <tr class="step"><td class="dl">ptr + i</td><td class="de">➡️ <b>Pointer arithmetic.</b> Adding <span class="ic">i</span> to a pointer doesn't add i bytes — it adds <span class="ic">i × sizeof(int)</span> bytes (4 bytes each). So <span class="ic">ptr+1</span> points to addr 0x1004, <span class="ic">ptr+2</span> to 0x1008 — advancing one int-sized step at a time.</td></tr>
+  <tr class="step"><td class="dl">int *ptr = arr;</td><td class="de">📍 <b><span class="hl-blue">Pointer</span> declaration and initialization.</b> The <span class="ic">*</span> in the declaration means "pointer to int". Arrays naturally decay to a pointer to their first element, so <span class="ic">ptr = arr</span> makes ptr point to <span class="ic">arr[0]</span>. No <span class="ic">&amp;</span> needed here!</td></tr>
+  <tr class="step"><td class="dl">ptr + i</td><td class="de">➡️ <b><span class="hl-blue">Pointer</span> arithmetic.</b> Adding <span class="ic">i</span> to a pointer doesn't add i bytes — it adds <span class="ic">i × <span class="hl-blue">sizeof</span>(int)</span> bytes (4 bytes each). So <span class="ic">ptr+1</span> points to addr 0x1004, <span class="ic">ptr+2</span> to 0x1008 — advancing one int-sized step at a time.</td></tr>
   <tr class="step"><td class="dl">*(ptr + i)</td><td class="de">🔍 <b>Dereferencing — reading the value at an address.</b> The <span class="ic">*</span> before a pointer (called the dereference operator) means "go to this address and read/write the value stored there". <span class="ic">*(ptr+1)</span> goes to address 0x1004 and reads 20.</td></tr>
   <tr class="step"><td class="dl">%p format specifier</td><td class="de">🖥️ <b>Printing memory addresses.</b> <span class="ic">%p</span> prints a pointer (memory address) in hexadecimal notation like <span class="ic">0x7fff5fbff5c0</span>. Never use <span class="ic">%d</span> to print a pointer — it's the wrong size on 64-bit systems.</td></tr>
-  <tr class="step"><td class="dl">arr[i] vs *(ptr+i)</td><td class="de">✅ <b>These are exactly equivalent!</b> Array subscript notation <span class="ic">arr[i]</span> is syntactic sugar — the compiler converts it to <span class="ic">*(arr + i)</span> automatically. Pointers and arrays are deeply connected in C.</td></tr>
+  <tr class="step"><td class="dl">arr[i] vs *(ptr+i)</td><td class="de">✅ <b>These are exactly equivalent!</b> <span class="hl-blue">Array</span> subscript notation <span class="ic">arr[i]</span> is syntactic sugar — the compiler converts it to <span class="ic">*(arr + i)</span> automatically. <span class="hl-blue">Pointers</span> and arrays are deeply connected in C.</td></tr>
 </table>
 
 `);
@@ -1418,11 +1418,11 @@ S(`
 <div class="title" style="font-size:2.6rem;">File Handling Breakdown</div>
 <table class="dissect-table">
   <tr><th>Line / Concept</th><th>Plain English Explanation</th></tr>
-  <tr class="step"><td class="dl">FILE *fptr</td><td class="de">📁 <b>FILE pointer — a handle to the file.</b> <span class="ic">FILE</span> is a structure defined in <span class="ic">stdio.h</span> that contains all the internal state of an open file (position, buffers, error flags). <span class="ic">fptr</span> is a pointer to this structure — your "handle" to the file.</td></tr>
-  <tr class="step"><td class="dl">fopen("emp.rec", "w")</td><td class="de">🚪 <b>Open file for writing.</b> <span class="ic">fopen</span> opens (or creates) the named file. Mode <span class="ic">"w"</span> = write mode (creates new or overwrites existing). Other modes: <span class="ic">"r"</span> = read, <span class="ic">"a"</span> = append, <span class="ic">"r+"</span> = read+write.</td></tr>
-  <tr class="step"><td class="dl">if (fptr == NULL) return 1;</td><td class="de">🛡️ <b>Always check if fopen succeeded.</b> If the file can't be opened (wrong path, no permissions), fopen returns NULL. Continuing without this check and writing to a NULL pointer causes an immediate crash. Good practice: always handle the error case.</td></tr>
-  <tr class="step"><td class="dl">fprintf(fptr, "...", ...);</td><td class="de">🖊️ <b>Write formatted text to file.</b> <span class="ic">fprintf</span> works exactly like <span class="ic">printf</span> but takes a FILE pointer as the first argument. Instead of printing to the screen, it writes to the file.</td></tr>
-  <tr class="step"><td class="dl">fclose(fptr);</td><td class="de">🔒 <b>ALWAYS close files after use.</b> Closing flushes the internal buffer to disk and releases the file handle. Forgetting <span class="ic">fclose</span> can cause data loss (buffered data never written to disk) and resource leaks (OS runs out of file handles).</td></tr>
+  <tr class="step"><td class="dl">FILE *fptr</td><td class="de">📁 <b>FILE pointer — a handle to the file.</b> <span class="ic">FILE</span> is a structure defined in <span class="ic"><span class="hl-violet">stdio.h</span></span> that contains all the internal state of an open file (position, buffers, error flags). <span class="ic">fptr</span> is a pointer to this structure — your "handle" to the file.</td></tr>
+  <tr class="step"><td class="dl">fopen("emp.rec", "w")</td><td class="de">🚪 <b>Open file for writing.</b> <span class="ic"><span class="hl-blue">fopen</span></span> opens (or creates) the named file. Mode <span class="ic">"w"</span> = write mode (creates new or overwrites existing). Other modes: <span class="ic">"r"</span> = read, <span class="ic">"a"</span> = append, <span class="ic">"r+"</span> = read+write.</td></tr>
+  <tr class="step"><td class="dl">if (fptr == NULL) return 1;</td><td class="de">🛡️ <b>Always check if <span class="hl-blue">fopen</span> succeeded.</b> If the file can't be opened (wrong path, no permissions), <span class="hl-blue">fopen</span> returns NULL. Continuing without this check and writing to a NULL pointer causes an immediate crash. Good practice: always handle the error case.</td></tr>
+  <tr class="step"><td class="dl">fprintf(fptr, "...", ...);</td><td class="de">🖊️ <b>Write formatted text to file.</b> <span class="ic"><span class="hl-blue">fprintf</span></span> works exactly like <span class="ic"><span class="hl-blue">printf</span></span> but takes a FILE pointer as the first argument. Instead of printing to the screen, it writes to the file.</td></tr>
+  <tr class="step"><td class="dl">fclose(fptr);</td><td class="de">🔒 <b>ALWAYS close files after use.</b> Closing flushes the internal buffer to disk and releases the file handle. Forgetting <span class="ic"><span class="hl-blue">fclose</span></span> can cause data loss (buffered data never written to disk) and resource leaks (OS runs out of file handles).</td></tr>
 </table>
 
 `);
@@ -1499,7 +1499,7 @@ S(`
 
 <div class="eyebrow">Deep Dive · Operating System Handshake</div>
 <div class="title">Why return 0; in main()? 🤝</div>
-<div class="lede">When your program finishes, who receives the return value? <b>The Operating System!</b></div>
+<div class="lede">When your program finishes, who receives the <span class="hl-green">return value</span>? <b>The <span class="hl-gold">Operating System</span>!</b></div>
 
 <div class="two-col">
   <div class="card-block step">
@@ -1532,7 +1532,7 @@ S(`
 
 <table class="dissect-table">
   <tr><th>Syntax Pattern</th><th>Type &amp; Purpose</th><th>Real Code Example</th></tr>
-  <tr class="step"><td class="dl">return 0;</td><td class="de"><b>Process Success.</b> Tells the OS that <span class="ic">main()</span> completed with zero errors.</td><td><span class="ic">int main() { ... return 0; }</span></td></tr>
+  <tr class="step"><td class="dl">return 0;</td><td class="de"><b>Process <span class="hl-green">Success</span>.</b> Tells the OS that <span class="ic"><span class="hl-blue">main</span>()</span> completed with zero errors.</td><td><span class="ic">int main() { ... return 0; }</span></td></tr>
   <tr class="step"><td class="dl">return 1; / return -1;</td><td class="de"><b>Error Signal.</b> Informs OS or caller that an operation failed (e.g. file open failure).</td><td><span class="ic">if (!file) return 1;</span></td></tr>
   <tr class="step"><td class="dl">return result;</td><td class="de"><b>Passing Data.</b> Hands the computed arithmetic/boolean value back to the caller.</td><td><span class="ic">return (a + b);</span></td></tr>
   <tr class="step"><td class="dl">return;</td><td class="de"><b>Early Exit in void.</b> Immediately stops a <span class="ic">void</span> function without sending back any value.</td><td><span class="ic">if (invalid) return;</span></td></tr>
@@ -1544,7 +1544,7 @@ S(`
 
 <div class="eyebrow">Deep Dive · Standards &amp; Myths</div>
 <div class="title">int main() vs void main() ⚖️</div>
-<div class="lede">Why older 1990s college textbooks wrote <span class="ic">void main()</span> and why modern compilers reject it.</div>
+<div class="lede">Why older 1990s college textbooks wrote <span class="ic">void <span class="hl-blue">main</span>()</span> and why modern compilers reject it.</div>
 
 <div class="two-col">
   <div class="card-block step" style="border-color:rgba(251,113,133,0.3);">
@@ -1581,9 +1581,9 @@ S(`
       If you see these 3 keywords in old lab manuals, here is the secret history behind them:
     </div>
     <ul class="simple-list">
-      <li class="step"><b>Why getch()?</b> In MS-DOS Turbo C, the black output window flashed for 1 millisecond and vanished! Teachers put <span class="ic">getch()</span> (Get Character) as a <b>door stopper</b> to freeze the screen until a key was pressed.</li>
+      <li class="step"><b>Why <span class="hl-blue">getch</span>()?</b> In MS-DOS Turbo C, the black output window flashed for 1 millisecond and vanished! Teachers put <span class="ic"><span class="hl-blue">getch</span>()</span> (Get Character) as a <b>door stopper</b> to freeze the screen until a key was pressed.</li>
       <li class="step"><b>Why clrscr()?</b> In DOS, old outputs remained on screen. <span class="ic">clrscr()</span> (Clear Screen) wiped the screen like a blackboard before printing new output.</li>
-      <li class="step"><b>Why &lt;conio.h&gt;?</b> "Console Input/Output" was a proprietary Borland DOS header.</li>
+      <li class="step"><b>Why &lt;<span class="hl-violet">conio.h</span>&gt;?</b> "Console Input/Output" was a proprietary Borland DOS header.</li>
     </ul>
   </div>
   <div class="card-block step">
@@ -1767,6 +1767,7 @@ function solveBlank(el,val){el.textContent=val;el.classList.add('solved');}
 render();
 
 </script>
+
 
 
 
