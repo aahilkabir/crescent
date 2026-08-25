@@ -38,11 +38,10 @@ function App() {
   const [adminLoading, setAdminLoading] = useState(false);
   const [adminSearch, setAdminSearch] = useState('');
 
-  const activeModule = modules.find(m => m.id === currentModuleId);
+  const activeSubject = subjects.find(s => s.id === currentSubjectId);
+  const activeModule = activeSubject?.modules?.find(m => m.id === currentModuleId) || modules.find(m => m.id === currentModuleId);
   const slides = activeModule?.slides || [];
   const currentSlide = slides[slideIdx];
-
-  const activeSubject = subjects.find(s => s.id === currentSubjectId);
   const touchStartX = useRef(null);
 
   // Initialize and check local storage check-in credentials
