@@ -579,7 +579,7 @@ S(`
     sum = a + b + c;
     avg = sum / <span class="num">3.0</span>;
 
-    <span class="fn">printf</span>(<span class="str">"Sum=%d\nAvg=%.2f\n"</span>, sum, avg);
+    <span class="fn">printf</span>(<span class="str">"Sum=%d\\nAvg=%.2f\\n"</span>, sum, avg);
     <span class="kw">return</span> <span class="num">0</span>;
 }
   </div>
@@ -606,7 +606,7 @@ S(`
   <tr class="step"><td class="dl">scanf("%d %d %d", &amp;a, &amp;b, &amp;c);</td><td class="de">⌨️ <b>Read 3 numbers from keyboard.</b> <span class="ic">%d</span> is the format specifier for integers. The <b>&amp; (ampersand)</b> is critical — it gives scanf the exact RAM address where to store the typed value. Without &amp;, it crashes!</td></tr>
   <tr class="step"><td class="dl">sum = a + b + c;</td><td class="de">➕ <b>Arithmetic addition.</b> Adds all three variables and stores the result in <span class="ic">sum</span>. This executes right-to-left: evaluate the right side, then assign to the left.</td></tr>
   <tr class="step"><td class="dl">avg = sum / 3.0;</td><td class="de">⚠️ <b>Float Division Trick.</b> Writing <span class="ic">3.0</span> (not <span class="ic">3</span>) forces the CPU to perform decimal division. If you wrote <span class="ic">sum/3</span>, integer division would truncate the decimal and give the wrong answer!</td></tr>
-  <tr class="step"><td class="dl">printf("...%.2f...", avg);</td><td class="de">🖥️ <b>%.2f specifier.</b> Prints the float value with exactly 2 decimal places. The <span class="ic">\n</span> inside strings is an escape sequence that creates a new line.</td></tr>
+  <tr class="step"><td class="dl">printf("...%.2f...", avg);</td><td class="de">🖥️ <b>%.2f specifier.</b> Prints the float value with exactly 2 decimal places. The <span class="ic">\\n</span> inside strings is an escape sequence that creates a new line.</td></tr>
 </table>
 
 `);
@@ -628,7 +628,7 @@ S(`
     area = PI * radius * radius;
     circumference = <span class="num">2</span> * PI * radius;
 
-    <span class="fn">printf</span>(<span class="str">"Area=%.2f\nCirc=%.2f\n"</span>, area, circumference);
+    <span class="fn">printf</span>(<span class="str">"Area=%.2f\\nCirc=%.2f\\n"</span>, area, circumference);
     <span class="kw">return</span> <span class="num">0</span>;
 }
 </div>
@@ -660,11 +660,11 @@ S(`
     <span class="fn">scanf</span>(<span class="str">"%d %d %d"</span>, &amp;num1, &amp;num2, &amp;num3);
 
     <span class="kw">if</span> (num1 &gt;= num2 &amp;&amp; num1 &gt;= num3) {
-        <span class="fn">printf</span>(<span class="str">"%d is largest\n"</span>, num1);
+        <span class="fn">printf</span>(<span class="str">"%d is largest\\n"</span>, num1);
     } <span class="kw">else if</span> (num2 &gt;= num1 &amp;&amp; num2 &gt;= num3) {
-        <span class="fn">printf</span>(<span class="str">"%d is largest\n"</span>, num2);
+        <span class="fn">printf</span>(<span class="str">"%d is largest\\n"</span>, num2);
     } <span class="kw">else</span> {
-        <span class="fn">printf</span>(<span class="str">"%d is largest\n"</span>, num3);
+        <span class="fn">printf</span>(<span class="str">"%d is largest\\n"</span>, num3);
     }
     <span class="kw">return</span> <span class="num">0</span>;
 }
@@ -741,11 +741,11 @@ S(`
 <span class="kw">#include</span> <span class="inc">&lt;stdio.h&gt;</span>
 
 <span class="type">int</span> <span class="fn">main</span>() {
-    <span class="fn">printf</span>(<span class="str">"char   : %lu bytes\n"</span>, <span class="kw">sizeof</span>(<span class="type">char</span>));
-    <span class="fn">printf</span>(<span class="str">"int    : %lu bytes\n"</span>, <span class="kw">sizeof</span>(<span class="type">int</span>));
-    <span class="fn">printf</span>(<span class="str">"float  : %lu bytes\n"</span>, <span class="kw">sizeof</span>(<span class="type">float</span>));
-    <span class="fn">printf</span>(<span class="str">"double : %lu bytes\n"</span>, <span class="kw">sizeof</span>(<span class="type">double</span>));
-    <span class="fn">printf</span>(<span class="str">"pointer: %lu bytes\n"</span>, <span class="kw">sizeof</span>(<span class="type">void</span> *));
+    <span class="fn">printf</span>(<span class="str">"char   : %lu bytes\\n"</span>, <span class="kw">sizeof</span>(<span class="type">char</span>));
+    <span class="fn">printf</span>(<span class="str">"int    : %lu bytes\\n"</span>, <span class="kw">sizeof</span>(<span class="type">int</span>));
+    <span class="fn">printf</span>(<span class="str">"float  : %lu bytes\\n"</span>, <span class="kw">sizeof</span>(<span class="type">float</span>));
+    <span class="fn">printf</span>(<span class="str">"double : %lu bytes\\n"</span>, <span class="kw">sizeof</span>(<span class="type">double</span>));
+    <span class="fn">printf</span>(<span class="str">"pointer: %lu bytes\\n"</span>, <span class="kw">sizeof</span>(<span class="type">void</span> *));
     <span class="kw">return</span> <span class="num">0</span>;
 }
 </div>
@@ -790,7 +790,7 @@ S(`
     <span class="type">int</span> age;
     <span class="fn">printf</span>(<span class="str">"Enter age: "</span>);
     <span class="fn">scanf</span>(<span class="str">"%d"</span>, &amp;age);
-    <span class="fn">printf</span>(<span class="str">"%s\n"</span>, (age &gt;= <span class="num">18</span>) ? <span class="str">"Eligible"</span> : <span class="str">"Not Eligible"</span>);
+    <span class="fn">printf</span>(<span class="str">"%s\\n"</span>, (age &gt;= <span class="num">18</span>) ? <span class="str">"Eligible"</span> : <span class="str">"Not Eligible"</span>);
     <span class="kw">return</span> <span class="num">0</span>;
 }
     </div>
@@ -817,7 +817,7 @@ S(`
   <tr class="step"><td class="dl">(age &gt;= 18)</td><td class="de">🔍 <b>The condition part.</b> Evaluates whether age is 18 or older. This returns 1 (true) or 0 (false). The outer parentheses are optional but improve readability.</td></tr>
   <tr class="step"><td class="dl">? "Eligible"</td><td class="de">✅ <b>True branch.</b> If the condition is true (age ≥ 18), the expression evaluates to the string "Eligible".</td></tr>
   <tr class="step"><td class="dl">: "Not Eligible"</td><td class="de">❌ <b>False branch.</b> If the condition is false (age &lt; 18), the expression evaluates to "Not Eligible". The colon acts as the separator between true and false outcomes.</td></tr>
-  <tr class="step"><td class="dl">printf("%s\n", ...);</td><td class="de">🖥️ <b>%s prints a string.</b> The ternary expression produces one of the two strings, and <span class="ic">%s</span> tells printf to display it as a character string.</td></tr>
+  <tr class="step"><td class="dl">printf("%s\\n", ...);</td><td class="de">🖥️ <b>%s prints a string.</b> The ternary expression produces one of the two strings, and <span class="ic">%s</span> tells printf to display it as a character string.</td></tr>
 </table>
 
 `);
@@ -852,7 +852,7 @@ S(`
     c--;  <span class="cm">// Postfix decrement</span>
     --d;  <span class="cm">// Prefix decrement</span>
 
-    <span class="fn">printf</span>(<span class="str">"a=%d  b=%d  c=%d  d=%d\n"</span>, a, b, c, d);
+    <span class="fn">printf</span>(<span class="str">"a=%d  b=%d  c=%d  d=%d\\n"</span>, a, b, c, d);
     <span class="kw">return</span> <span class="num">0</span>;
 }
 </div>
@@ -902,8 +902,8 @@ S(`
             <span class="kw">break</span>;    <span class="cm">// no need to check further</span>
         }
     }
-    <span class="kw">if</span> (flag == <span class="num">0</span>) <span class="fn">printf</span>(<span class="str">"%d is Prime\n"</span>, n);
-    <span class="kw">else</span>           <span class="fn">printf</span>(<span class="str">"%d is Not Prime\n"</span>, n);
+    <span class="kw">if</span> (flag == <span class="num">0</span>) <span class="fn">printf</span>(<span class="str">"%d is Prime\\n"</span>, n);
+    <span class="kw">else</span>           <span class="fn">printf</span>(<span class="str">"%d is Not Prime\\n"</span>, n);
     <span class="kw">return</span> <span class="num">0</span>;
 }
 </div>
@@ -935,9 +935,9 @@ S(`
     <span class="fn">scanf</span>(<span class="str">"%d"</span>, &amp;yr);
 
     <span class="kw">if</span> ((yr % <span class="num">400</span> == <span class="num">0</span>) || ((yr % <span class="num">4</span> == <span class="num">0</span>) &amp;&amp; (yr % <span class="num">100</span> != <span class="num">0</span>))) {
-        <span class="fn">printf</span>(<span class="str">"%d is a Leap Year\n"</span>, yr);
+        <span class="fn">printf</span>(<span class="str">"%d is a Leap Year\\n"</span>, yr);
     } <span class="kw">else</span> {
-        <span class="fn">printf</span>(<span class="str">"%d is Not a Leap Year\n"</span>, yr);
+        <span class="fn">printf</span>(<span class="str">"%d is Not a Leap Year\\n"</span>, yr);
     }
     <span class="kw">return</span> <span class="num">0</span>;
 }
@@ -981,12 +981,12 @@ S(`
     <span class="fn">scanf</span>(<span class="str">"%d"</span>, &amp;n);
 
     <span class="kw">if</span> (n &lt; <span class="num">0</span>)
-        <span class="fn">printf</span>(<span class="str">"Negative values invalid.\n"</span>);
+        <span class="fn">printf</span>(<span class="str">"Negative values invalid.\\n"</span>);
     <span class="kw">else</span> {
         <span class="kw">for</span> (<span class="type">int</span> i = <span class="num">1</span>; i &lt;= n; i++) {
             fact *= i;  <span class="cm">// fact = fact * i</span>
         }
-        <span class="fn">printf</span>(<span class="str">"%d! = %llu\n"</span>, n, fact);
+        <span class="fn">printf</span>(<span class="str">"%d! = %llu\\n"</span>, n, fact);
     }
     <span class="kw">return</span> <span class="num">0</span>;
 }
@@ -1024,8 +1024,8 @@ S(`
         result += remainder * remainder * remainder; <span class="cm">// cube it</span>
         originalNum /= <span class="num">10</span>;  <span class="cm">// remove last digit</span>
     }
-    <span class="kw">if</span> (result == num) <span class="fn">printf</span>(<span class="str">"%d is Armstrong\n"</span>, num);
-    <span class="kw">else</span>               <span class="fn">printf</span>(<span class="str">"%d is Not Armstrong\n"</span>, num);
+    <span class="kw">if</span> (result == num) <span class="fn">printf</span>(<span class="str">"%d is Armstrong\\n"</span>, num);
+    <span class="kw">else</span>               <span class="fn">printf</span>(<span class="str">"%d is Not Armstrong\\n"</span>, num);
     <span class="kw">return</span> <span class="num">0</span>;
 }
 </div>
@@ -1057,11 +1057,11 @@ S(`
     <span class="fn">scanf</span>(<span class="str">"%d"</span>, &amp;num);
 
     <span class="kw">switch</span> (num &gt; <span class="num">0</span>) {
-        <span class="kw">case</span> <span class="num">1</span>: <span class="fn">printf</span>(<span class="str">"%d is Positive\n"</span>, num); <span class="kw">break</span>;
+        <span class="kw">case</span> <span class="num">1</span>: <span class="fn">printf</span>(<span class="str">"%d is Positive\\n"</span>, num); <span class="kw">break</span>;
         <span class="kw">case</span> <span class="num">0</span>:
             <span class="kw">switch</span> (num &lt; <span class="num">0</span>) {
-                <span class="kw">case</span> <span class="num">1</span>: <span class="fn">printf</span>(<span class="str">"%d is Negative\n"</span>, num); <span class="kw">break</span>;
-                <span class="kw">case</span> <span class="num">0</span>: <span class="fn">printf</span>(<span class="str">"Zero\n"</span>); <span class="kw">break</span>;
+                <span class="kw">case</span> <span class="num">1</span>: <span class="fn">printf</span>(<span class="str">"%d is Negative\\n"</span>, num); <span class="kw">break</span>;
+                <span class="kw">case</span> <span class="num">0</span>: <span class="fn">printf</span>(<span class="str">"Zero\\n"</span>); <span class="kw">break</span>;
             }
             <span class="kw">break</span>;
     }
@@ -1100,11 +1100,11 @@ S(`
         <span class="kw">for</span> (j = <span class="num">0</span>; j &lt; c; j++)
             sum[i][j] = a[i][j] + b[i][j];
 
-    <span class="fn">printf</span>(<span class="str">"Sum matrix:\n"</span>);
+    <span class="fn">printf</span>(<span class="str">"Sum matrix:\\n"</span>);
     <span class="kw">for</span> (i = <span class="num">0</span>; i &lt; r; i++) {
         <span class="kw">for</span> (j = <span class="num">0</span>; j &lt; c; j++)
             <span class="fn">printf</span>(<span class="str">"%d  "</span>, sum[i][j]);
-        <span class="fn">printf</span>(<span class="str">"\n"</span>);
+        <span class="fn">printf</span>(<span class="str">"\\n"</span>);
     }
     <span class="kw">return</span> <span class="num">0</span>;
 }
@@ -1121,7 +1121,7 @@ S(`
   <tr class="step"><td class="dl">for (i=0; i&lt;r; i++)</td><td class="de">🔄 <b>Outer loop iterates over rows.</b> For a 2×2 matrix, i goes 0,1 (two rows). Each iteration of the outer loop processes one complete row of the matrix.</td></tr>
   <tr class="step"><td class="dl">for (j=0; j&lt;c; j++)</td><td class="de">🔄 <b>Inner loop iterates over columns.</b> For each row position i, j goes through all column positions 0,1. The combination of (i,j) visits every single cell in the matrix.</td></tr>
   <tr class="step"><td class="dl">sum[i][j] = a[i][j] + b[i][j];</td><td class="de">➕ <b>Element-wise addition.</b> For each position (row i, column j), add the corresponding elements from both matrices. This is the fundamental rule of matrix addition: matching positions are summed.</td></tr>
-  <tr class="step"><td class="dl">printf("\n"); after inner loop</td><td class="de">🖥️ <b>Newline after each row.</b> Placed after the inner loop completes (all columns printed), this moves to the next line for the next matrix row, creating the grid visual output.</td></tr>
+  <tr class="step"><td class="dl">printf("\\n"); after inner loop</td><td class="de">🖥️ <b>Newline after each row.</b> Placed after the inner loop completes (all columns printed), this moves to the next line for the next matrix row, creating the grid visual output.</td></tr>
 </table>
 
 `);
@@ -1149,10 +1149,10 @@ S(`
 
 <span class="type">int</span> <span class="fn">main</span>() {
     <span class="type">int</span> x = <span class="num">8</span>, y = <span class="num">3</span>;
-    <span class="fn">printf</span>(<span class="str">"Add: %d\n"</span>, <span class="fn">addition</span>(x, y));
-    <span class="fn">printf</span>(<span class="str">"Sub: %d\n"</span>, <span class="fn">subtract</span>(x, y));
-    <span class="fn">printf</span>(<span class="str">"Mul: %d\n"</span>, <span class="fn">multiply</span>(x, y));
-    <span class="fn">printf</span>(<span class="str">"Div: %f\n"</span>, <span class="fn">division</span>(x, y));
+    <span class="fn">printf</span>(<span class="str">"Add: %d\\n"</span>, <span class="fn">addition</span>(x, y));
+    <span class="fn">printf</span>(<span class="str">"Sub: %d\\n"</span>, <span class="fn">subtract</span>(x, y));
+    <span class="fn">printf</span>(<span class="str">"Mul: %d\\n"</span>, <span class="fn">multiply</span>(x, y));
+    <span class="fn">printf</span>(<span class="str">"Div: %f\\n"</span>, <span class="fn">division</span>(x, y));
     <span class="kw">return</span> <span class="num">0</span>;
 }
 </div>
@@ -1202,7 +1202,7 @@ S(`
 }
 <span class="type">int</span> <span class="fn">main</span>() {
     <span class="type">int</span> num = <span class="num">123</span>;
-    <span class="fn">printf</span>(<span class="str">"Sum = %d\n"</span>, <span class="fn">sumOfDigits</span>(num));
+    <span class="fn">printf</span>(<span class="str">"Sum = %d\\n"</span>, <span class="fn">sumOfDigits</span>(num));
     <span class="kw">return</span> <span class="num">0</span>;
 }
   </div>
@@ -1245,7 +1245,7 @@ S(`
 
 <span class="type">int</span> <span class="fn">main</span>() {
     <span class="kw">struct</span> Student s = {<span class="str">"Arun"</span>, <span class="num">450</span>, <span class="num">90.0</span>};
-    <span class="fn">printf</span>(<span class="str">"Name: %s\nScore: %d\nPct: %.2f%%\n"</span>,
+    <span class="fn">printf</span>(<span class="str">"Name: %s\\nScore: %d\\nPct: %.2f%%\\n"</span>,
            s.name, s.score, s.pct);
     <span class="kw">return</span> <span class="num">0</span>;
 }
@@ -1259,7 +1259,7 @@ S(`
 <table class="dissect-table">
   <tr><th>Line / Concept</th><th>Plain English Explanation</th></tr>
   <tr class="step"><td class="dl">struct Student { ... };</td><td class="de">🏛️ <b>Structure definition — a custom data blueprint.</b> A struct groups multiple related variables of different types under one name. Think of it as a form template: a Student "form" has fields for name, score, and percentage. The semicolon after <span class="ic">}</span> is mandatory!</td></tr>
-  <tr class="step"><td class="dl">char name[50];</td><td class="de">🔤 <b>Character array as a string.</b> C has no built-in string type. A string is an array of characters ending with a null terminator <span class="ic">\0</span>. <span class="ic">char name[50]</span> reserves 50 bytes — enough for 49 characters + the terminator.</td></tr>
+  <tr class="step"><td class="dl">char name[50];</td><td class="de">🔤 <b>Character array as a string.</b> C has no built-in string type. A string is an array of characters ending with a null terminator <span class="ic">\\0</span>. <span class="ic">char name[50]</span> reserves 50 bytes — enough for 49 characters + the terminator.</td></tr>
   <tr class="step"><td class="dl">struct Student s = {"Arun", 450, 90.0};</td><td class="de">📋 <b>Struct variable declaration + initialization.</b> <span class="ic">struct Student s</span> creates one Student record. The values in <span class="ic">{}</span> initialize each member in order: name="Arun", score=450, pct=90.0.</td></tr>
   <tr class="step"><td class="dl">s.name, s.score, s.pct</td><td class="de">🔑 <b>Dot operator for member access.</b> The <span class="ic">.</span> (dot/member access) operator accesses a specific field inside the struct. <span class="ic">s.score</span> reads the <span class="ic">score</span> field of the <span class="ic">s</span> variable. This is how you read/write struct data.</td></tr>
   <tr class="step"><td class="dl">%%  in printf format</td><td class="de">🖥️ <b>Printing a literal % sign.</b> In printf, <span class="ic">%</span> starts a format specifier. To print an actual <span class="ic">%</span> character, you must escape it as <span class="ic">%%</span>.</td></tr>
@@ -1282,8 +1282,8 @@ S(`
     <span class="kw">union</span> Data d;
     d.i = <span class="num">10</span>;
     d.f = <span class="num">220.5</span>;  <span class="cm">// overwrites d.i (shared memory!)</span>
-    <span class="fn">printf</span>(<span class="str">"d.i = %d\n"</span>, d.i);  <span class="cm">// garbled — floats corrupt int bits</span>
-    <span class="fn">printf</span>(<span class="str">"d.f = %f\n"</span>, d.f);  <span class="cm">// correct — last written</span>
+    <span class="fn">printf</span>(<span class="str">"d.i = %d\\n"</span>, d.i);  <span class="cm">// garbled — floats corrupt int bits</span>
+    <span class="fn">printf</span>(<span class="str">"d.f = %f\\n"</span>, d.f);  <span class="cm">// correct — last written</span>
     <span class="kw">return</span> <span class="num">0</span>;
 }
 </div>
@@ -1328,7 +1328,7 @@ S(`
     <span class="type">int</span> *ptr = arr; <span class="cm">// ptr → arr[0]</span>
 
     <span class="kw">for</span> (<span class="type">int</span> i = <span class="num">0</span>; i &lt; <span class="num">3</span>; i++) {
-        <span class="fn">printf</span>(<span class="str">"Addr:%p  Val:%d\n"</span>,
+        <span class="fn">printf</span>(<span class="str">"Addr:%p  Val:%d\\n"</span>,
                (ptr+i), *(ptr+i));
     }
     <span class="kw">return</span> <span class="num">0</span>;
@@ -1367,7 +1367,7 @@ S(`
 <span class="type">int</span> <span class="fn">main</span>() {
     <span class="type">int</span> val = <span class="num">99</span>;
     <span class="type">int</span> *ptr = &amp;val;
-    <span class="fn">printf</span>(<span class="str">"Value is %d\n"</span>, <span class="blank-fill step" onclick="solveBlank(this, '*ptr')">______</span>);
+    <span class="fn">printf</span>(<span class="str">"Value is %d\\n"</span>, <span class="blank-fill step" onclick="solveBlank(this, '*ptr')">______</span>);
     <span class="kw">return</span> <span class="num">0</span>;
 }
 </div>
@@ -1388,11 +1388,11 @@ S(`
     <span class="type">int</span>  age    = <span class="num">28</span>;
     <span class="type">float</span> sal  = <span class="num">75000</span>;
 
-    <span class="fn">fprintf</span>(fptr, <span class="str">"Name:%s Age:%d Sal:%.2f\n"</span>,
+    <span class="fn">fprintf</span>(fptr, <span class="str">"Name:%s Age:%d Sal:%.2f\\n"</span>,
             name, age, sal);
 
     <span class="fn">fclose</span>(fptr);
-    <span class="fn">printf</span>(<span class="str">"Saved to emp.rec successfully.\n"</span>);
+    <span class="fn">printf</span>(<span class="str">"Saved to emp.rec successfully.\\n"</span>);
     <span class="kw">return</span> <span class="num">0</span>;
 }
 </div>
@@ -1753,6 +1753,7 @@ function solveBlank(el,val){el.textContent=val;el.classList.add('solved');}
 render();
 
 </script>
+
 
 
 <!-- DATABASE CHECKIN OVERLAY -->
