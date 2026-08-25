@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { modules } from './data/slides';
+import { subjects } from './data/subjects';
 import { 
   SwappingCups, 
   SumAccumulator, 
@@ -13,10 +14,11 @@ import {
   TodoCard,
   StringGarland
 } from './components/InteractiveWidgets';
-import { Play, Home, ChevronRight, Menu, X, ArrowLeft, ArrowRight, Maximize2, Monitor, BookOpen, Terminal, CheckCircle2 } from 'lucide-react';
+import { Play, Home, ChevronRight, Menu, X, ArrowLeft, ArrowRight, Maximize2, Monitor, BookOpen, Terminal, CheckCircle2, Code, Lightbulb, Cpu, Briefcase, ExternalLink } from 'lucide-react';
 
 function App() {
-  const [currentModuleId, setCurrentModuleId] = useState('home');
+  const [currentSubjectId, setCurrentSubjectId] = useState(null);
+  const [currentModuleId, setCurrentModuleId] = useState(null);
   const [slideIdx, setSlideIdx] = useState(0);
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [isFullscreen, setIsFullscreen] = useState(false);
@@ -24,6 +26,8 @@ function App() {
   const activeModule = modules.find(m => m.id === currentModuleId);
   const slides = activeModule?.slides || [];
   const currentSlide = slides[slideIdx];
+
+  const activeSubject = subjects.find(s => s.id === currentSubjectId);
 
   // Reference for touch gestures
   const touchStartX = useRef(null);
@@ -43,7 +47,7 @@ function App() {
     }
   };
 
-  // Monitor fullscreen changes (e.g. if user exits using Escape key)
+  // Monitor fullscreen changes
   useEffect(() => {
     const handleFullscreenChange = () => {
       setIsFullscreen(!!document.fullscreenElement);
@@ -54,9 +58,9 @@ function App() {
 
   // Keyboard navigation controller
   useEffect(() => {
+    if (currentModuleId === null) return;
+    
     const handleKeyDown = (e) => {
-      if (currentModuleId === 'home') return;
-      
       if (['ArrowRight', 'ArrowDown', 'PageDown', ' '].includes(e.key)) {
         e.preventDefault();
         nextSlide();
@@ -113,7 +117,11 @@ function App() {
     setSidebarOpen(false);
   };
 
-  // Helper function to return beautiful custom titles or badges for the sidebar
+  const handleSubjectSelect = (subjectId) => {
+    setCurrentSubjectId(subjectId);
+    setCurrentModuleId(null);
+  };
+
   const getSlideBadge = (slide) => {
     if (slide.type === 'title') return 'Intro';
     if (slide.type === 'quiz') return 'Quiz';
@@ -122,6 +130,16 @@ function App() {
     if (slide.type === 'code') return 'C Code';
     if (['swapping', 'accumulator', 'ternary', 'recursion', 'pointers', 'loopTracer', 'arrayMath', 'stringTracer'].includes(slide.type)) return 'Trace';
     return 'Study';
+  };
+
+  const getSubjectIcon = (iconName) => {
+    switch (iconName) {
+      case 'code': return <Code size={32} className="accent" style={{ color: 'var(--accent)' }} />;
+      case 'lightbulb': return <Lightbulb size={32} className="accent" style={{ color: 'var(--rose)' }} />;
+      case 'cpu': return <Cpu size={32} className="accent" style={{ color: 'var(--blue)' }} />;
+      case 'briefcase': return <Briefcase size={32} className="accent" style={{ color: 'var(--green)' }} />;
+      default: return <BookOpen size={32} />;
+    }
   };
 
   return (
@@ -137,9 +155,15 @@ function App() {
         zIndex: 40
       }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '0.8rem' }}>
-          {currentModuleId !== 'home' && (
+          {currentSubjectId !== null && (
             <button 
-              onClick={() => setCurrentModuleId('home')} 
+              onClick={() => {
+                if (currentModuleId !== null) {
+                  setCurrentModuleId(null);
+                } else {
+                  setCurrentSubjectId(null);
+                }
+              }} 
               style={{
                 background: 'transparent',
                 border: '1px solid var(--border)',
@@ -154,15 +178,15 @@ function App() {
               }}
               className="widget-btn-secondary"
             >
-              <Home size={16} /> Home
+              <Home size={16} /> {currentModuleId !== null ? 'Back to Subject' : 'Back to Subjects'}
             </button>
           )}
           <span style={{ fontSize: '1.2rem', fontWeight: 'bold', letterSpacing: '0.02em', background: 'linear-gradient(90deg, #ffffff, var(--accent))', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>
-            CRESCENT CSE
+            CRESCENT ACADEMY
           </span>
         </div>
 
-        {currentModuleId !== 'home' && (
+        {currentModuleId !== null && (
           <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
             <span style={{ fontSize: '1rem', fontWeight: '500', color: 'var(--low)', fontFamily: 'var(--mono)' }}>
               {activeModule.title}
@@ -199,28 +223,28 @@ function App() {
         )}
       </header>
 
-      {/* DASHBOARD HOME SCREEN */}
-      {currentModuleId === 'home' && (
+      {/* PORTAL MAIN HOME SCREEN (SUBJECT SELECTION) */}
+      {currentSubjectId === null && (
         <div style={{ flex: '1', overflowY: 'auto', padding: '4rem 6vw' }}>
           <div style={{ maxWidth: '1200px', margin: '0 auto' }}>
-            <div style={{ textAlign: 'center', marginBottom: '4rem' }}>
-              <h1 style={{ fontFamily: 'var(--serif)', fontSize: 'clamp(3rem, 6vw, 5.5rem)', fontWeight: '900', lineHeight: '1.1', background: 'linear-gradient(135deg, #ffffff, #fcd34d, var(--accent))', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', marginBottom: '1.5rem' }}>
-                Programming for Problem Solving
+            <div style={{ textAlign: 'center', marginBottom: '4.5rem' }}>
+              <h1 style={{ fontFamily: 'var(--serif)', fontSize: 'clamp(3rem, 5.8vw, 5.2rem)', fontWeight: '900', lineHeight: '1.1', background: 'linear-gradient(135deg, #ffffff, #fcd34d, var(--accent))', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', marginBottom: '1.5rem' }}>
+                Crescent Student Learning Portal
               </h1>
-              <p style={{ fontSize: '1.4rem', color: 'var(--mid)', fontWeight: '300', maxWidth: '65ch', margin: '0 auto', lineHeight: '1.6' }}>
-                Interactive classroom learning deck & visualization tracing modules built specifically for Crescent CSE students.
+              <p style={{ fontSize: '1.35rem', color: 'var(--mid)', fontWeight: '300', maxWidth: '65ch', margin: '0 auto', lineHeight: '1.6' }}>
+                Select a subject path to view interactive slide presentations, quizzes, lab guides, and engineering blueprints.
               </p>
             </div>
 
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(340px, 1fr))', gap: '2.5rem', marginInline: 'auto' }}>
-              {modules.map((mod) => (
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(270px, 1fr))', gap: '2rem' }}>
+              {subjects.map((sub) => (
                 <div 
-                  key={mod.id}
+                  key={sub.id}
                   style={{
                     background: 'var(--surface)',
                     border: '1px solid var(--border)',
                     borderRadius: '16px',
-                    padding: '2.5rem',
+                    padding: '2rem',
                     display: 'flex',
                     flexDirection: 'column',
                     justifyContent: 'space-between',
@@ -231,24 +255,22 @@ function App() {
                 >
                   <div>
                     <div style={{ display: 'flex', alignItems: 'center', gap: '0.8rem', marginBottom: '1.2rem' }}>
-                      {mod.id === 'intro' && <BookOpen size={24} className="accent" style={{ color: 'var(--accent)' }} />}
-                      {mod.id === 'control' && <Terminal size={24} className="accent" style={{ color: 'var(--blue)' }} />}
-                      {mod.id === 'lab' && <CheckCircle2 size={24} className="accent" style={{ color: 'var(--green)' }} />}
-                      <span style={{ fontSize: '0.85rem', fontFamily: 'var(--mono)', letterSpacing: '0.15em', textTransform: 'uppercase', color: 'var(--low)' }}>
-                        {mod.slides.length} slides
+                      {getSubjectIcon(sub.icon)}
+                      <span style={{ fontSize: '0.8rem', fontFamily: 'var(--mono)', letterSpacing: '0.12em', color: 'var(--low)', fontWeight: '600' }}>
+                        {sub.code}
                       </span>
                     </div>
 
-                    <h3 style={{ fontFamily: 'var(--serif)', fontSize: '2.1rem', color: 'var(--hi)', fontWeight: '700', marginBottom: '1rem', lineHeight: '1.2' }}>
-                      {mod.title}
+                    <h3 style={{ fontFamily: 'var(--serif)', fontSize: '1.8rem', color: 'var(--hi)', fontWeight: '700', marginBottom: '1rem', lineHeight: '1.2' }}>
+                      {sub.title}
                     </h3>
-                    <p style={{ fontSize: '1.15rem', color: 'var(--mid)', fontWeight: '300', lineHeight: '1.6', marginBottom: '2rem' }}>
-                      {mod.description}
+                    <p style={{ fontSize: '1.1rem', color: 'var(--mid)', fontWeight: '300', lineHeight: '1.6', marginBottom: '2rem' }}>
+                      {sub.desc}
                     </p>
                   </div>
 
                   <button 
-                    onClick={() => handleModuleSelect(mod.id)}
+                    onClick={() => handleSubjectSelect(sub.id)}
                     style={{
                       width: '100%',
                       background: 'var(--surface2)',
@@ -256,8 +278,8 @@ function App() {
                       color: 'var(--hi)',
                       fontFamily: 'var(--sans)',
                       fontWeight: '600',
-                      fontSize: '1.05rem',
-                      padding: '1rem',
+                      fontSize: '1rem',
+                      padding: '0.9rem',
                       borderRadius: '8px',
                       cursor: 'pointer',
                       display: 'flex',
@@ -268,7 +290,7 @@ function App() {
                     }}
                     className="start-module-btn"
                   >
-                    Start Presentation <ChevronRight size={18} />
+                    Open Course <ChevronRight size={18} />
                   </button>
                 </div>
               ))}
@@ -277,8 +299,107 @@ function App() {
         </div>
       )}
 
-      {/* PRESENTATION VIEWPORT AND NAVIGATION SIDEBAR */}
-      {currentModuleId !== 'home' && (
+      {/* SUBJECT MODULES PAGE */}
+      {currentSubjectId !== null && currentModuleId === null && (
+        <div style={{ flex: '1', overflowY: 'auto', padding: '4rem 6vw' }}>
+          <div style={{ maxWidth: '1000px', margin: '0 auto' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', marginBottom: '1.5rem' }}>
+              {getSubjectIcon(activeSubject.icon)}
+              <h2 style={{ fontFamily: 'var(--serif)', fontSize: '3rem', color: 'var(--hi)', fontWeight: '700' }}>
+                {activeSubject.title}
+              </h2>
+            </div>
+            <p style={{ fontSize: '1.25rem', color: 'var(--mid)', fontWeight: '300', lineHeight: '1.6', marginBottom: '3.5rem', maxWidth: '75ch' }}>
+              {activeSubject.desc}
+            </p>
+
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '2rem' }}>
+              {activeSubject.modules.map((mod, idx) => (
+                <div 
+                  key={idx}
+                  style={{
+                    background: 'var(--surface)',
+                    border: '1px solid var(--border)',
+                    borderRadius: '12px',
+                    padding: '2rem',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    justifyContent: 'space-between',
+                    minHeight: '220px',
+                    boxShadow: '0 15px 35px rgba(0,0,0,0.4)'
+                  }}
+                  className="dashboard-card"
+                >
+                  <div>
+                    <h4 style={{ fontFamily: 'var(--sans)', fontSize: '1.35rem', color: 'var(--hi)', fontWeight: '600', marginBottom: '0.8rem' }}>
+                      {mod.title}
+                    </h4>
+                    <p style={{ fontSize: '1rem', color: 'var(--low)', lineHeight: '1.5', marginBottom: '1.5rem' }}>
+                      {mod.desc}
+                    </p>
+                  </div>
+
+                  {mod.isReact ? (
+                    <button 
+                      onClick={() => handleModuleSelect(mod.id)}
+                      style={{
+                        width: '100%',
+                        background: 'var(--accent)',
+                        color: 'var(--black)',
+                        border: 'none',
+                        fontFamily: 'var(--sans)',
+                        fontWeight: '600',
+                        fontSize: '0.95rem',
+                        padding: '0.8rem',
+                        borderRadius: '6px',
+                        cursor: 'pointer',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        gap: '0.5rem',
+                        transition: 'all 0.3s'
+                      }}
+                      className="widget-btn"
+                    >
+                      Launch Slider <ChevronRight size={16} />
+                    </button>
+                  ) : (
+                    <a 
+                      href={mod.path}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      style={{
+                        width: '100%',
+                        background: 'var(--surface2)',
+                        border: '1px solid var(--border-hi)',
+                        color: 'var(--mid)',
+                        fontFamily: 'var(--sans)',
+                        fontWeight: '600',
+                        fontSize: '0.95rem',
+                        padding: '0.8rem',
+                        borderRadius: '6px',
+                        cursor: 'pointer',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        gap: '0.5rem',
+                        textDecoration: 'none',
+                        transition: 'all 0.3s'
+                      }}
+                      className="widget-btn-secondary"
+                    >
+                      Open Slide Deck <ExternalLink size={16} />
+                    </a>
+                  )}
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* SLIDE PORTAL ENGINE VIEWPORT */}
+      {currentSubjectId !== null && currentModuleId !== null && (
         <div style={{ flex: '1', display: 'flex', overflow: 'hidden', position: 'relative' }} onTouchStart={handleTouchStart} onTouchEnd={handleTouchEnd}>
           {/* SIDEBAR NAVIGATION */}
           <aside style={{
@@ -295,7 +416,7 @@ function App() {
             overflow: 'hidden'
           }}>
             <div style={{ padding: '1.5rem', borderBottom: '1px solid var(--border)', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-              <span className="bank-title">Slide Navigation Directory</span>
+              <span className="bank-title">Slide Directory</span>
               <button onClick={() => setSidebarOpen(false)} style={{ background: 'transparent', border: 'none', color: 'var(--low)', cursor: 'pointer' }}>
                 <X size={18} />
               </button>
@@ -451,7 +572,7 @@ function App() {
                     height: '350px',
                     borderRadius: '12px',
                     border: '1px solid var(--border)',
-                    background: `linear-gradient(to bottom, rgba(0,0,0,0.4), rgba(0,0,0,0.8)), url('https://images.unsplash.com/photo-1517694712202-14dd9538aa97?q=80&w=600&auto=format&fit=crop')`,
+                    background: `linear-gradient(to bottom, rgba(0,0,0,0.4), rgba(0,0,0,0.8)), url('/${currentSlide.image}')`,
                     backgroundSize: 'cover',
                     backgroundPosition: 'center',
                     boxShadow: '0 20px 45px rgba(0,0,0,0.5)',
@@ -543,7 +664,7 @@ function App() {
                     <div style={{ flex: '0.8', display: 'flex', flexDirection: 'column', justifyContent: 'center', background: '#070809', border: '1px solid var(--border)', borderRadius: '12px', padding: '2rem' }}>
                       <span className="bank-title" style={{ marginBottom: '1rem' }}>Output Terminal Console</span>
                       <div className="console-line">Enter score: <span className="accent" style={{ animation: 'pulse 1.2s infinite' }}>85█</span></div>
-                      <div className="console-line text-accent" style={{ marginTop: '0.8rem', borderLeftColor: 'var(--accent)' }}>✔ scanf mapped address &amp;score directly in RAM memory (address: 0x7ffd5a).</div>
+                      <div className="console-line text-accent" style={{ marginTop: '0.8rem', borderLeftColor: 'var(--accent)' }}>✔ scanf mapped address &amp;score directly in RAM memory.</div>
                     </div>
                   </div>
                 </div>
@@ -633,7 +754,7 @@ function App() {
                 </div>
               )}
 
-              {/* RENDER COMPILATIONS AND TODO CHEATS */}
+              {/* RENDER QUIZZES AND PRACTICE TASKS */}
               {currentSlide.type === 'quiz' && (
                 <div style={{ animation: 'fadeIn 0.6s' }}>
                   <div className="eyebrow">{currentSlide.eyebrow}</div>
@@ -707,7 +828,7 @@ function App() {
                 </button>
               </div>
 
-              {/* PROGRESS BAR BAR WIDGET */}
+              {/* PROGRESS BAR WIDGET */}
               <div style={{ flex: '1', margin: '0 3rem', display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
                 <div style={{ height: '4px', background: 'var(--surface3)', borderRadius: '2px', overflow: 'hidden' }}>
                   <div style={{
