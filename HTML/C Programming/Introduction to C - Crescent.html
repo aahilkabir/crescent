@@ -46,16 +46,33 @@ body{
 .slide{
   position:absolute;inset:0;
   display:flex;flex-direction:column;
-  justify-content:center;
-  padding:7vh 9vw;
+  justify-content:flex-start;
+  padding:6vh 9vw 14vh 9vw;
   background:var(--black);
   opacity:0;visibility:hidden;
   transform:translateY(12px) scale(0.995);
   transition:opacity .55s var(--ease-out-expo), transform .55s var(--ease-out-expo);
-  overflow:hidden;
+  overflow-y:auto;
+  overflow-x:hidden;
+  scrollbar-width:thin;
+  scrollbar-color:rgba(245,158,11,0.3) transparent;
+}
+.slide::-webkit-scrollbar{
+  width:6px;
+}
+.slide::-webkit-scrollbar-track{
+  background:rgba(255,255,255,0.02);
+  border-radius:999px;
+}
+.slide::-webkit-scrollbar-thumb{
+  background:rgba(245,158,11,0.3);
+  border-radius:999px;
+}
+.slide::-webkit-scrollbar-thumb:hover{
+  background:rgba(245,158,11,0.6);
 }
 .slide.active{opacity:1;visibility:visible;transform:translateY(0) scale(1);}
-.slide > *{position:relative;z-index:1;}
+.slide > *{position:relative;z-index:1;flex-shrink:0;}
 
 /* Ambient corner glow on every slide */
 .slide::before{
@@ -935,6 +952,214 @@ S(`
 </div>
 `);
 
+
+/* ---------- RETURN MASTERCLASS: PART 0 ---------- */
+S(`
+<div class="section-num">Special Masterclass</div>
+<div class="section-title">The Philosophy<br>of "Return"</div>
+<div class="section-list">
+  <div class="s-item now">Amma &amp; Maligai Kadai (The Story)</div>
+  <div class="s-item">The Kalyanam Thamboolam Pai Analogy</div>
+  <div class="s-item">Operating System Handshake: return 0; vs return 1;</div>
+  <div class="s-item">5 Types of Return Statements in Real Programs</div>
+  <div class="s-item">The Great Debate: int main() vs void main()</div>
+  <div class="s-item">90s Turbo C Ghosts: getch(), clrscr(), and &lt;conio.h&gt;</div>
+  <div class="s-item">The Dangerous Relic: gets() vs fgets()</div>
+</div>
+`, '{');
+
+/* ---------- RETURN MASTERCLASS: SLIDE 1 ---------- */
+S(`
+<div class="eyebrow">Deep Dive · Cultural Analogy</div>
+<div class="title">The Maligai Kadai Story 🛒</div>
+<div class="lede">Understanding how functions receive parameters and return values through everyday Tamil life.</div>
+
+<div class="story-card step">
+  <div class="story-header">
+    <div class="story-icon">👵</div>
+    <div>
+      <div class="story-title">Amma's Errand (கடைக்கு போயிட்டு மிச்ச காசு கொண்டு வா)</div>
+      <div class="story-tamil">"கண்ணா, இந்தா ₹100... மளிகைக் கடைக்கு போயிட்டு 1kg பொன்னி அரிசி வாங்கிட்டு வா!"</div>
+    </div>
+  </div>
+  <div class="story-body">
+    <b>1. The Function Call:</b> Amma calls you: <span class="ic">buyRice(100)</span>. You receive the ₹100 note as an <b>input parameter</b>.<br>
+    <b>2. Execution:</b> You walk to the shop, pay the shopkeeper, and collect the rice bag.<br>
+    <b>3. The Return:</b> You don't just vanish into thin air! You come back home and place the <b>Rice Bag + ₹30 change</b> in Amma's hand: <span class="ic">return remainingChange;</span>.<br>
+    <b>4. What if it's void?</b> If Amma says: <em>"Go switch off the water motor on the terrace"</em> → You do the work, come back down empty-handed. That is a <span class="ic">void</span> function!
+  </div>
+</div>
+`);
+
+/* ---------- RETURN MASTERCLASS: SLIDE 2 ---------- */
+S(`
+<div class="eyebrow">Deep Dive · Cultural Analogy</div>
+<div class="title">The Kalyanam Thamboolam Pai 🎁</div>
+<div class="split">
+  <div>
+    <div class="body-copy">
+      In Tamil culture, attending a wedding is a structured process with a formal conclusion:
+    </div>
+    <ul class="simple-list">
+      <li class="step"><b>Calling the function:</b> You receive an invitation and enter the Mandapam (<span class="ic">attendWedding(guest)</span>).</li>
+      <li class="step"><b>Inside the function:</b> You greet the couple, enjoy the banana-leaf feast, and congratulate the family.</li>
+      <li class="step"><b>The Return Token:</b> Before leaving, the family hands you the <b>Thamboolam Pai (தாம்பூலப் பை — Coconut, Betel leaf, Laddu)</b>.</li>
+      <li class="step">You carry that gift bag home. In C, a function never leaves without handing back its return package to the caller.</li>
+    </ul>
+  </div>
+  <div class="card-block step" style="background:linear-gradient(135deg, rgba(245,158,11,0.08), rgba(18,20,26,0.9)); border-color:var(--accent);">
+    <h4 style="color:var(--accent);">Function Execution Flow</h4>
+    <div class="code" style="padding-top:1.8rem; font-size:0.95rem; margin-top:0.8rem;">
+<span class="type">Thamboolam</span> <span class="fn">attendWedding</span>(<span class="type">Guest</span> g) {
+    <span class="fn">eatFeast</span>(g);
+    <span class="fn">blessCouple</span>(g);
+    
+    <span class="type">Thamboolam</span> gift = {COCONUT, LADDU};
+    <span class="kw">return</span> gift; <span class="cm">// Given to guest on exit</span>
+}
+    </div>
+  </div>
+</div>
+`);
+
+/* ---------- RETURN MASTERCLASS: SLIDE 3 ---------- */
+S(`
+<div class="eyebrow">Deep Dive · Operating System Handshake</div>
+<div class="title">Why return 0; in main()? 🤝</div>
+<div class="lede">When your program finishes, who receives the return value? <b>The Operating System!</b></div>
+
+<div class="two-col">
+  <div class="card-block step">
+    <h4 style="color:var(--green);">✅ return 0; (Vetri / Success)</h4>
+    <p class="body-copy" style="font-size:1.05rem;">
+      Tells Linux / Windows / macOS: <em>"All instructions executed cleanly with ZERO errors."</em><br><br>
+      By universal convention across all Unix & C standards, <b>0 means clean exit</b>.
+    </p>
+  </div>
+
+  <div class="card-block step">
+    <h4 style="color:var(--rose);">⚠️ return 1; / return -1; (Aabathu / Error)</h4>
+    <p class="body-copy" style="font-size:1.05rem;">
+      Signals an emergency or abnormal termination: <em>"File not found", "Out of memory", or "Invalid input."</em><br><br>
+      Any <b>non-zero value</b> informs scripts and parent processes that something broke.
+    </p>
+  </div>
+</div>
+
+<div class="insight step blue" style="margin-top:1.8rem;">
+  🖥️ <b>Terminal Proof:</b> Run any C program in your terminal, then immediately type <span class="ic">echo $?</span> in bash/zsh. The terminal will print the exact number that your <span class="ic">main()</span> returned!
+</div>
+`);
+
+/* ---------- RETURN MASTERCLASS: SLIDE 4 ---------- */
+S(`
+<div class="eyebrow">Deep Dive · Syntax Mastery</div>
+<div class="title">The 5 Types of return in C 🎯</div>
+<div class="lede">How different return statements are written across production C programs:</div>
+
+<table class="dissect-table">
+  <tr><th>Syntax Pattern</th><th>Type &amp; Purpose</th><th>Real Code Example</th></tr>
+  <tr class="step"><td class="dl">return 0;</td><td class="de"><b>Process Success.</b> Tells the OS that <span class="ic">main()</span> completed with zero errors.</td><td><span class="ic">int main() { ... return 0; }</span></td></tr>
+  <tr class="step"><td class="dl">return 1; / return -1;</td><td class="de"><b>Error Signal.</b> Informs OS or caller that an operation failed (e.g. file open failure).</td><td><span class="ic">if (!file) return 1;</span></td></tr>
+  <tr class="step"><td class="dl">return result;</td><td class="de"><b>Passing Data.</b> Hands the computed arithmetic/boolean value back to the caller.</td><td><span class="ic">return (a + b);</span></td></tr>
+  <tr class="step"><td class="dl">return;</td><td class="de"><b>Early Exit in void.</b> Immediately stops a <span class="ic">void</span> function without sending back any value.</td><td><span class="ic">if (invalid) return;</span></td></tr>
+  <tr class="step"><td class="dl">return (n * fact(n-1));</td><td class="de"><b>Recursive Return.</b> Multiplies current state and passes the baton up the call stack.</td><td><span class="ic">return n * fact(n-1);</span></td></tr>
+</table>
+`);
+
+/* ---------- RETURN MASTERCLASS: SLIDE 5 ---------- */
+S(`
+<div class="eyebrow">Deep Dive · Standards &amp; Myths</div>
+<div class="title">int main() vs void main() ⚖️</div>
+<div class="lede">Why older 1990s college textbooks wrote <span class="ic">void main()</span> and why modern compilers reject it.</div>
+
+<div class="two-col">
+  <div class="card-block step" style="border-color:rgba(251,113,133,0.3);">
+    <h4 style="color:var(--rose);">❌ The 1990s Myth: void main()</h4>
+    <ul>
+      <li>Used in old 16-bit <b>Turbo C (MS-DOS)</b> from 1989.</li>
+      <li>Tells compiler: <em>"main() returns nothing."</em></li>
+      <li><b>The Problem:</b> The OS expects an exit code in CPU register EAX/RAX. With void, the register contains random leftover <b>garbage bits</b>!</li>
+      <li><b>Banned</b> by ISO C99, C11, C17, and C23 standards.</li>
+    </ul>
+  </div>
+
+  <div class="card-block step" style="border-color:rgba(52,211,153,0.3);">
+    <h4 style="color:var(--green);">✅ The Modern Standard: int main()</h4>
+    <ul>
+      <li>Mandated by <b>ANSI &amp; ISO C Standards</b>.</li>
+      <li>Guarantees a clean, predictable exit code to the OS.</li>
+      <li>Accepted across all modern compilers (GCC, Clang, MSVC).</li>
+      <li>Standard signatures:
+        <br><span class="ic" style="margin-top:0.4rem; display:inline-block;">int main(void)</span> or <span class="ic">int main(int argc, char *argv[])</span>
+      </li>
+    </ul>
+  </div>
+</div>
+`);
+
+/* ---------- RETURN MASTERCLASS: SLIDE 6 ---------- */
+S(`
+<div class="eyebrow">Deep Dive · Historical Relics</div>
+<div class="title">getch(), clrscr(), &amp; &lt;conio.h&gt; 💾</div>
+<div class="split">
+  <div>
+    <div class="body-copy">
+      If you see these 3 keywords in old lab manuals, here is the secret history behind them:
+    </div>
+    <ul class="simple-list">
+      <li class="step"><b>Why getch()?</b> In MS-DOS Turbo C, the black output window flashed for 1 millisecond and vanished! Teachers put <span class="ic">getch()</span> (Get Character) as a <b>door stopper</b> to freeze the screen until a key was pressed.</li>
+      <li class="step"><b>Why clrscr()?</b> In DOS, old outputs remained on screen. <span class="ic">clrscr()</span> (Clear Screen) wiped the screen like a blackboard before printing new output.</li>
+      <li class="step"><b>Why &lt;conio.h&gt;?</b> "Console Input/Output" was a proprietary Borland DOS header.</li>
+    </ul>
+  </div>
+  <div class="card-block step">
+    <h4 style="color:var(--accent);">Modern GCC / VS Code Reality</h4>
+    <p class="body-copy" style="font-size:1rem;">
+      Modern terminal windows <b>never close automatically</b>. Therefore, <span class="ic">getch()</span>, <span class="ic">clrscr()</span>, and <span class="ic">&lt;conio.h&gt;</span> are completely obsolete and will cause compile errors on macOS/Linux!
+    </p>
+  </div>
+</div>
+`);
+
+/* ---------- RETURN MASTERCLASS: SLIDE 7 ---------- */
+S(`
+<div class="eyebrow">Deep Dive · Security &amp; Safety</div>
+<div class="title">Why gets() Was Banned in Modern C 🚫</div>
+<div class="split">
+  <div>
+    <div class="story-card" style="margin-top:0;">
+      <div class="story-header">
+        <div class="story-icon">🍲</div>
+        <div>
+          <div class="story-title">The Payasam Tumbler Analogy</div>
+          <div class="story-tamil">"2 லிட்டர் பாயாசத்தை 100ml டம்ளரில் ஊத்தினால் என்ன ஆகும்?"</div>
+        </div>
+      </div>
+      <div class="story-body">
+        If you pour 2 Litres of boiling Payasam into a 100ml steel tumbler, it overflows all over the dining table, ruining the neighboring plates!<br><br>
+        That is exactly a <b>Buffer Overflow</b>: writing 50 characters into a 10-byte memory buffer destroys adjacent variables and crashes the system.
+      </div>
+    </div>
+  </div>
+  <div>
+    <div class="card-block step" style="border-color:var(--rose);">
+      <h4 style="color:var(--rose);">❌ gets(str) — Banned in ISO C11</h4>
+      <p class="body-copy" style="font-size:0.95rem;">
+        Never checked array length. Hackers used it to inject malware. Officially <b>deleted from C</b> in 2011.
+      </p>
+    </div>
+    <div class="card-block step" style="border-color:var(--green); margin-top:1.2rem;">
+      <h4 style="color:var(--green);">✅ fgets(str, sizeof(str), stdin) — Safe Standard</h4>
+      <p class="body-copy" style="font-size:0.95rem;">
+        Strictly enforces array boundaries by specifying <span class="ic">sizeof(str)</span>. Safe against overflows.
+      </p>
+    </div>
+  </div>
+</div>
+`);
+
+
 /* ---------- 18 SECTION DIVIDER: PART 4 ---------- */
 S(`
 <div class="section-num">Part 04</div>
@@ -1587,7 +1812,9 @@ document.getElementById('tot').textContent = String(slideEls.length).padStart(2,
 let idx = 0;
 function render(){
   slideEls.forEach((el,i)=> {
-    el.classList.toggle('active', i===idx);
+    const isActive = (i === idx);
+    el.classList.toggle('active', isActive);
+    if (isActive) el.scrollTop = 0;
   });
   document.getElementById('cur').textContent = String(idx+1).padStart(2,'0');
   document.getElementById('progress').style.width = ((idx+1)/slideEls.length*100)+'%';
@@ -1737,7 +1964,6 @@ document.addEventListener('touchend', e=>{
 
 render();
 </script>
-
 
 <!-- DATABASE CHECKIN OVERLAY -->
 <div id="checkin-overlay" style="position:fixed;inset:0;background:rgba(0,0,0,0.92);backdrop-filter:blur(8px);display:flex;align-items:center;justify-content:center;z-index:9999;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;color:#fff;">
