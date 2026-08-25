@@ -30,6 +30,13 @@ const injection = `
   </form>
 </div>
 
+<style>
+.code .num { color: #f43f5e !important; }
+.code .inc { color: #fb923c !important; }
+.code .type { color: #60a5fa !important; font-weight: 700; }
+.code .op { color: #fcd34d !important; }
+</style>
+
 <script>
 (function() {
   const overlay = document.getElementById('checkin-overlay');
@@ -115,9 +122,55 @@ const injection = `
       window.recordResponse(blankTitle, val, true);
     };
   }, 100);
+
+  // Client-side C Code Syntax Highlighter
+  const highlightCode = () => {
+    const codeBlocks = document.querySelectorAll('pre.code, code.code, pre.code-template');
+    codeBlocks.forEach(block => {
+      if (block.querySelector('span.kw') || block.querySelector('span.type')) return;
+
+      let html = block.innerHTML;
+
+      // Comments
+      html = html.replace(/(\\/\\*[\\s\\S]*?\\*\\/)/g, '<span class="cm">$1</span>');
+      html = html.replace(/(\\/\\/.*)/g, '<span class="cm">$1</span>');
+
+      // Double quoted strings
+      html = html.replace(/(".*?")/g, '<span class="str">$1</span>');
+
+      // Preprocessor
+      html = html.replace(/(#include|#define)/g, '<span class="kw">$1</span>');
+
+      // Header imports
+      html = html.replace(/(&lt;[a-zA-Z0-9_\\.]+\\.h&gt;)/g, '<span class="inc">$1</span>');
+
+      // Keywords
+      const keywords = ['return', 'if', 'else', 'for', 'while', 'do', 'switch', 'case', 'break', 'continue', 'struct', 'union', 'typedef', 'const', 'static'];
+      keywords.forEach(kw => {
+        const regex = new RegExp(\`\\\\b\${kw}\\\\b\`, 'g');
+        html = html.replace(regex, \`<span class="kw">\${kw}</span>\`);
+      });
+
+      // Types
+      const types = ['int', 'float', 'char', 'double', 'void', 'unsigned', 'signed', 'long', 'short'];
+      types.forEach(t => {
+        const regex = new RegExp(\`\\\\b\${t}\\\\b\`, 'g');
+        html = html.replace(regex, \`<span class="type">\${t}</span>\`);
+      });
+
+      // Common functions
+      html = html.replace(/\\b(printf|scanf|main|malloc|free|exit|pow|sqrt)\\b/g, '<span class="fn">$1</span>');
+
+      // Numbers
+      html = html.replace(/\\b(\\d+)\\b/g, '<span class="num">$1</span>');
+
+      block.innerHTML = html;
+    });
+  };
+
+  setTimeout(highlightCode, 100);
 })();
 </script>
-</body>
 `;
 
 HTML_FILES.forEach(filePath => {
@@ -132,7 +185,7 @@ HTML_FILES.forEach(filePath => {
   html = html.replace(/<!-- DATABASE CHECKIN OVERLAY -->[\s\S]*?<\/body>/, '</body>');
   
   // Inject the new overlay
-  html = html.replace('</body>', injection);
+  html = html.replace('</body>', () => injection + '\n</body>');
   
   fs.writeFileSync(filePath, html, 'utf8');
   console.log(`Successfully injected database check-in to ${path.basename(filePath)}`);
