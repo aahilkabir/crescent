@@ -1,13 +1,4 @@
-import os
-
-WORKSPACE_DIR = "/Users/mohammedkabir/prez"
-TARGET_FILE = os.path.join(WORKSPACE_DIR, "HTML", "C Programming", "C Programming Lab Activity Deck - Crescent.html")
-
-# Ensure parent directory exists
-os.makedirs(os.path.dirname(TARGET_FILE), exist_ok=True)
-
-# Using raw string (r""") to preserve all double-backslashes (\\n, \\0) as-is in the output HTML file
-html_content = r"""<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -1443,9 +1434,3 @@ render();
 </script>
 </body>
 </html>
-"""
-
-with open(TARGET_FILE, "w", encoding="utf-8") as f:
-    f.write(html_content)
-
-print(f"Successfully generated lab activity slide deck at {TARGET_FILE}")
